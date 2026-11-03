@@ -110,7 +110,9 @@ func TestOwnedContextPaymentBrowser(t *testing.T) {
 		}
 		return ref, cart.InitialPaymentCommand{OperationID: uuid.NewString(), Version: "4"}
 	}
-	if os.Getenv("PAYPAL_CHECKOUT_REHEARSAL") == "1" {
+	if os.Getenv("CUSTOMER_GROUP_COMPLETION_REHEARSAL") == "1" {
+		checkCustomerGroupCompletion(t, ctx, db, sessions, makeCart, options)
+	} else if os.Getenv("PAYPAL_CHECKOUT_REHEARSAL") == "1" {
 		checkPayPalCheckout(t, ctx, db, sessions, makeCart, options)
 	} else if os.Getenv("PAYPAL_WALLET_BROWSER") == "1" {
 		checkPayPalWalletBrowser(t, ctx, db, sessions, makeCart, options)

@@ -15,12 +15,14 @@ const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
 const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits','group-save','group-restore']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
 const paypalContext=args.includes('--paypal-context'),paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
+const groupCompletion=args.includes('--group-completion'),sqlOnly=paypalOnly||groupCompletion
+assert(!groupCompletion||args.length===1,'--group-completion is an independent HTTP/SQL subflow')
 assert(!paypalContext||args.length===1,'--paypal-context is an independent context browser subflow')
 assert(!walletBrowser||args.length===1,'--paypal-wallet is an independent wallet browser subflow')
 assert(!paypalOnly||args.length===1,'--paypal-checkout is an independent HTTP/SQL subflow')
 for(let i=0;i<args.length;i++){
  if(args[i]==='--matrix')continue
- if(args[i]==='--paypal-context'||args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card')continue
+ if(args[i]==='--paypal-context'||args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card'||args[i]==='--group-completion')continue
  assert.equal(args[i],'--scenario','Use [--scenario name]... [--matrix]')
  assert(choices.includes(args[++i]),'Unknown or missing scenario')
  requested.push(args[i])
@@ -92,7 +94,7 @@ try{
  const binary=path.join(base,'identity-linux.test')
  const goTmp=path.join(base,'go-tmp');await mkdir(goTmp)
  run('go',['-C',backend,'test','-trimpath','-c','-o',binary,'./internal/identity'],{env:{...process.env,GOOS:'linux',GOARCH:'amd64',CGO_ENABLED:'0',GOTMPDIR:goTmp}})
- if(!paypalOnly)run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
+ if(!sqlOnly)run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
  report.binary_sha256=createHash('sha256').update(await readFile(binary)).digest('hex')
  // Docker Desktop does not publish host ports on an --internal network.
  // Use an owned bridge and publish only the Gin fixture to host loopback.
@@ -116,13 +118,14 @@ try{
  run('docker',['cp',binary,mysql+':/tmp/identity.test']);run('docker',['exec',mysql,'chmod','700','/tmp/identity.test'])
  run('docker',['exec',mysql,'mkdir','-p','/work/retail/backend/internal/identity','/work/docs/migration'])
  run('docker',['cp',path.join(root,'docs/migration/fixtures'),mysql+':/work/docs/migration/fixtures'])
- const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),...(paypalContext?['-e','PAYPAL_CONTEXT_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
- if(paypalOnly){
+ const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(groupCompletion?['-e','CUSTOMER_GROUP_COMPLETION_REHEARSAL=1']:[]),...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),...(paypalContext?['-e','PAYPAL_CONTEXT_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
+ if(sqlOnly){
   assert.equal(await new Promise((resolve,reject)=>{fixture.once('exit',resolve);fixture.once('error',reject)}),0,'PayPal HTTP/SQL subflow failed; inspect fixture.log')
-  assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_CHECKOUT_SQL:'))
-  assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_COMPLETION_SQL:'))
+  const fixtureLog=await readFile(path.join(base,'fixture.log'),'utf8')
+  if(groupCompletion){assert(fixtureLog.includes('CUSTOMER_GROUP_COMPLETION_SQL'));assert(fixtureLog.includes('CART_PROMOTION_COMPLETION_REHEARSAL'))}
+  else{assert(fixtureLog.includes('PAYPAL_CHECKOUT_SQL:'));assert(fixtureLog.includes('PAYPAL_COMPLETION_SQL:'))}
   assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes)
-  Object.assign(report,{passed:true,subflow:'paypal-checkout',actual_gin_mysql_redis_astro:false,actual_gin_http_mysql_redis:true,astro_executed:false,frozen_source_verified:true,source_sha256:{backend:backendHashes}})
+  Object.assign(report,{passed:true,subflow:groupCompletion?'customer-group-completion':'paypal-checkout',actual_gin_mysql_redis_astro:false,actual_gin_http_mysql_redis:true,astro_executed:false,frozen_source_verified:true,source_sha256:{backend:backendHashes}})
  }else{
  // Private fixture route readiness uses an authenticated harmless facts read.
  for(let i=0;i<180;i++){if(fixture.exitCode!==null)throw Error('Fixture exited before browser; inspect fixture.log');try{const r=await fetch(api+'/__fixture/facts',{headers:{'X-Fixture-Key':key},signal:AbortSignal.timeout(1000)});if(r.status===503)break}catch{}await pause(500);if(i===179)throw Error('Fixture HTTP not ready')}

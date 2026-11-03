@@ -1,0 +1,101 @@
+{
+  "owner": "fe865fa5d86b",
+  "passed": true,
+  "finished_utc": "2026-11-03T00:03:46.453Z",
+  "subflow": "customer-group-completion",
+  "raw_report": "logs/gin-migration/context-payment-fe865fa5d86b/report.json",
+  "raw_report_sha256": "ffdfa46d101de18e0e522d1cdc748ca3c08fe63b6efabe93fef3e0d19271e2e7",
+  "fixture_log_sha256": "268a8a1c31a406acd7d9dfcdea7ef5978eb01d46e4dcc6aef9e83690c4fa8741",
+  "binary_sha256": "fac2d0a111f45d6f7b1d54033bf2ba6acbda866cd294d0d60d0d3bf048a32410",
+  "migrations": 107,
+  "actual_gin_http_mysql_redis": true,
+  "astro_executed": false,
+  "real_provider_called": false,
+  "full_business_flow_executed": false,
+  "production_code_changed": false,
+  "main_database_modified": false,
+  "membership_and_configuration_via_owned_sql_fixture": true,
+  "success_response_discarded_then_same_cart_http_replayed": true,
+  "browser_network_abort_tested": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "source_sha256": {
+    "retail/backend/internal/identity/customer_group_completion_test.go": "b6ac04e92b488701b62b8f1ac1ebb8b998c1b4021a1ac80bb3ceaf168c4cd147",
+    "retail/backend/internal/identity/context_payment_fixture_test.go": "9dca2138c6654f6a5f2b491b15206865d6625ae931379828478601f1471a35a2",
+    "retail/scripts/test-context-payment-joint.mjs": "356872579849f03b650983b0944034647f61ec766b8f79f82a78dd7a95af5dd6"
+  },
+  "group_completion": {
+    "real_mysql_redis": true,
+    "production_completion_http": true,
+    "artificial_provider_only": true,
+    "new_account_group_coupon": true,
+    "settlement": "121.25",
+    "concurrent_retries": 6,
+    "usage_once": true,
+    "customer_budget_once": true,
+    "removed_member_rejected_atomically": true,
+    "late_failure_rolls_back": true,
+    "second_paid_cart_budget_rejected_atomically": true,
+    "lost_response_replay_after_member_removal": true,
+    "order_owner_once": true,
+    "no_external_recharge": true
+  },
+  "group_facts": {
+    "cart_id": "cart_4fecbc22-8916-4629-b110-aa877b94c573",
+    "counts": {
+      "completion_receipt": 1,
+      "frozen_coupon_snapshot": 1,
+      "notification": 1,
+      "order_transaction": 1,
+      "paid_capture": 1,
+      "usage_journal": 1
+    },
+    "customer_budget_used": "1.000000000000000000",
+    "customer_id": "cust_bbb1d40e-0784-4190-86f5-827dd4fcdc0f",
+    "order_id": "order_1fad044f-2fcb-4d57-bd61-43e20e2f21b1",
+    "order_owner_count": 1,
+    "promotion_used": 1,
+    "provider_events": [
+      {
+        "Kind": "create",
+        "Amount": "121.25",
+        "Currency": "eur"
+      },
+      {
+        "Kind": "create",
+        "Amount": "121.25",
+        "Currency": "eur"
+      }
+    ]
+  },
+  "anonymous_regression": {
+    "real_mysql_redis": true,
+    "real_applied_coupon": true,
+    "settlement": "157.19",
+    "concurrent_retries": 4,
+    "usage_once": true,
+    "email_budget_serialized": true,
+    "late_failure_rolls_back_usage_and_order": true,
+    "changed_configuration_rejected": true,
+    "paid_other_cart_budget_rejected_atomically": true,
+    "reversal_journal": true,
+    "no_external_recharge": true
+  },
+  "earlier_narrower_passing_run": "9b48e1f0bb5f",
+  "checks": {
+    "go_test_identity": "passed",
+    "go_vet_identity": "passed",
+    "node_syntax": "passed",
+    "diff_check": "passed"
+  },
+  "main_preview": {
+    "backend_health": 200,
+    "admin": 200,
+    "store": 200,
+    "context_about_route": 200,
+    "legacy_9001_health": "intentionally stopped before this task",
+    "legacy_9001_app": "intentionally stopped before this task",
+    "api_sha256": "374f69143742e52676d1bd4bd5237b77e44d26080f641db1d2669abedb7161dd",
+    "recent_logs": "no new errors in inspected api/admin/storefront logs"
+  }
+}
