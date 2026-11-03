@@ -106,14 +106,11 @@ func checkPaidOrderPromotionCompletion(t *testing.T, ctx context.Context, db *go
 	if fingerprint() != before {
 		t.Fatal("coupon usage escaped completion rollback")
 	}
-	// Changed configuration cannot silently reprice an already paid cart.
+	// Changed configuration must not silently reprice/requalify a paid quote.
+	// Source complete-cart registers saved adjustments, not a fresh computation.
 	exec("UPDATE promotion_application_methods SET value=2,raw_value='" + `{"value":"2","precision":100}` + "' WHERE id='checkout-coupon-method'")
-	if _, e := cart.CompletePaidOrder(ctx, db, "shop", first, firstIn, o); e != cart.ErrCompletionPromotion {
-		t.Fatal("changed coupon accepted", e)
-	}
-	exec("UPDATE promotion_application_methods SET value=1.25,raw_value='" + `{"value":"1.25","precision":100}` + "' WHERE id='checkout-coupon-method'")
 	if fingerprint() != before {
-		t.Fatal("coupon configuration rejection leaked rows")
+		t.Fatal("coupon configuration edit changed completion facts")
 	}
 	var wg sync.WaitGroup
 	errs := make(chan error, 4)
@@ -167,5 +164,5 @@ func checkPaidOrderPromotionCompletion(t *testing.T, ctx context.Context, db *go
 	if externalCreates != 2 {
 		t.Fatal("completion called external creation")
 	}
-	t.Log(`CART_PROMOTION_COMPLETION_REHEARSAL {"real_mysql_redis":true,"real_applied_coupon":true,"settlement":"157.19","concurrent_retries":4,"usage_once":true,"email_budget_serialized":true,"late_failure_rolls_back_usage_and_order":true,"changed_configuration_rejected":true,"paid_other_cart_budget_rejected_atomically":true,"reversal_journal":true,"no_external_recharge":true}`)
+	t.Log(`CART_PROMOTION_COMPLETION_REHEARSAL {"real_mysql_redis":true,"real_applied_coupon":true,"settlement":"157.19","concurrent_retries":4,"usage_once":true,"email_budget_serialized":true,"late_failure_rolls_back_usage_and_order":true,"changed_configuration_preserves_frozen_quote":true,"paid_other_cart_budget_rejected_atomically":true,"reversal_journal":true,"no_external_recharge":true}`)
 }

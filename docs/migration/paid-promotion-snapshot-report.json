@@ -1,0 +1,132 @@
+{
+  "owner": "7ca0fdfdd9bf",
+  "passed": true,
+  "raw_report": "logs/gin-migration/context-payment-7ca0fdfdd9bf/report.json",
+  "raw_report_sha256": "a7b40a93ff558044a92ea93cd65cf497291f78b850c0bccf8d656a4ac12d3953",
+  "fixture_log_sha256": "76568a7520f33434796ee3094e4e358d7a55ad0e86e7a1d27de9bec7f7663f11",
+  "binary_sha256": "33f1fd5d5c26a191207c4dfa66d3c3eef4d7167ff42cd89a4bfbec7fdcf82779",
+  "finished_utc": "2026-11-03T00:17:34.308Z",
+  "migrations": 107,
+  "actual_gin_http_mysql_redis": true,
+  "astro_executed": false,
+  "real_provider_called": false,
+  "full_business_flow_executed": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "source_sha256": {
+    "retail/backend/internal/cart/checkout_order_promotions.go": "39d8378c296b45aa5b78807a5e99356dd5b8737e5ff8c94fc2e2d0045692bb4c",
+    "retail/backend/internal/identity/cart_order_promotion_completion_test.go": "55c273855631b123d13ff5879d2877f2fbbbf6f342b9c9d75eba7c1a6f5e70c3",
+    "retail/backend/internal/identity/customer_group_completion_test.go": "01ba5527a4d7df00b030364cd31df4672f562702e75a879da662e74db3a5001b"
+  },
+  "source_behavior_review": [
+    {
+      "path": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/complete-cart.js",
+      "lines": "481-508",
+      "fact": "Build usage from saved item/shipping adjustments, with server customer id/email.",
+      "sha256": "bf950dc4094dc0ad7bcfca93b72301e526dbf650ad773427abb5d1844a65f611"
+    },
+    {
+      "path": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/promotion/steps/register-usage.js",
+      "lines": "10-28",
+      "fact": "Pass saved adjustment actions to registerUsage; compensation reverts the same usage.",
+      "sha256": "90b1ee4b616a0c821922d77e75b0d0ed52e22cca6e2876dfad2295d54b339068"
+    },
+    {
+      "path": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/services/promotion-module.js",
+      "lines": "132-275",
+      "fact": "Lock and re-read current promotion/budget usage; enforce limits, without recomputing member eligibility or discount methods.",
+      "sha256": "cb1eaec98335f68e91377548998b498167652ccecf9a3874bbb0192964cb13f1"
+    }
+  ],
+  "group_completion": {
+    "real_mysql_redis": true,
+    "production_completion_http": true,
+    "artificial_provider_only": true,
+    "new_account_group_coupon": true,
+    "settlement": "121.25",
+    "concurrent_retries": 6,
+    "usage_once": true,
+    "customer_budget_once": true,
+    "removed_member_completes_saved_quote": true,
+    "changed_method_preserves_frozen_discount": true,
+    "new_automatic_promotion_not_applied": true,
+    "late_failure_rolls_back": true,
+    "second_paid_cart_budget_rejected_atomically": true,
+    "lost_response_replay_after_member_removal": true,
+    "order_owner_once": true,
+    "no_external_recharge": true
+  },
+  "group_facts": {
+    "cart_id": "cart_70a95a13-30c4-42d8-b060-96702d8ab4f1",
+    "counts": {
+      "completion_receipt": 1,
+      "frozen_coupon_snapshot": 1,
+      "notification": 1,
+      "order_transaction": 1,
+      "paid_capture": 1,
+      "usage_journal": 1
+    },
+    "customer_budget_used": "1.000000000000000000",
+    "customer_id": "cust_7a822835-47c6-40e7-be97-447166a708a1",
+    "new_automatic_used": 0,
+    "order_id": "order_879658ef-9120-4c59-b8ba-294f6c667439",
+    "order_owner_count": 1,
+    "plain_order_discount_count": 0,
+    "plain_order_id": "order_816bcb50-0c3a-42b5-916e-a9113ad883a6",
+    "promotion_used": 1,
+    "provider_events": [
+      {
+        "Kind": "create",
+        "Amount": "121.25",
+        "Currency": "eur"
+      },
+      {
+        "Kind": "create",
+        "Amount": "121.25",
+        "Currency": "eur"
+      },
+      {
+        "Kind": "create",
+        "Amount": "158.75",
+        "Currency": "eur"
+      }
+    ]
+  },
+  "anonymous_regression": {
+    "real_mysql_redis": true,
+    "real_applied_coupon": true,
+    "settlement": "157.19",
+    "concurrent_retries": 4,
+    "usage_once": true,
+    "email_budget_serialized": true,
+    "late_failure_rolls_back_usage_and_order": true,
+    "changed_configuration_preserves_frozen_quote": true,
+    "paid_other_cart_budget_rejected_atomically": true,
+    "reversal_journal": true,
+    "no_external_recharge": true
+  },
+  "prior_passing_run_without_plain_cart": "4c1bb6b80c8f",
+  "checks": {
+    "go_test_all": "passed",
+    "affected_go_tests": "passed after final test additions",
+    "affected_vet": "passed",
+    "diff_check": "passed"
+  },
+  "main_preview": {
+    "updated_by": "scripts/start-retail.ps1",
+    "api_sha256": "832dd475af24417d7de90c9939a186718836e69d5383c6fb299a534ad982668e",
+    "backend_health": 200,
+    "admin": 200,
+    "store": 200,
+    "checkout_without_possession": 404,
+    "legacy_9001": "intentionally stopped",
+    "order_payment_workers": 1,
+    "order_refund_workers": 1,
+    "recent_service_logs": "no new errors in inspected API/Admin/storefront and worker tails"
+  },
+  "remaining_boundaries": [
+    "current promotion identity/status and campaign/usage limits remain enforced",
+    "budget exhaustion conflict needs existing operational handling; no automatic pre-order refund added",
+    "external payment channel is artificial in this subflow; no real email delivery or full C01-C11 acceptance"
+  ]
+}

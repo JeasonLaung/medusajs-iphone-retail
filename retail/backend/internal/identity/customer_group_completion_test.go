@@ -125,6 +125,25 @@ func checkCustomerGroupCompletion(t *testing.T, ctx context.Context, db *gorm.DB
 		return prepared{ref, issued.Token, issued.CSRF}
 	}
 	first, second := prepare(), prepare()
+	// A previously undiscounted payment must also ignore an offer enabled only
+	// after payment. It remains anonymous, with a separate cart possession.
+	plainRef, plainIn := makeCart()
+	plainIssued, err := sessions.IssueCart(ctx, plainRef)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result, e := cart.StartInitialPayment(ctx, db, "shop", plainRef, plainIn, o); e != nil || result.State != "ready" {
+		t.Fatal("plain payment", result, e)
+	}
+	adapter.mu.Lock()
+	for id := range adapter.status {
+		adapter.status[id] = "paid"
+	}
+	adapter.mu.Unlock()
+	if result, e := cart.ObserveInitialPayment(ctx, db, "shop", plainRef, o); e != nil || result.State != "paid_pending_order" {
+		t.Fatal("plain paid observation", result, e)
+	}
+	plain := prepared{plainRef, plainIssued.Token, plainIssued.CSRF}
 	fingerprint := func() string {
 		t.Helper()
 		var all []any
@@ -160,12 +179,12 @@ func checkCustomerGroupCompletion(t *testing.T, ctx context.Context, db *gorm.DB
 		raw, e := io.ReadAll(response.Body)
 		return response.StatusCode, raw, e
 	}
-	before := fingerprint()
 	member(false)
-	if code, _, e := complete(first); e != nil || code != 409 || fingerprint() != before {
-		t.Fatal("removed member must reject paid completion atomically", code, e)
-	}
-	member(true)
+	// Match the source workflow: register the saved paid quote after membership
+	// removal/method changes; a newly automatic offer cannot affect this payment.
+	exec(`UPDATE promotion_application_methods SET value=20,raw_value='{"value":"20","precision":100}' WHERE id='context-member-method'`)
+	exec("UPDATE promotions SET is_automatic=TRUE WHERE id='context-manual-offer'")
+	before := fingerprint()
 	exec("CREATE TRIGGER group_completion_late_failure BEFORE INSERT ON cart_completion_receipts FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned group completion late failure'")
 	if code, _, e := complete(first); e != nil || code < 400 || fingerprint() != before {
 		t.Fatal("late completion failure leaked usage/order/stock", code, e)
@@ -233,20 +252,36 @@ func checkCustomerGroupCompletion(t *testing.T, ctx context.Context, db *gorm.DB
 	if code, raw, e := complete(first); e != nil || code != 200 || !strings.Contains(string(raw), orderID) || fingerprint() != after {
 		t.Fatal("lost completion response replay changed facts", code, e)
 	}
+	code, plainRaw, err := complete(plain)
+	var plainBody map[string]string
+	if err != nil || code != 200 || json.Unmarshal(plainRaw, &plainBody) != nil || plainBody["order_id"] == "" || plainBody["version"] != "6" {
+		t.Fatal("new automatic offer blocked plain paid quote", code, err)
+	}
+	var plainAdjustments, automaticUsed int64
+	if db.Table("order_line_adjustments a").Joins("JOIN order_items i ON i.item_id=a.item_id AND i.version=a.version").Where("i.order_id=? AND a.deleted_at IS NULL", plainBody["order_id"]).Count(&plainAdjustments).Error != nil || plainAdjustments != 0 {
+		t.Fatal("plain quote gained a discount")
+	}
+	if db.Table("promotions").Select("used").Where("id='context-manual-offer'").Scan(&automaticUsed).Error != nil || automaticUsed != 0 {
+		t.Fatal("new automatic offer consumed usage")
+	}
 	adapter.mu.Lock()
 	defer adapter.mu.Unlock()
-	if adapter.creates != 2 || adapter.deletes != 0 || len(adapter.events) != 2 {
+	if adapter.creates != 3 || adapter.deletes != 0 || len(adapter.events) != 3 {
 		t.Fatal("completion recharged member", adapter.events)
 	}
-	for _, event := range adapter.events {
-		if event.Amount != "121.25" || event.Currency != "eur" {
+	for i, event := range adapter.events {
+		want := "121.25"
+		if i == 2 {
+			want = "158.75"
+		}
+		if event.Amount != want || event.Currency != "eur" {
 			t.Fatal("member quote mismatch", event)
 		}
 	}
-	rawFacts, err := json.Marshal(map[string]any{"order_id": orderID, "cart_id": first.ref.CartID, "customer_id": account.ID, "promotion_used": used, "customer_budget_used": budget.Used, "order_owner_count": owners, "counts": counts, "provider_events": adapter.events})
+	rawFacts, err := json.Marshal(map[string]any{"order_id": orderID, "cart_id": first.ref.CartID, "customer_id": account.ID, "promotion_used": used, "customer_budget_used": budget.Used, "order_owner_count": owners, "counts": counts, "provider_events": adapter.events, "plain_order_id": plainBody["order_id"], "plain_order_discount_count": plainAdjustments, "new_automatic_used": automaticUsed})
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Log("CUSTOMER_GROUP_COMPLETION_FACTS " + string(rawFacts))
-	t.Log(`CUSTOMER_GROUP_COMPLETION_SQL {"real_mysql_redis":true,"production_completion_http":true,"artificial_provider_only":true,"new_account_group_coupon":true,"settlement":"121.25","concurrent_retries":6,"usage_once":true,"customer_budget_once":true,"removed_member_rejected_atomically":true,"late_failure_rolls_back":true,"second_paid_cart_budget_rejected_atomically":true,"lost_response_replay_after_member_removal":true,"order_owner_once":true,"no_external_recharge":true}`)
+	t.Log(`CUSTOMER_GROUP_COMPLETION_SQL {"real_mysql_redis":true,"production_completion_http":true,"artificial_provider_only":true,"new_account_group_coupon":true,"settlement":"121.25","concurrent_retries":6,"usage_once":true,"customer_budget_once":true,"removed_member_completes_saved_quote":true,"changed_method_preserves_frozen_discount":true,"new_automatic_promotion_not_applied":true,"late_failure_rolls_back":true,"second_paid_cart_budget_rejected_atomically":true,"lost_response_replay_after_member_removal":true,"order_owner_once":true,"no_external_recharge":true}`)
 }

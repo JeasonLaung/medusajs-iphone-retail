@@ -2,6 +2,7 @@ package cart
 
 import (
 	"context"
+	"errors"
 	"strconv"
 	"time"
 
@@ -14,7 +15,7 @@ import (
 
 // Called only after StagePaidOrderAndStock has authorized the frozen checkout,
 // matching sealed paid evidence, new order and current stock in THIS transaction.
-// Recompute without replacing frozen adjustments or changing the paid amount.
+// Register the saved adjustments without requalifying/repricing a paid quote.
 // Counter/attribute registration and its reversal journal commit with the order.
 func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, in InitialPaymentCommand, orderID string) error {
 	var attempt initialAttempt
@@ -35,7 +36,7 @@ func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string,
 	// current usage counters. Registration must not authorize a stale preview.
 	locked := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Session(&gorm.Session{})
 	at := time.Now().UTC()
-	candidates, err := promotion.ReadActive(locked, promotion.ActiveRequest{Codes: codes, IncludeAutomatic: true, At: at})
+	candidates, err := promotion.ReadActive(locked, promotion.ActiveRequest{Codes: codes, IncludeAutomatic: false, At: at})
 	if err != nil {
 		return err
 	}
@@ -43,38 +44,17 @@ func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string,
 	if err != nil {
 		return err
 	}
-	computed, err := promotion.ComputeCandidates(promotion.ComputeInput{Candidates: candidates, Context: facts.JSON, Epsilon: facts.CurrencyEpsilon, AttributeUsages: attributes})
-	if err != nil {
-		return err
+	// The source complete-cart workflow registers amounts/codes from persisted
+	// cart adjustments. Recomputing eligibility here can strand a paid order
+	// after a member is removed, or add a newly automatic promotion. Payment
+	// creation already qualified/refreshed this quote, and normal cart writes
+	// remain frozen. Keep current promotion identity and serialized usage guards.
+	known := map[string]string{}
+	for _, candidate := range candidates {
+		known[candidate.ID] = candidate.Code
 	}
-	// Include target/code/tax treatment in equality, not just the final discount.
-	type adjustment struct {
-		Kind, Parent, Promotion, Code, Amount string
-		Inclusive                             bool
-	}
-	expected := map[adjustment]int{}
 	actions := []promotion.UsageAction{}
 	wanted := map[string]bool{}
-	for _, a := range computed.Actions {
-		var parent, kind string
-		switch a.Action {
-		case "addItemAdjustment":
-			parent, kind = a.ItemID, "item"
-		case "addShippingMethodAdjustment":
-			parent, kind = a.ShippingMethodID, "shipping"
-		case "promotionLimitExceeded", "campaignBudgetExceeded":
-			continue
-		default:
-			return ErrCompletionPromotion
-		}
-		canonical, e := totals.Resolve(totals.Number{Decimal: a.Amount})
-		if e != nil || canonical == "0" {
-			return ErrCompletionPromotion
-		}
-		expected[adjustment{kind, parent, a.PromotionID, a.Code, canonical, a.TaxInclusive}]++
-		wanted[a.PromotionID] = true
-		actions = append(actions, promotion.UsageAction{PromotionID: a.PromotionID, Amount: canonical})
-	}
 	type saved struct {
 		ParentID, PromotionID, Code, Amount string
 		RawAmount                           *string
@@ -98,16 +78,11 @@ func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string,
 			if e != nil {
 				return ErrSchema
 			}
-			key := adjustment{spec.kind, row.ParentID, row.PromotionID, row.Code, amount, row.Inclusive}
-			if expected[key] <= 0 {
+			if amount == "0" || row.Code == "" || known[row.PromotionID] != row.Code {
 				return ErrCompletionPromotion
 			}
-			expected[key]--
-		}
-	}
-	for _, count := range expected {
-		if count != 0 {
-			return ErrCompletionPromotion
+			wanted[row.PromotionID] = true
+			actions = append(actions, promotion.UsageAction{PromotionID: row.PromotionID, Amount: amount})
 		}
 	}
 	var links []string
@@ -132,5 +107,8 @@ func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string,
 		registration.Attributes[fact.Attribute] = fact.Value
 	}
 	_, err = promotion.RegisterUsageOnce(ctx, tx, promotion.UsageOperation{ScopeID: orderID, OperationID: in.OperationID}, actions, registration)
+	if errors.Is(err, promotion.ErrUsageLimit) || errors.Is(err, promotion.ErrUsageUnavailable) {
+		return ErrCompletionPromotion
+	}
 	return err
 }
