@@ -1,5 +1,5 @@
 import {CartError,type CartClient} from './cart-client.ts'
-export type PaymentResultState={status:'pending'|'failed'|'invalid'|'error'|'confirmed';orderID?:string}
+export type PaymentResultState={status:'pending'|'paid_pending_order'|'failed'|'invalid'|'error'|'confirmed';orderID?:string}
 type PaymentAPI=Pick<CartClient,'current'|'paymentStatus'|'complete'>
 // A return URL is only a routing hint. Every operation is authorized by the
 // existing HttpOnly possession and CSRF. Closed carts recover via the durable
@@ -11,9 +11,16 @@ export async function checkPaymentResult(api:PaymentAPI,cartID:string|undefined,
   if(cartID&&cart&&cartID!==cart.id)return {status:'invalid'}
   const id=cart?.id??cartID
   if(!id)return {status:'invalid'}
-  const finish=async():Promise<PaymentResultState>=>{
-   const receipt=await api.complete(id,{csrfToken})
-   return {status:'confirmed',orderID:receipt.order_id}
+  const finish=async(paid=false):Promise<PaymentResultState>=>{
+   try{
+    const receipt=await api.complete(id,{csrfToken})
+    return {status:'confirmed',orderID:receipt.order_id}
+   }catch(error){
+    // Only an authenticated paid observation establishes this distinction.
+    // A failed/lost completion response never authorizes another payment.
+    if(paid&&!(error instanceof CartError&&(error.status===401||error.status===404||error.kind==='input')))return {status:'paid_pending_order'}
+    throw error
+   }
   }
   if(!cart)return await finish()
   let state
@@ -24,7 +31,7 @@ export async function checkPaymentResult(api:PaymentAPI,cartID:string|undefined,
    if(error instanceof CartError&&error.status===404)return await finish()
    throw error
   }
-  if(state.state==='paid_pending_order')return await finish()
+  if(state.state==='paid_pending_order')return await finish(true)
   if(state.state==='failed')return {status:'failed'}
   return {status:state.state==='requires_review'?'error':'pending'}
  }catch(error){

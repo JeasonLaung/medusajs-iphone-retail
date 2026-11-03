@@ -1,0 +1,139 @@
+{
+  "owner": "43c0a01f986f",
+  "passed": true,
+  "raw_report": "logs/gin-migration/context-payment-43c0a01f986f/report.json",
+  "raw_report_sha256": "5ba0c9ca37cbbd3deccfe10a177b3d69e2fa5edaccff898d9d4155aea15eab59",
+  "fixture_log_sha256": "36428b28abd2467e05b13033604188e6c1900de05ce04a9579cd303773553714",
+  "browser_result_sha256": "f7c1a68498395d9c7a33035d6f8b5ba9c04593ee076929bca9e0987a07b2dd7d",
+  "binary_sha256": "c30a142717a088b63e4298b18d4dbf03dbbf41528a68e071924a1af3cb3a4a72",
+  "finished_utc": "2026-11-03T00:36:35.517Z",
+  "migrations": 107,
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "full_business_flow_executed": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "source_sha256": {
+    "retail/storefront/src/lib/payment-result-state.ts": "b18b3ac570658d4b7fbfbc88f292977315b931e13b20bf756871cbc15bd653a9",
+    "retail/storefront/src/components/checkout/payment-result/index.tsx": "82d97491340a6a04c70e4614ab9ce609c9d31cec013899baf510ab2f2d7cda23",
+    "retail/storefront/src/components/checkout/payment-result/styles.module.css": "5bebcdd7059b4db5c9a9c034322d14c0ccfeb8934e3f6d9e3df10172887ee7a3",
+    "retail/storefront/src/components/checkout/i18n.ts": "1a2c283f875282020297e13900380e1a71967178b9a93edb1b84198198801964",
+    "retail/storefront/tests/payment-result-state.test.ts": "ea24ad3ebfd51c821f63a6f9f93cedfb2173ed5fbda2019f43b7805f5ed58b97",
+    "retail/backend/internal/identity/customer_group_completion_test.go": "8913816bb96b1d619df311a1b3b402785c401ae0ee5c6cf287582805a4c9d7d6",
+    "retail/backend/internal/identity/paid_order_recovery_browser_test.go": "31eab2f087ae98a7b182c5a616e627d07f9f93babcbf48558b751751366eda17",
+    "retail/admin/tests/paid-order-recovery.native.mjs": "ed685716d705e9da64397b5a176675beeb27b26e744c8ea386185b0abb919dc6",
+    "retail/scripts/test-context-payment-joint.mjs": "ca7358343e6c5fd2c6de0e7750f82da93d103685f44ada2e8b8c8fa0ee303742"
+  },
+  "browser": {
+    "cases": [
+      {
+        "scenario": "paid-conflict",
+        "lang": "en",
+        "width": 390,
+        "same_paid_cart": true,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "zh",
+        "width": 390,
+        "same_paid_cart": true,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "en",
+        "width": 1440,
+        "same_paid_cart": true,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "zh",
+        "width": 1440,
+        "same_paid_cart": true,
+        "double_click_single_request": true,
+        "lost_success_response": true,
+        "reload_recovered": true
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "en",
+        "width": 390,
+        "order_id": "order_7d2b9007-fa2f-49d8-98ed-353ece6a8b50"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "zh",
+        "width": 390,
+        "order_id": "order_7d2b9007-fa2f-49d8-98ed-353ece6a8b50"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "en",
+        "width": 1440,
+        "order_id": "order_7d2b9007-fa2f-49d8-98ed-353ece6a8b50"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "zh",
+        "width": 1440,
+        "order_id": "order_7d2b9007-fa2f-49d8-98ed-353ece6a8b50"
+      }
+    ],
+    "errors": [],
+    "post_requests": 23,
+    "only_payment_status_and_complete": true
+  },
+  "sql": {
+    "cart_settlement": "121.25",
+    "unique_receipt_capture_transaction_ownership_notification_usage": true,
+    "account_budget_used": "2.000000000000000000",
+    "provider_creates": 3,
+    "provider_deletes": 0
+  },
+  "checks": {
+    "frontend_tests": 16,
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 29,
+    "go_test": [
+      "identity",
+      "cart"
+    ],
+    "go_vet": [
+      "identity",
+      "cart"
+    ]
+  },
+  "main_preview": {
+    "checked_utc": "2026-11-03T00:38:13.844Z",
+    "health": [
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9200/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/gb-en/payment-result",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/gb-zh/payment-result",
+        "status": 200
+      }
+    ],
+    "frontend_hmr": true,
+    "legacy_9001": "intentionally stopped"
+  },
+  "remaining": [
+    "operational pending-paid queue",
+    "business policy for unresolved paid conflicts",
+    "production callbacks",
+    "real mail delivery",
+    "remaining C01-C11 acceptance"
+  ]
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {browserCartClient,cartCSRFFromCookies} from "../../../lib/cart-client"
 import {clearCompletedPayment} from '../../../lib/checkout-payment'
 import {checkPaymentResult} from "../../../lib/payment-result-state"
@@ -8,12 +8,15 @@ import BrandLogo from "../../layout/brand-logo"
 import { getCheckoutCopy } from "../i18n"
 import styles from "./styles.module.css"
 
-type Status = "checking" | "pending" | "failed" | "invalid" | "error" | "confirmed"
+type Status = "checking" | "pending" | "paid_pending_order" | "failed" | "invalid" | "error" | "confirmed"
 type Result = { status: Status; order_url?: string; retry_url?: string }
 
 export default function PaymentResult({ countryCode, cartId }: { countryCode: string; cartId?: string }) {
   const copy = getCheckoutCopy(countryCode)
   const [result, setResult] = useState<Result>({ status: "checking" })
+  const [run, setRun] = useState(0)
+  const [busy, setBusy] = useState(true)
+  const checking = useRef(true)
   useEffect(() => {
     let stopped = false
     let attempts = 0
@@ -28,10 +31,16 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
         if (attempts < 12) {
           setResult({ status: "pending" })
           timer = setTimeout(() => void check(), 5000)
-        } else setResult({ status: "error" })
+        } else {
+          setResult(next)
+          checking.current = false
+          setBusy(false)
+        }
         return
       }
       setResult(next)
+      checking.current = false
+      setBusy(false)
       if (next.status === "confirmed" && next.order_url){
         // cartId is a hint, but confirmed is reached only after Gin authorizes
         // its matching completion. Cleanup cannot confer order access.
@@ -43,11 +52,20 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     // cart completion requests. Each retry starts after the previous one ends.
     timer = setTimeout(() => void check(), 0)
     return () => { stopped = true; clearTimeout(timer) }
-  }, [cartId,countryCode])
+  }, [cartId,countryCode,run])
+
+  function retry() {
+    if (checking.current) return
+    checking.current = true
+    setBusy(true)
+    setResult({ status: result.status === 'paid_pending_order' ? 'paid_pending_order' : 'checking' })
+    setRun(value => value + 1)
+  }
 
   const messages = {
     checking: [copy.paymentCheckingTitle, copy.paymentCheckingBody],
     pending: [copy.paymentWaitingTitle, copy.paymentWaitingBody],
+    paid_pending_order: [copy.paymentOrderPendingTitle, copy.paymentOrderPendingBody],
     failed: [copy.paymentFailedTitle, copy.paymentFailedBody],
     invalid: [copy.paymentInvalidTitle, copy.paymentInvalidBody],
     error: [copy.paymentCheckErrorTitle, copy.paymentCheckErrorBody],
@@ -69,6 +87,8 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
         <p className={styles.description}>{description}</p>
       </div>
       <div className={styles.actions}>
+        {(result.status === "paid_pending_order" || result.status === "error" || result.status === "pending" && !busy) &&
+          <button className={styles.primary} type="button" disabled={busy} aria-busy={busy} onClick={retry}>{busy ? copy.paymentCheckingTitle : copy.paymentCheckAgain}</button>}
         {result.status === "failed" && result.retry_url &&
           <a className={styles.primary} href={result.retry_url}>{copy.paymentReturnCheckout}</a>}
         {result.status === "confirmed" && result.order_url &&

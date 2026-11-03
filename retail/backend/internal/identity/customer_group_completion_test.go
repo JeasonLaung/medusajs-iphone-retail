@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -47,7 +48,10 @@ func checkCustomerGroupCompletion(t *testing.T, ctx context.Context, db *gorm.DB
 	exec("INSERT INTO promotion_campaigns(id,name,campaign_identifier,created_at,updated_at) VALUES('group-completion-campaign','Owned group completion','GROUP_COMPLETION',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("UPDATE promotions SET campaign_id='group-completion-campaign',`limit`=10 WHERE id='context-member-coupon'")
 	exec(`INSERT INTO promotion_campaign_budgets(id,type,campaign_id,attribute,currency_code,` + "`limit`" + `,raw_limit,used,raw_used,created_at,updated_at) VALUES('group-completion-budget','use_by_attribute','group-completion-campaign','customer_id','eur',1,'{"value":"1","precision":100}',0,'{"value":"0","precision":100}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
-	const origin = "http://127.0.0.1:19200"
+	origin := "http://127.0.0.1:19200"
+	if os.Getenv("PAID_ORDER_RECOVERY_BROWSER") == "1" {
+		origin = os.Getenv("CONTEXT_PAYMENT_ORIGIN")
+	}
 	accounts, err := customer.New(db, options.Ring, sessions, origin)
 	if err != nil {
 		t.Fatal(err)
@@ -263,6 +267,9 @@ func checkCustomerGroupCompletion(t *testing.T, ctx context.Context, db *gorm.DB
 	}
 	if db.Table("promotions").Select("used").Where("id='context-manual-offer'").Scan(&automaticUsed).Error != nil || automaticUsed != 0 {
 		t.Fatal("new automatic offer consumed usage")
+	}
+	if os.Getenv("PAID_ORDER_RECOVERY_BROWSER") == "1" {
+		checkPaidOrderRecoveryBrowser(t, ctx, db, router, second.ref.CartID, second.token, second.csrf)
 	}
 	adapter.mu.Lock()
 	defer adapter.mu.Unlock()

@@ -16,8 +16,23 @@ test('only a completed server receipt confirms a verified paid attempt',async()=
   assert.equal(result.status,state==='failed'?'failed':state==='requires_review'?'error':'pending');assert.equal(completions,0)
  }
  for(const error of [new CartError('unavailable',503,true),new CartError('conflict',409),new CartError('item',422),new CartError('protocol',200,true)]){
-  assert.equal((await checkPaymentResult({...api,complete:async()=>{throw error}},'cart',csrf)).status,'error')
+  assert.equal((await checkPaymentResult({...api,complete:async()=>{throw error}},'cart',csrf)).status,'paid_pending_order')
  }
+})
+
+test('paid conflict and lost completion recover the original receipt without another payment',async()=>{
+ let calls=0
+ const api={current:async()=>cart,paymentStatus:async()=>({cart_id:'cart',version:'5',state:'paid_pending_order' as const}),complete:async()=>{
+  calls++
+  if(calls===1)throw new CartError('conflict',409)
+  if(calls===2)throw new CartError('unavailable',0,true)
+  return receipt
+ }}
+ assert.deepEqual(await checkPaymentResult(api,'cart',csrf),{status:'paid_pending_order'})
+ assert.deepEqual(await checkPaymentResult(api,'cart',csrf),{status:'paid_pending_order'})
+ assert.deepEqual(await checkPaymentResult(api,'cart',csrf),{status:'confirmed',orderID:receipt.order_id})
+ for(const code of [401,404])assert.equal((await checkPaymentResult({...api,complete:async()=>{throw new CartError('session',code)}},'cart',csrf)).status,'invalid')
+ assert.equal(calls,3)
 })
 
 test('closed-cart reload and a concurrent completion recover via the same receipt',async()=>{

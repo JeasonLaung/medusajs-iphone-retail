@@ -15,20 +15,22 @@ const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
 const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits','group-save','group-restore']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
 const paypalContext=args.includes('--paypal-context'),paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
-const groupCompletion=args.includes('--group-completion'),sqlOnly=paypalOnly||groupCompletion
+const paidRecovery=args.includes('--paid-order-recovery')
+const groupCompletion=args.includes('--group-completion')||paidRecovery,sqlOnly=paypalOnly||groupCompletion&&!paidRecovery
+assert(!paidRecovery||args.length===1,'--paid-order-recovery is an independent paid-order browser subflow')
 assert(!groupCompletion||args.length===1,'--group-completion is an independent HTTP/SQL subflow')
 assert(!paypalContext||args.length===1,'--paypal-context is an independent context browser subflow')
 assert(!walletBrowser||args.length===1,'--paypal-wallet is an independent wallet browser subflow')
 assert(!paypalOnly||args.length===1,'--paypal-checkout is an independent HTTP/SQL subflow')
 for(let i=0;i<args.length;i++){
  if(args[i]==='--matrix')continue
- if(args[i]==='--paypal-context'||args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card'||args[i]==='--group-completion')continue
+ if(args[i]==='--paypal-context'||args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card'||args[i]==='--group-completion'||args[i]==='--paid-order-recovery')continue
  assert.equal(args[i],'--scenario','Use [--scenario name]... [--matrix]')
  assert(choices.includes(args[++i]),'Unknown or missing scenario')
  requested.push(args[i])
 }
 const selected=requested.length?[...new Set(requested)]:choices
-const caseCount=paypalContext?28:walletBrowser?4:selected.length*(matrix?4:1)
+const caseCount=paidRecovery?8:paypalContext?28:walletBrowser?4:selected.length*(matrix?4:1)
 const pause=ms=>new Promise(r=>setTimeout(r,ms)),containers=[],processes=[]
 let network,failed,volume
 function run(cmd,args,opts={}){
@@ -63,7 +65,7 @@ try{
  assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes)
  assert.deepEqual(await inventory(path.join(root,'retail/storefront')),storefrontHashes)
  const admin=path.join(base,'admin');await mkdir(path.join(admin,'tests'),{recursive:true})
- const browserSource=path.join(root,paypalContext?'retail/admin/tests/paypal-context.native.mjs':walletBrowser?(cardBrowser?'retail/admin/tests/paypal-card.native.mjs':'retail/admin/tests/paypal-wallet.native.mjs'):'retail/admin/tests/context-payment.native.mjs')
+ const browserSource=path.join(root,paidRecovery?'retail/admin/tests/paid-order-recovery.native.mjs':paypalContext?'retail/admin/tests/paypal-context.native.mjs':walletBrowser?(cardBrowser?'retail/admin/tests/paypal-card.native.mjs':'retail/admin/tests/paypal-wallet.native.mjs'):'retail/admin/tests/context-payment.native.mjs')
  await cp(browserSource,path.join(admin,'tests/context-payment.native.mjs'))
  const browserHash=createHash('sha256').update(await readFile(browserSource)).digest('hex')
  await symlink(path.join(root,'retail/admin/node_modules'),path.join(admin,'node_modules'),process.platform==='win32'?'junction':'dir')
@@ -118,7 +120,7 @@ try{
  run('docker',['cp',binary,mysql+':/tmp/identity.test']);run('docker',['exec',mysql,'chmod','700','/tmp/identity.test'])
  run('docker',['exec',mysql,'mkdir','-p','/work/retail/backend/internal/identity','/work/docs/migration'])
  run('docker',['cp',path.join(root,'docs/migration/fixtures'),mysql+':/work/docs/migration/fixtures'])
- const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(groupCompletion?['-e','CUSTOMER_GROUP_COMPLETION_REHEARSAL=1']:[]),...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),...(paypalContext?['-e','PAYPAL_CONTEXT_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
+ const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(groupCompletion?['-e','CUSTOMER_GROUP_COMPLETION_REHEARSAL=1']:[]),...(paidRecovery?['-e','PAID_ORDER_RECOVERY_BROWSER=1']:[]),...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),...(paypalContext?['-e','PAYPAL_CONTEXT_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
  if(sqlOnly){
   assert.equal(await new Promise((resolve,reject)=>{fixture.once('exit',resolve);fixture.once('error',reject)}),0,'PayPal HTTP/SQL subflow failed; inspect fixture.log')
   const fixtureLog=await readFile(path.join(base,'fixture.log'),'utf8')
@@ -130,7 +132,7 @@ try{
  // Private fixture route readiness uses an authenticated harmless facts read.
  for(let i=0;i<180;i++){if(fixture.exitCode!==null)throw Error('Fixture exited before browser; inspect fixture.log');try{const r=await fetch(api+'/__fixture/facts',{headers:{'X-Fixture-Key':key},signal:AbortSignal.timeout(1000)});if(r.status===503)break}catch{}await pause(500);if(i===179)throw Error('Fixture HTTP not ready')}
  const astro=launch(process.execPath,['scripts/start.mjs'],storefront,{...env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:api,STOREFRONT_ORIGIN:origin,CUSTOMER_BRIDGE_KEY:key,ASTRO_TELEMETRY_DISABLED:'1'},'astro.log')
- await ready(origin+'/dk-en/about',astro)
+ await ready(origin+(paidRecovery?'/dk-en/payment-result':'/dk-en/about'),astro)
  console.log('Run actual browser save/restore cases against owned services.')
  const browser=launch(process.execPath,['tests/context-payment.native.mjs'],admin,{...env,...(process.env.CONTEXT_BROWSER_EXECUTABLE?{CONTEXT_BROWSER_EXECUTABLE:process.env.CONTEXT_BROWSER_EXECUTABLE}:{}),CONTEXT_ASTRO_ORIGIN:origin,CONTEXT_API_ORIGIN:api,CONTEXT_FIXTURE_KEY:key,CONTEXT_BROWSER_OUTPUT:base,CONTEXT_SCENARIOS:JSON.stringify(selected),CONTEXT_MATRIX:matrix?'1':'0'},'browser.log')
  const code=await new Promise((resolve,reject)=>{browser.once('exit',resolve);browser.once('error',reject)})
@@ -139,7 +141,7 @@ try{
  const ended=new Promise(resolve=>fixture.once('exit',resolve))
  assert.equal((await fetch(api+'/__fixture/finish',{method:'POST',headers:{'X-Fixture-Key':key}})).status,200)
  assert.equal(await ended,0,'SQL fixture assertions failed; inspect fixture.log')
- assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('CONTEXT_PAYMENT_BROWSER_SQL'))
+ assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes(paidRecovery?'PAID_ORDER_RECOVERY_SQL':'CONTEXT_PAYMENT_BROWSER_SQL'))
  assert.deepEqual(await inventory(backend),backendHashes);assert.deepEqual(await inventory(storefront),storefrontHashes)
  assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes);assert.deepEqual(await inventory(path.join(root,'retail/storefront')),storefrontHashes)
  assert.equal(createHash('sha256').update(await readFile(browserSource)).digest('hex'),browserHash)
