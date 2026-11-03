@@ -3,6 +3,7 @@ import {Alert,App,Button,Drawer,Empty,Select,Space,Spin,Table,Tabs,Typography} f
 import {APIError,csrfCookie} from './api'
 import type {Copy} from './i18n'
 import {useAccess} from './Permissions'
+import type {Reply} from './MailCompose'
 
 type Message={id:string;account_id:string;subject:string;from_address:string;received_at:string;read_at:string|null;archived:boolean;deleted:boolean}
 type Detail={message:Message;text:string;html:string;attachments:{index:number;filename:string}[]}
@@ -12,7 +13,7 @@ async function request<T>(path:string,body?:unknown):Promise<T>{
  if(!response.ok)throw new APIError(response.status,'mail.unavailable')
  return response.json()
 }
-export default function MailInbox({accountID,enabled,copy,onExpired}:{accountID:string;enabled:boolean;copy:Copy;onExpired():void}){
+export default function MailInbox({accountID,enabled,copy,onExpired,onReply}:{accountID:string;enabled:boolean;copy:Copy;onExpired():void;onReply(reply:Reply):void}){
  const zh=copy.mailboxes==='通知邮箱',{message}=App.useApp()
  const writable=useAccess().can('mail.write')
  const [folder,setFolder]=useState('inbox'),[offset,setOffset]=useState(0),[reload,setReload]=useState(0),[rows,setRows]=useState<Message[]>(),[detail,setDetail]=useState<Detail>(),[error,setError]=useState(false),[busy,setBusy]=useState(false),[view,setView]=useState('text')
@@ -53,6 +54,7 @@ export default function MailInbox({accountID,enabled,copy,onExpired}:{accountID:
   ]}/><Space><Button disabled={offset===0||busy} onClick={()=>setOffset(n=>Math.max(0,n-50))}>{zh?'上一页':'Previous'}</Button><Button disabled={rows.length<50||busy} onClick={()=>setOffset(n=>n+50)}>{zh?'下一页':'Next'}</Button></Space></>}
   {detail&&<Drawer open width="min(900px,100vw)" title={detail.message.subject} onClose={()=>{generation.current++;setDetail(undefined)}} extra={<a href={'/api/admin/notification-mail/inbox/'+detail.message.id+'/original'}>{zh?'下载原始邮件':'Download original email'}</a>}>
    <Typography.Paragraph>{detail.message.from_address}</Typography.Paragraph>
+   <Space><Button disabled={!writable} onClick={()=>{const from=detail.message.from_address;onReply({to:from.match(/<([^>]+)>/)?.[1]??from,subject:'Re: '+detail.message.subject,text:'\n\n> '+detail.text.replace(/\n/g,'\n> ')});setDetail(undefined)}}>{zh?'回复':'Reply'}</Button><Button disabled={!writable} onClick={()=>{onReply({to:'',subject:'Fwd: '+detail.message.subject,text:'\n\n'+detail.message.from_address+'\n'+detail.text});setDetail(undefined)}}>{zh?'转发正文':'Forward text'}</Button></Space>
    <Tabs activeKey={view} onChange={setView} items={[{key:'text',label:zh?'纯文本':'Plain text'},{key:'html',label:'HTML'}]}/>
    {view==='text'?<pre style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere',fontFamily:'inherit'}}>{detail.text}</pre>:<iframe title={zh?'邮件预览':'Email preview'} sandbox="" referrerPolicy="no-referrer" style={{width:'100%',height:500,border:0}} srcDoc={'<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src data:; font-src \'none\'; form-action \'none\'; base-uri \'none\'"><meta name="viewport" content="width=device-width">'+detail.html}/>}
    {detail.attachments.length>0&&<><Typography.Title level={5}>{zh?'附件':'Attachments'}</Typography.Title>{detail.attachments.map(a=><Typography.Paragraph key={a.index}><a href={'/api/admin/notification-mail/inbox/'+detail.message.id+'/attachments/'+a.index}>{a.filename||'attachment'}</a></Typography.Paragraph>)}</>}

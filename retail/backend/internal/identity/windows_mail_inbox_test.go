@@ -15,6 +15,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -73,6 +74,23 @@ func TestWindowsInboxBrowser(t *testing.T) {
 		t.Fatal("mailbox fixture missing")
 	}
 	account := directory.Accounts[0]
+	var submissions atomic.Int32
+	gateway := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var message struct {
+			To, Cc, Bcc []string
+			Subject     string
+			Attachments []maildelivery.Attachment
+		}
+		if r.Method != "POST" || r.URL.Path != "/api/external/v1/emails" || r.Header.Get("Authorization") != "Bearer owned.fixture-secret" || json.NewDecoder(r.Body).Decode(&message) != nil || len(message.To) != 1 || message.To[0] != "compose@example.invalid" || len(message.Cc) != 1 || len(message.Bcc) != 1 || len(message.Attachments) != 1 || message.Attachments[0].Content != "QXR0YWNobWVudCBmaXh0dXJl" {
+			w.WriteHeader(422)
+			return
+		}
+		submissions.Add(1)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(201)
+		_, _ = w.Write([]byte(`{"id":"owned-compose-accepted","object":"email","status":"accepted"}`))
+	}))
+	defer gateway.Close()
 	certificateServer := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {}))
 	certificate := certificateServer.TLS.Certificates[0]
 	certificateServer.Close()
@@ -96,7 +114,7 @@ func TestWindowsInboxBrowser(t *testing.T) {
 	host, rawPort, _ := net.SplitHostPort(listener.Addr().String())
 	port, _ := strconv.Atoi(rawPort)
 	pin := sha256.Sum256(certificate.Certificate[0])
-	command := notificationmail.Command{OperationID: "00000000-0000-4000-8000-000000000009", ExpectedRevision: directory.Revision, ID: account.ID, Name: account.Name, Email: account.Email, ReplyTo: account.ReplyTo, Enabled: true, Registration: true, Transport: &notificationmail.TransportConfig{Provider: "resend", IMAP: &maildelivery.IMAPConfig{Host: host, Port: port, Username: "username", Password: "password", Encryption: "tls", CertSHA256: hex.EncodeToString(pin[:])}}}
+	command := notificationmail.Command{OperationID: "00000000-0000-4000-8000-000000000009", ExpectedRevision: directory.Revision, ID: account.ID, Name: account.Name, Email: account.Email, ReplyTo: account.ReplyTo, Enabled: true, Registration: true, Transport: &notificationmail.TransportConfig{Provider: "quguo", Relayme: &maildelivery.RelaymeConfig{APIURL: gateway.URL, KeyID: "owned", Secret: "fixture-secret"}, IMAP: &maildelivery.IMAPConfig{Host: host, Port: port, Username: "username", Password: "password", Encryption: "tls", CertSHA256: hex.EncodeToString(pin[:])}}}
 	if _, e = store.Save(t.Context(), actor, command); e != nil {
 		t.Fatal("owned IMAP setup failed")
 	}
@@ -184,5 +202,29 @@ func TestWindowsInboxBrowser(t *testing.T) {
 	}
 	if os.WriteFile(filepath.Join(logs, "inbox-sql-passed.json"), []byte(`{"browser_messages":2,"browser_encrypted_chunks":3,"raw_bytes_identical":true,"remote_seen_unchanged":true,"read_archive_trash_restore":true,"late_archive_failure_atomic":true,"recovery_imported_once":true,"final_checkpoint_uid":8}`), 0600) != nil {
 		t.Fatal("inbox evidence failed")
+	}
+	if submissions.Load() != 1 {
+		t.Fatal("manual send was not accepted exactly once")
+	}
+	var composed []struct {
+		ID, Status      string
+		ContentEnvelope []byte
+	}
+	if db.Table("notification_mail_compositions").Find(&composed).Error != nil || len(composed) != 1 || composed[0].Status != "sent" || bytes.Contains(composed[0].ContentEnvelope, []byte("Attachment fixture")) {
+		t.Fatal("manual archive terminal state differs")
+	}
+	_, content, e := store.Composition(t.Context(), actor, composed[0].ID)
+	if e != nil || len(content.Attachments) != 1 || content.Subject != "Compose fixture" {
+		t.Fatal("encrypted draft did not round trip")
+	}
+	directory, e = store.Directory(t.Context(), actor)
+	if e != nil {
+		t.Fatal(e)
+	}
+	command.OperationID = "00000000-0000-4000-8000-000000000010"
+	command.ExpectedRevision = directory.Revision
+	command.Transport = &notificationmail.TransportConfig{Provider: "resend"}
+	if _, e = store.Save(t.Context(), actor, command); e != nil {
+		t.Fatal("restore Resend after compose failed")
 	}
 }

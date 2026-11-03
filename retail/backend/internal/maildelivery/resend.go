@@ -55,12 +55,15 @@ func (s *Resend) Fingerprint() string { return s.fingerprint }
 func (s *Resend) SupportsIdempotency() bool { return s != nil && s.dispatch == nil }
 
 type request struct {
-	From    string   `json:"from"`
-	To      []string `json:"to"`
-	Subject string   `json:"subject"`
-	Text    string   `json:"text"`
-	HTML    string   `json:"html"`
-	ReplyTo string   `json:"reply_to,omitempty"`
+	From        string       `json:"from"`
+	To          []string     `json:"to"`
+	Subject     string       `json:"subject"`
+	Text        string       `json:"text"`
+	HTML        string       `json:"html"`
+	ReplyTo     string       `json:"reply_to,omitempty"`
+	Cc          []string     `json:"cc,omitempty"`
+	Bcc         []string     `json:"bcc,omitempty"`
+	Attachments []Attachment `json:"attachments,omitempty"`
 }
 
 // Copy and structure inherited from lib/registration-email.ts. The caller must
@@ -84,7 +87,12 @@ func (s *Resend) Prepare(to, link, locale string) ([]byte, error) {
 	return json.Marshal(request{From: s.from, To: []string{to}, ReplyTo: s.reply, Subject: title, Text: intro + "\n\n" + link + "\n\n" + expiry, HTML: "<h1>" + title + "</h1><p>" + intro + "</p><p><a href=\"" + html.EscapeString(link) + "\">" + action + "</a></p><p>" + expiry + "</p>"})
 }
 func (s *Resend) Send(ctx context.Context, key string, payload []byte) Result {
-	if s == nil || s.client == nil || len(payload) == 0 || len(payload) > 16384 || (!strings.HasPrefix(key, "mail/cv_") && !strings.HasPrefix(key, "mail/op_") && !strings.HasPrefix(key, "mail/ce_")) {
+	manual := strings.HasPrefix(key, "mail/mc_")
+	limit := 16384
+	if manual {
+		limit = 2 << 20
+	}
+	if s == nil || s.client == nil || len(payload) == 0 || len(payload) > limit || (!strings.HasPrefix(key, "mail/cv_") && !strings.HasPrefix(key, "mail/op_") && !strings.HasPrefix(key, "mail/ce_") && !manual) {
 		return Result{Code: "invalid_request"}
 	}
 	prefix := "mail/cv_"
@@ -94,6 +102,9 @@ func (s *Resend) Send(ctx context.Context, key string, payload []byte) Result {
 	if strings.HasPrefix(key, "mail/ce_") {
 		prefix = "mail/ce_"
 	}
+	if manual {
+		prefix = "mail/mc_"
+	}
 	id, err := uuid.Parse(strings.TrimPrefix(key, prefix))
 	if err != nil || id == uuid.Nil || key != prefix+id.String() {
 		return Result{Code: "invalid_request"}
@@ -101,7 +112,10 @@ func (s *Resend) Send(ctx context.Context, key string, payload []byte) Result {
 	var message request
 	decoder := json.NewDecoder(bytes.NewReader(payload))
 	decoder.DisallowUnknownFields()
-	if decoder.Decode(&message) != nil || decoder.Decode(new(any)) != io.EOF || message.From != s.from || message.ReplyTo != s.reply || len(message.To) != 1 || message.Subject == "" || message.Text == "" || message.HTML == "" {
+	if decoder.Decode(&message) != nil || decoder.Decode(new(any)) != io.EOF || message.From != s.from || message.ReplyTo != s.reply || len(message.To) == 0 || (!manual && (len(message.To) != 1 || len(message.Cc)+len(message.Bcc)+len(message.Attachments) != 0)) || message.Subject == "" || message.Text == "" || message.HTML == "" {
+		return Result{Code: "invalid_request"}
+	}
+	if validateManual(ManualMessage{To: message.To, Cc: message.Cc, Bcc: message.Bcc, Subject: message.Subject, Text: message.Text, Attachments: message.Attachments}) != nil && manual {
 		return Result{Code: "invalid_request"}
 	}
 	if _, err := mail.ParseAddress(message.To[0]); err != nil {

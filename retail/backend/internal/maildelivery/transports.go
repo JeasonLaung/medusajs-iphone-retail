@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"net/mail"
 	"net/smtp"
+	"net/textproto"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -90,12 +91,15 @@ func NewRelayme(c RelaymeConfig, from, reply string) (*Resend, error) {
 		// The original gateway accepts HTML and returns its own submission ID.
 		// Do not send Resend-only reply_to/text fields to that API.
 		body, _ := json.Marshal(struct {
-			From    string            `json:"from"`
-			To      []string          `json:"to"`
-			Subject string            `json:"subject"`
-			HTML    string            `json:"html"`
-			Headers map[string]string `json:"headers,omitempty"`
-		}{message.From, message.To, message.Subject, message.HTML, map[string]string{"Message-ID": stableMessageID(key), "Reply-To": message.ReplyTo}})
+			From        string            `json:"from"`
+			To          []string          `json:"to"`
+			Subject     string            `json:"subject"`
+			HTML        string            `json:"html"`
+			Headers     map[string]string `json:"headers,omitempty"`
+			Cc          []string          `json:"cc,omitempty"`
+			Bcc         []string          `json:"bcc,omitempty"`
+			Attachments []Attachment      `json:"attachments,omitempty"`
+		}{message.From, message.To, message.Subject, message.HTML, map[string]string{"Message-ID": stableMessageID(key), "Reply-To": message.ReplyTo}, message.Cc, message.Bcc, message.Attachments})
 		defer clear(body)
 		req, e := http.NewRequestWithContext(ctx, http.MethodPost, c.APIURL+"/api/external/v1/emails", bytes.NewReader(body))
 		if e != nil {
@@ -143,6 +147,9 @@ func smtpMessage(key string, message request) ([]byte, error) {
 	if message.ReplyTo != "" {
 		headers = append(headers, "Reply-To: "+message.ReplyTo)
 	}
+	if len(message.Cc) > 0 {
+		headers = append(headers, "Cc: "+strings.Join(message.Cc, ", "))
+	}
 	for _, part := range []struct{ kind, value string }{{"text/plain", message.Text}, {"text/html", message.HTML}} {
 		writer, e := mixed.CreatePart(map[string][]string{"Content-Type": {part.kind + "; charset=UTF-8"}, "Content-Transfer-Encoding": {"base64"}})
 		if e != nil {
@@ -157,6 +164,33 @@ func smtpMessage(key string, message request) ([]byte, error) {
 	}
 	if e := mixed.Close(); e != nil {
 		return nil, e
+	}
+	if len(message.Attachments) > 0 {
+		var outer bytes.Buffer
+		writer := multipart.NewWriter(&outer)
+		_ = writer.SetBoundary("mixed-" + hex.EncodeToString(boundaryDigest[:24]))
+		alternative, e := writer.CreatePart(textproto.MIMEHeader{"Content-Type": {"multipart/alternative; boundary=" + mixed.Boundary()}})
+		if e != nil {
+			return nil, e
+		}
+		_, _ = alternative.Write(body.Bytes())
+		for _, attachment := range message.Attachments {
+			part, e := writer.CreatePart(textproto.MIMEHeader{"Content-Type": {"application/octet-stream"}, "Content-Disposition": {mime.FormatMediaType("attachment", map[string]string{"filename": attachment.Filename})}, "Content-Transfer-Encoding": {"base64"}})
+			if e != nil {
+				return nil, e
+			}
+			encoded := attachment.Content
+			for len(encoded) > 76 {
+				_, _ = io.WriteString(part, encoded[:76]+"\r\n")
+				encoded = encoded[76:]
+			}
+			_, _ = io.WriteString(part, encoded+"\r\n")
+		}
+		if e := writer.Close(); e != nil {
+			return nil, e
+		}
+		headers[5] = "Content-Type: multipart/mixed; boundary=" + writer.Boundary()
+		body = outer
 	}
 	return append([]byte(strings.Join(headers, "\r\n")+"\r\n\r\n"), body.Bytes()...), nil
 }
@@ -202,7 +236,7 @@ func sendSMTP(ctx context.Context, c SMTPConfig, key string, message request) Re
 	if e = client.Mail(from.Address); e != nil {
 		return Result{Code: "provider_rejected"}
 	}
-	for _, to := range message.To {
+	for _, to := range append(append(append([]string{}, message.To...), message.Cc...), message.Bcc...) {
 		if e = client.Rcpt(to); e != nil {
 			return Result{Code: "provider_rejected"}
 		}

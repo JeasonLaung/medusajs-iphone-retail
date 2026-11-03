@@ -8,6 +8,8 @@ import EventMailJobs from './EventMailJobs'
 import {useAccess} from './Permissions'
 import MailboxTransportFields from './MailboxTransportFields'
 import MailInbox from './MailInbox'
+import MailCompose from './MailCompose'
+import type {Reply} from './MailCompose'
 
 type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'|'transport'>&{imap_enabled:boolean}
 function Editor({copy,account,revision,onClose,onSaved,onExpired}:{copy:Copy;account?:Mailbox;revision:string;onClose():void;onSaved():void;onExpired():void}){
@@ -52,6 +54,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
  const {message}=App.useApp(),access=useAccess(),[attempt,setAttempt]=useState(0)
  const [state,setState]=useState<{data?:MailboxDirectory;error?:unknown}>({}),[editor,setEditor]=useState<{account?:Mailbox}>()
  const [inbox,setInbox]=useState<Mailbox>()
+ const [reply,setReply]=useState<Reply>()
  useEffect(()=>{
   const controller=new AbortController();setState({})
   mailboxes(controller.signal).then(data=>{if(!controller.signal.aborted)setState({data})}).catch(error=>{if(!controller.signal.aborted){setState({error});if(error instanceof APIError&&error.status===401)onExpired()}})
@@ -77,7 +80,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
   </>}
   <OrderMailJobs copy={copy} onExpired={onExpired}/>
   <EventMailJobs copy={copy} onExpired={onExpired}/>
-  {inbox&&<MailInbox key={inbox.id} accountID={inbox.id} enabled={!!inbox.transport?.imap} copy={copy} onExpired={onExpired}/>}
+  {inbox&&<><MailInbox key={inbox.id} accountID={inbox.id} enabled={!!inbox.transport?.imap} copy={copy} onExpired={onExpired} onReply={setReply}/><MailCompose key={'compose-'+inbox.id} accountID={inbox.id} copy={copy} onExpired={onExpired} reply={reply} onReplyUsed={()=>setReply(undefined)}/></>}
   {editor&&state.data&&<Editor key={editor.account?.id??'new'} copy={copy} account={editor.account} revision={state.data.revision} onClose={close} onExpired={onExpired} onSaved={()=>{message.success(copy.mailSaved);close()}}/>}
  </Space></section>
 }
