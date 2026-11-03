@@ -73,4 +73,6 @@ Relayme收件回调经同一只读IMAP游标归档，必须确认当前来源/ep
 
 ## 付款子流程的待续证据
 
+后续已复用该探针补[真实整笔取消后重付](local-payment-retry.md)：改用托管页整笔取消表单，认证GET为canceled，新付款paid。最终独立SQL及认证GET复核通过；下面的方法级探针保留为失败历史，stash不再代表当前未提交任务。
+
 本轮真实 Mollie 终止重付探针保留在 Git stash `wip: real Mollie terminal retry probe; method cancellation remains open`，尚未作为完成任务提交。隔离 owner `8d5269b067a0` 的方法取消及返回后，正式渠道 GET 仍为 open；owner `ce7b936bc364` 选择方法 expired 后返回托管支付方式选择页。不能把支付方式结果当作整笔付款终止。所有探针的忽略 SQL/日志保留，报告确认自有资源清理；上一轮人工适配器联合验收仍有效，但真实终止重付未通过。

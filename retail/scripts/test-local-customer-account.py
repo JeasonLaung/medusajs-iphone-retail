@@ -35,6 +35,9 @@ it never creates another remote payment.
 --scenario=payment-context-restore injects a final SQL save failure only in the
 copy after retiring a payment, then restores original settings and a replacement
 sandbox checkout through the actual UI, including lost restore replies.
+--scenario=payment-retry prepares a guest cart through production APIs, then
+uses real Mollie whole-payment cancellation, lost retry response/reload and replacement paid
+completion. It creates no account and never repeats fulfillment/after-sales.
 Verification links are read from authenticated encrypted intents in the owned
 copy (or the captured dispatch body for mail), never returned by an application
 endpoint or marked verified with SQL.
@@ -172,6 +175,27 @@ def redis_cleanup(prefix):
         return len(keys)
 
 
+def retry_payment_facts(database, cart_id, order_id):
+    queries = {
+        'context_receipts': "SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'",
+        'checkout_attempts': "SELECT COUNT(*) FROM cart_checkout_attempts WHERE cart_id='" + cart_id + "'",
+        'create_effects': "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='create_session' AND state='succeeded'",
+        'delete_effects': "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='delete_session' AND state='succeeded'",
+        'completion_receipt': "SELECT COUNT(*) FROM cart_completion_receipts WHERE cart_id='" + cart_id + "' AND order_id='" + order_id + "'",
+        'guest_ownership': "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order_id + "'",
+        'replacement_completion_binding': "SELECT COUNT(*) FROM cart_completion_receipts r JOIN cart_checkout_attempts a ON a.cart_id=r.cart_id AND a.operation_id=r.operation_id JOIN cart_context_operations c ON c.cart_id=a.cart_id AND c.result_version=a.input_version WHERE r.cart_id='" + cart_id + "' AND r.input_version=a.input_version AND r.completed_version=COALESCE(a.effective_cart_version,a.cart_version)+1 AND a.settlement_amount='789'",
+        'unique_capture': "SELECT COUNT(*) FROM payment_captures c JOIN payments p ON p.id=c.payment_id JOIN order_payment_collections o ON o.payment_collection_id=p.payment_collection_id WHERE o.order_id='" + order_id + "'",
+    }
+    facts = {key: int(sql(database, query)) for key, query in queries.items()}
+    if facts != dict(context_receipts=1, checkout_attempts=2, create_effects=2, delete_effects=1, completion_receipt=1, guest_ownership=0, replacement_completion_binding=1, unique_capture=1):
+        raise RuntimeError('Real terminal-payment retry facts differ: ' + str(facts))
+    capture_total = sql(database, "SELECT COALESCE(SUM(CAST(c.amount AS DECIMAL(24,2))),0) FROM payment_captures c JOIN payments p ON p.id=c.payment_id JOIN order_payment_collections o ON o.payment_collection_id=p.payment_collection_id WHERE o.order_id='" + order_id + "'")
+    if Decimal(capture_total) != Decimal('789.00'):
+        raise RuntimeError('Replacement captured amount differs')
+    facts['captured_amount'] = str(Decimal(capture_total))
+    return facts
+
+
 def payment_context_facts(database, cart_id, order_id):
     facts = {
         'context_receipts': int(sql(database, "SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'")),
@@ -274,7 +298,7 @@ def verify_payment_context_checkpoint(owner):
     logs = ROOT / 'logs/retail-native' / ('account-' + owner)
     report = json.loads((logs / 'report.json').read_text())
     browser = json.loads((logs / 'browser-result.json').read_text())
-    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') not in ('payment-context', 'payment-context-changed', 'payment-context-restore'):
+    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') not in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'payment-retry'):
         raise RuntimeError('Successful owned context browser checkpoint required')
     cart_id, order_id = browser['cart_id'], browser['order_id']
     if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
@@ -287,7 +311,15 @@ def verify_payment_context_checkpoint(owner):
         docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
         created = True
         docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
-        if browser['scenario'] == 'payment-context-restore':
+        if browser['scenario'] == 'payment-retry':
+            facts = retry_payment_facts(database, cart_id, order_id)
+            report['provider_observations'] = observe_context_payments(database, cart_id, '789.00')
+            if report['provider_observations'][0]['status'] != 'canceled':
+                raise RuntimeError('First sandbox payment was not canceled')
+            report.pop('real_mollie_expiration', None)
+            report['real_mollie_whole_payment_cancel'] = True
+            report['steps'] = [step.replace('real Mollie expired observation', 'real Mollie whole-payment cancellation observed as failed') for step in browser.get('steps', [])]
+        elif browser['scenario'] == 'payment-context-restore':
             facts = restored_payment_context_facts(database, cart_id, order_id)
             report['provider_observations'] = observe_context_payments(database, cart_id, '789.00')
         elif browser['scenario'] == 'payment-context-changed':
@@ -661,7 +693,7 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation', 'rejection-mail', 'customer-groups')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'payment-retry', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation', 'rejection-mail', 'customer-groups')
     buyback_return_mail = scenario == 'buyback-return-mail'
     event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail', 'cancellation', 'rejection-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail', 'buyback-return-mail')
@@ -1011,6 +1043,8 @@ def main(language, scenario='account', resume=None):
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true')
             (logs / 'refund-new-paid-order.json').write_text(json.dumps(paid))
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        if scenario == 'payment-retry':
+            script = 'tests/local-payment-retry.live.mjs'
         if resume and payment_context:
             browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
             script = 'tests/local-payment-context-resume.live.mjs'
@@ -1139,13 +1173,18 @@ def main(language, scenario='account', resume=None):
                     raise RuntimeError('Expected exactly three inspection receipts/events; failed command must roll back')
                 report['sql_inspection_receipts_and_events'] = [int(v) for v in facts]
 
-        if report['verified_accounts'] != (0 if product_entry else 1):
+        if report['verified_accounts'] != (0 if product_entry or scenario == 'payment-retry' else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
         if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail or customer_groups):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
-            if scenario == 'payment-context-changed':
+            if scenario == 'payment-retry':
+                facts = retry_payment_facts(database, cart_id, order_id)
+                report['provider_observations'] = observe_context_payments(database, cart_id, '789.00')
+                if report['provider_observations'][0]['status'] != 'canceled':
+                    raise RuntimeError('First sandbox payment was not canceled')
+            elif scenario == 'payment-context-changed':
                 facts = changed_payment_context_facts(database, cart_id, order_id)
             elif scenario == 'payment-context-restore':
                 facts = restored_payment_context_facts(database, cart_id, order_id)
@@ -1558,6 +1597,8 @@ if __name__ == '__main__':
         main('en', 'payment-context')
     elif sys.argv[1:] == ['--scenario=payment-context-changed']:
         main('en', 'payment-context-changed')
+    elif sys.argv[1:] == ['--scenario=payment-retry']:
+        main('en', 'payment-retry')
     elif sys.argv[1:] == ['--scenario=payment-context-restore']:
         main('en', 'payment-context-restore')
     elif len(sys.argv) == 5 and sys.argv[1] == '--context-restore-fault':

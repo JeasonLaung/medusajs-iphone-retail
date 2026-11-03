@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-03 接续：[真实Mollie整笔取消后重付](migration/local-payment-retry.md)在独立111库/Redis通过实际Astro取消、同操作丢响应刷新恢复、新付款Paid及唯一789EUR实收订单；固定快照可只查复核，未重复配货/售后大流程。SMTP/Relayme/Resend、IMAP与基本收发中心已按新增范围迁入，见[邮件协议](migration/mail-protocol-migration.md)。真实邮件、PayPal沙箱、正式数据文件、偶发开发结账加载及最终C01—C11验收仍开放。
+
 2026-11-02 主流程接续：[当前购物订单副本的配货→装包→发货](migration/local-fulfillment-main.md)已通过真实Ant/Gin操作和库存/预留/发货收据SQL核对；新增start.bat显式本机履约配置，主订单未被测试改动。客户账号查询、仓库员工初次配货和其他主流程继续，C01—C11未完成。
 
 2026-11-02 最新：按“先主流程后细节”，[Windows真实Mollie测试购物](migration/local-mollie-shopping.md)已通过选品→加购→地址→配送→远程托管付款→认证查询→订单确认→新Admin只读核对。邮件仅入队，其他大流程继续；此前PayPal成单细节仍暂存，不以本轮替代整期验收。

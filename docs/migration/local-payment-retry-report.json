@@ -1,0 +1,57 @@
+{
+  "owner": "3c7378601077",
+  "passed": true,
+  "scenario": "payment-retry",
+  "api_sha256": "1d80b284b7d7d56bd58ff350820f7e04e115d6862749b4527a343619d4086b10",
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "real_mollie_test_payment": true,
+  "real_mollie_whole_payment_cancel": true,
+  "guest_checkout": true,
+  "retry_request_replayed": 2,
+  "verified_accounts": 0,
+  "provider_observations": [
+    {
+      "status": "canceled",
+      "amount": {
+        "value": "789.00",
+        "currency": "EUR"
+      },
+      "is_cancelable": null
+    },
+    {
+      "status": "paid",
+      "amount": {
+        "value": "789.00",
+        "currency": "EUR"
+      },
+      "is_cancelable": null
+    }
+  ],
+  "sql_payment_context_facts": {
+    "context_receipts": 1,
+    "checkout_attempts": 2,
+    "create_effects": 2,
+    "delete_effects": 1,
+    "completion_receipt": 1,
+    "guest_ownership": 0,
+    "replacement_completion_binding": 1,
+    "unique_capture": 1,
+    "captured_amount": "789.00"
+  },
+  "checkpoint_sql_verified": true,
+  "payment_durable_snapshot_retained": true,
+  "redis_keys_removed": 13,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "source_account_counts_unchanged": true,
+  "browser_errors": 0,
+  "remaining": [
+    "real expired/failed outcomes",
+    "unreproduced development checkout hydration timeout",
+    "PayPal real sandbox",
+    "production webhooks",
+    "real mail delivery",
+    "C01-C11 final acceptance"
+  ]
+}

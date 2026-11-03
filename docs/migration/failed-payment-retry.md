@@ -1,5 +1,7 @@
 # 终止付款后返回结账
 
+接续：真实Mollie整笔取消→丢响应/刷新恢复→新付款Paid已补[实际联合验收](local-payment-retry.md)，原文末“真实渠道终止付款未验收”为此前边界；真实expired/failed仍待，不把方法模拟页结果当整笔终止。
+
 2026-11-03，固定证据：[failed-payment-retry-report.json](failed-payment-retry-report.json)。
 
 原结果页对 canceled/expired/failed 提示可以返回结账，但 `retry_url` 从未赋值，因此实际没有入口；即使手动打开结账页，原付款绑定及创建日志仍会保留冻结，不能开始新的有效尝试。
