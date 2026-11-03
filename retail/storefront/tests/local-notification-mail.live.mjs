@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import {execFileSync} from 'node:child_process'
-import {readFileSync,writeFileSync} from 'node:fs'
+import {execFileSync,spawn} from 'node:child_process'
+import {readFileSync,writeFileSync,existsSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:19300',adminOrigin='http://127.0.0.1:19200'
@@ -24,7 +24,7 @@ const credentials=readFileSync(resolve('../../.private-files/local/admin-credent
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')}),errors=[]
 try{
  const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),admin=await context.newPage()
- admin.on('pageerror',e=>errors.push(e.message));await admin.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','en'))
+ admin.on('pageerror',e=>errors.push(e.message));await admin.addInitScript(()=>{if(window===window.top)localStorage.setItem('eurorefurb.admin.language','en')})
  await admin.goto(adminOrigin+'/account');await admin.getByLabel('Email',{exact:true}).fill(credential('Email'));await admin.getByLabel('Password',{exact:true}).fill(credential('Password'))
  await admin.getByRole('button',{name:'Sign in',exact:true}).click();await expect(admin.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
  await admin.goto(adminOrigin+'/mailboxes');await admin.getByRole('button',{name:'Add mailbox',exact:true}).click()
@@ -39,6 +39,46 @@ try{
  await expect(drawer.getByLabel('Resend API Key',{exact:true})).toHaveValue('')
  // Save with blank secrets; the subsequent worker must retain the original key.
  await drawer.getByRole('button',{name:'Save',exact:true}).click();await expect(drawer).not.toBeVisible()
+ const inboxWorker=spawn(process.env.WINDOWS_MAIL_FIXTURE,['-test.run=^TestWindowsInboxBrowser$','-test.v'],{env:process.env,windowsHide:true,stdio:['ignore','pipe','pipe']})
+ let inboxOutput='',inboxExit
+ inboxWorker.stdout.on('data',value=>{inboxOutput+=value});inboxWorker.stderr.on('data',value=>{inboxOutput+=value})
+ const inboxDone=new Promise(resolve=>inboxWorker.on('close',code=>{inboxExit=code;resolve(code)}))
+ try{
+  await expect.poll(()=>existsSync(resolve(logs,'inbox-ready.json'))||inboxExit!==undefined,{timeout:30000}).toBe(true)
+  assert.equal(inboxExit,undefined,inboxOutput)
+  await admin.reload();await admin.getByRole('button',{name:'Open inbox',exact:true}).click()
+  const inbox=admin.getByTestId('mail-inbox')
+  await inbox.getByRole('button',{name:'Sync IMAP inbox',exact:true}).click()
+  await expect(inbox.getByRole('button',{name:'Sync IMAP inbox',exact:true})).toBeEnabled()
+  await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(2)
+  const syncResponse=admin.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/sync'))
+  await inbox.getByRole('button',{name:'Sync IMAP inbox',exact:true}).click()
+  assert.equal((await syncResponse).status(),200);assert.equal((await(await syncResponse).json()).imported,0)
+  const inbound=inbox.locator('tbody tr[data-row-key]').filter({hasText:/IMAP/})
+  await inbound.getByRole('button',{name:/IMAP/}).click()
+  drawer=admin.getByRole('dialog');await expect(drawer.locator('pre')).toContainText('Isolated inbound message')
+  await drawer.getByRole('tab',{name:'HTML',exact:true}).click()
+  const frame=drawer.locator('iframe');await expect(frame).toHaveAttribute('sandbox','')
+  assert.equal(await admin.evaluate(()=>window.__mailScriptExecuted),undefined)
+  const original=await context.request.get(await drawer.getByRole('link',{name:'Download original email'}).getAttribute('href').then(path=>adminOrigin+path))
+  assert.equal(original.status(),200);assert.ok((await original.text()).includes('Isolated inbound message'))
+  const attachment=await context.request.get(adminOrigin+await drawer.getByRole('link',{name:'fixture.txt',exact:true}).getAttribute('href'))
+  assert.equal(attachment.status(),200);assert.equal(await attachment.text(),'Attachment fixture')
+  await drawer.locator('.ant-drawer-close').click()
+  await inbound.getByRole('button',{name:'Archive',exact:true}).click();await expect(inbox.locator('tbody tr[data-row-key]').filter({hasText:/IMAP/})).toHaveCount(0)
+  const selectFolder=async label=>{await inbox.locator('.ant-select').click();await admin.locator(`.ant-select-item-option[title="${label}"]`).click()}
+  await selectFolder('Archive');await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(1)
+  await inbox.getByRole('button',{name:'Move to trash',exact:true}).click();await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(0)
+  await selectFolder('Trash');await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(1)
+  await inbox.getByRole('button',{name:'Restore',exact:true}).click();await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(0)
+  await selectFolder('Archive');await inbox.getByRole('button',{name:'Move to inbox',exact:true}).click()
+  await selectFolder('Inbox');await expect(inbox.locator('tbody tr[data-row-key]')).toHaveCount(2)
+  await admin.setViewportSize({width:390,height:900});await admin.screenshot({path:resolve(logs,'imap-inbox-mobile.png'),fullPage:true})
+ }finally{
+  writeFileSync(resolve(logs,'inbox-browser-done'),'done')
+  await inboxDone;writeFileSync(resolve(logs,'inbox-sql.log'),inboxOutput)
+ }
+ assert.equal(inboxExit,0,inboxOutput)
  const customer=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'}),page=await customer.newPage()
  page.on('pageerror',e=>errors.push(e.message))
  await page.goto(origin+'/gb-en/account');await page.getByTestId('register-button').click()
@@ -113,5 +153,5 @@ try{
  await drawer.getByRole('button',{name:'Save',exact:true}).click();await expect(drawer).not.toBeVisible()
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual(errors,[])
  await admin.screenshot({path:resolve(logs,'mail-admin-sent.png'),fullPage:true})
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'mail',actual_admin_mailbox_save:true,smtp_relayme_imap_configuration:true,protocol_credentials_encrypted:true,protocol_blank_secrets_preserved:true,protocol_mobile_forms:true,blank_secret_preserved:true,customer_registration_verification_login:true,link_from_dispatched_email:true,paid_order_existing_outbox:true,permanent_rejection_admin_retry_then_sent:true,same_frozen_mail_on_retry:true,lost_reply_exact_command_recovery:true,production_dispatchers_separate_processes:true,isolated_resend_transport:true,real_email_delivery:false,browser_errors:0},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'mail',actual_admin_mailbox_save:true,smtp_relayme_imap_configuration:true,imap_inbox_read_archive_trash:true,protocol_credentials_encrypted:true,protocol_blank_secrets_preserved:true,protocol_mobile_forms:true,blank_secret_preserved:true,customer_registration_verification_login:true,link_from_dispatched_email:true,paid_order_existing_outbox:true,permanent_rejection_admin_retry_then_sent:true,same_frozen_mail_on_retry:true,lost_reply_exact_command_recovery:true,production_dispatchers_separate_processes:true,isolated_resend_transport:true,real_email_delivery:false,browser_errors:0},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

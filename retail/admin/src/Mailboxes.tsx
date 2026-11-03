@@ -7,6 +7,7 @@ import OrderMailJobs from './OrderMailJobs'
 import EventMailJobs from './EventMailJobs'
 import {useAccess} from './Permissions'
 import MailboxTransportFields from './MailboxTransportFields'
+import MailInbox from './MailInbox'
 
 type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'|'transport'>&{imap_enabled:boolean}
 function Editor({copy,account,revision,onClose,onSaved,onExpired}:{copy:Copy;account?:Mailbox;revision:string;onClose():void;onSaved():void;onExpired():void}){
@@ -50,6 +51,7 @@ function Editor({copy,account,revision,onClose,onSaved,onExpired}:{copy:Copy;acc
 export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void}){
  const {message}=App.useApp(),access=useAccess(),[attempt,setAttempt]=useState(0)
  const [state,setState]=useState<{data?:MailboxDirectory;error?:unknown}>({}),[editor,setEditor]=useState<{account?:Mailbox}>()
+ const [inbox,setInbox]=useState<Mailbox>()
  useEffect(()=>{
   const controller=new AbortController();setState({})
   mailboxes(controller.signal).then(data=>{if(!controller.signal.aborted)setState({data})}).catch(error=>{if(!controller.signal.aborted){setState({error});if(error instanceof APIError&&error.status===401)onExpired()}})
@@ -69,11 +71,13 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
     {title:copy.status,render:(_,a)=><Space direction="vertical"><Tag color={a.enabled?'success':'default'}>{a.enabled?copy.mailOn:copy.mailOff}</Tag>{a.registration&&<Tag color="processing">{copy.registrationSender}</Tag>}</Space>},
     {title:copy.mailboxes==='通知邮箱'?'发信渠道':'Sending provider',render:(_,a)=><Space direction="vertical"><span>{a.transport?.provider==='smtp'?'SMTP':a.transport?.provider==='quguo'?'Relayme':'Resend'}</span><span>{(a.has_api_key||a.transport?.has_smtp_password||a.transport?.has_relayme_secret)?copy.configured:copy.unconfigured}</span></Space>},
     {title:copy.webhookSecret,render:(_,a)=>a.has_webhook_secret?copy.configured:copy.unconfigured},
+    {title:copy.mailboxes==='通知邮箱'?'收件箱':'Inbox',render:(_,a)=><Button onClick={()=>setInbox(a)}>{copy.mailboxes==='通知邮箱'?'打开收件箱':'Open inbox'}</Button>},
     ...(access.can('mail.write')?[{title:copy.editMailbox,render:(_:unknown,a:Mailbox)=><Button onClick={()=>setEditor({account:a})}>{copy.editMailbox}</Button>}]:[]),
    ]}/>
   </>}
   <OrderMailJobs copy={copy} onExpired={onExpired}/>
   <EventMailJobs copy={copy} onExpired={onExpired}/>
+  {inbox&&<MailInbox key={inbox.id} accountID={inbox.id} enabled={!!inbox.transport?.imap} copy={copy} onExpired={onExpired}/>}
   {editor&&state.data&&<Editor key={editor.account?.id??'new'} copy={copy} account={editor.account} revision={state.data.revision} onClose={close} onExpired={onExpired} onSaved={()=>{message.success(copy.mailSaved);close()}}/>}
  </Space></section>
 }

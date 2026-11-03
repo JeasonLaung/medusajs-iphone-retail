@@ -1219,7 +1219,7 @@ def main(language, scenario='account', resume=None):
                 'approved_mailbox': int(sql(database, "SELECT COUNT(*) FROM notification_mail_accounts")),
                 'mailbox_receipts': int(sql(database, "SELECT COUNT(*) FROM notification_mail_commands")),
             }
-            if not report.get('smtp_relayme_imap_configuration') or facts != {'verification_sent': 1, 'order_sent': 1, 'order_retry_audit': 1, 'approved_mailbox': 1, 'mailbox_receipts': 7}:
+            if not report.get('smtp_relayme_imap_configuration') or not report.get('imap_inbox_read_archive_trash') or facts != {'verification_sent': 1, 'order_sent': 1, 'order_retry_audit': 1, 'approved_mailbox': 1, 'mailbox_receipts': 8}:
                 raise RuntimeError('Mail terminal facts differ: ' + str(facts))
             report['sql_mail_facts'] = facts
         if warehouse:

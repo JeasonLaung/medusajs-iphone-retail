@@ -17,6 +17,12 @@ import (
 )
 
 func (s Store) Register(group *gin.RouterGroup) {
+	group.GET("/notification-mail/inbox", s.listInbox)
+	group.GET("/notification-mail/inbox/:id", s.readInbox)
+	group.GET("/notification-mail/inbox/:id/original", s.downloadInbox)
+	group.GET("/notification-mail/inbox/:id/attachments/:index", s.downloadInboxAttachment)
+	group.POST("/notification-mail/accounts/:id/sync", s.syncInbox)
+	group.POST("/notification-mail/inbox/:id/state", s.updateInbox)
 	group.GET("/notification-mail/customer-jobs", s.eventJobs)
 	group.POST("/notification-mail/customer-jobs/:id/retry", s.retryEventJob)
 	group.GET("/notification-mail/order-jobs", s.orderJobs)

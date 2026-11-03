@@ -5,6 +5,7 @@ go 1.26.0
 require (
 	github.com/blevesearch/snowballstem v0.9.0
 	github.com/emersion/go-imap v1.2.1
+	github.com/emersion/go-message v0.15.0
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/google/uuid v1.6.0
@@ -24,7 +25,6 @@ require (
 	github.com/bytedance/sonic/loader v0.5.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
-	github.com/emersion/go-message v0.15.0 // indirect
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21 // indirect
 	github.com/emersion/go-textwrapper v0.0.0-20200911093747-65d896831594 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
