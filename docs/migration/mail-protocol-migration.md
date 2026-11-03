@@ -23,6 +23,12 @@ SMTP 和原 Relayme 接口均不具备已证明的远端幂等承诺；适配器
 
 后台渠道与加密配置保存、IMAP 收件配置和连接、各渠道通知队列接入、收件/回调/归档及原邮件操作、隔离协议联合验收，最后在用户配置账户并明确提供测试收件地址后验证真实投递。现有发信适配器测试没有证明这些范围完成。
 
+## 已完成：IMAP 读取适配器
+
+沿用原项目 go-imap v1.2.1、TLS/STARTTLS 和邮箱级 SHA256 证书指纹信任方式。新增 `maildelivery.FetchIMAP` 以只读 EXAMINE/BODY.PEEK 获取原始 RFC822、接收时间及 UID，返回 UIDVALIDITY，拒绝静默复用旧 epoch 的游标。分页使用受限 UID 数值窗口并返回 `ScannedThrough`，避免空洞 UID 导致游标永远停滞；调用方须先保存消息再推进游标。单封 26 MiB、单批 32 MiB，最多 100 UID，超时及上下文取消关闭连接。
+
+真实本机 TLS 和 STARTTLS IMAP 服务器测试通过：空洞 UID 分页、原文、接收时间、重复检查点、UIDVALIDITY 变化、读取不设 Seen、错误证书指纹拒绝、无响应连接取消。该适配器没有改动真实邮箱，也尚未接入后台收件同步/归档；上述接续项继续开放。
+
 ## 付款子流程的待续证据
 
 本轮真实 Mollie 终止重付探针保留在 Git stash `wip: real Mollie terminal retry probe; method cancellation remains open`，尚未作为完成任务提交。隔离 owner `8d5269b067a0` 的方法取消及返回后，正式渠道 GET 仍为 open；owner `ce7b936bc364` 选择方法 expired 后返回托管支付方式选择页。不能把支付方式结果当作整笔付款终止。所有探针的忽略 SQL/日志保留，报告确认自有资源清理；上一轮人工适配器联合验收仍有效，但真实终止重付未通过。
