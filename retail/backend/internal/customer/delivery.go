@@ -106,6 +106,9 @@ func (s *Store) DispatchVerification(ctx context.Context, sender DeliverySender)
 		if job.Attempts >= 3 || job.FirstAttemptAt != nil && !job.FirstAttemptAt.Add(23*time.Hour).After(now) {
 			return fail("retry_exhausted", false)
 		}
+		if job.FirstAttemptAt != nil && !maildelivery.CanRepeat(sender) {
+			return fail("channel_review_required", false)
+		}
 		plain, err := s.ring.Open(mailContext(job.ID), job.Payload)
 		if err != nil {
 			return ErrUnavailable
@@ -188,8 +191,7 @@ func (s *Store) DispatchVerification(ctx context.Context, sender DeliverySender)
 	updates := map[string]any{"lease_until": nil, "lease_token": nil}
 	finished := time.Now().UTC().Truncate(time.Microsecond)
 	if sent.ID != "" {
-		providerID, parseErr := uuid.Parse(sent.ID)
-		if parseErr != nil || providerID == uuid.Nil || sent.ID != providerID.String() {
+		if !maildelivery.ValidSubmissionID(sender, sent.ID) {
 			sent = maildelivery.Result{Code: "provider_response", Retry: true}
 		}
 	}

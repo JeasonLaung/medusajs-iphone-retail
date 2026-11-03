@@ -102,6 +102,9 @@ func (s Store) Dispatch(ctx context.Context, sender Sender) (Result, error) {
 		if j.Attempts >= 3 || d.FirstAttemptAt != nil && !d.FirstAttemptAt.Add(23*time.Hour).After(now) {
 			return fail("retry_exhausted")
 		}
+		if d.FirstAttemptAt != nil && !maildelivery.CanRepeat(sender) {
+			return fail("channel_review_required")
+		}
 		if d.LeaseUntil != nil && d.LeaseUntil.After(now) {
 			result = Result{}
 			return nil
@@ -196,8 +199,7 @@ func (s Store) Dispatch(ctx context.Context, sender Sender) (Result, error) {
 		now := time.Now().UTC().Truncate(time.Microsecond)
 		changes := map[string]any{"lease_token": nil, "lease_until": nil}
 		if sent.ID != "" {
-			id, e := uuid.Parse(sent.ID)
-			if e != nil || id == uuid.Nil || id.String() != sent.ID {
+			if !maildelivery.ValidSubmissionID(sender, sent.ID) {
 				sent = maildelivery.Result{Code: "provider_response", Retry: true}
 			}
 		}

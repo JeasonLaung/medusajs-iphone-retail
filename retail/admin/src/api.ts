@@ -46,9 +46,10 @@ export async function saveWarehouse(body:WarehouseCommand):Promise<void>{
  if(!d||!warehouseID(d.id)||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean'||body.id!==''&&body.id!==d.id)throw new APIError(0,'request.invalid_response')
 }
 
-export type Mailbox={id:string;name:string;email:string;reply_to:string;enabled:boolean;has_api_key:boolean;has_webhook_secret:boolean;registration:boolean}
+export type MailTransport={provider:'resend'|'smtp'|'quguo';smtp?:{host:string;port:number;username:string;password?:string;encryption:'tls'|'starttls'|'none';skip_tls_verify:boolean};relayme?:{api_url:string;key_id:string;secret?:string};imap?:{host:string;port:number;username:string;password?:string;encryption:'tls'|'starttls';cert_sha256:string}}
+export type Mailbox={id:string;name:string;email:string;reply_to:string;enabled:boolean;has_api_key:boolean;has_webhook_secret:boolean;registration:boolean;transport?:MailTransport&{has_smtp_password:boolean;has_relayme_secret:boolean;has_imap_password:boolean}}
 export type MailboxDirectory={revision:string;registration_account_id:string|null;accounts:Mailbox[]}
-export type MailboxCommand={operation_id:string;expected_revision:string;id:string;name:string;email:string;reply_to:string;enabled:boolean;registration:boolean;api_key:string;webhook_secret:string}
+export type MailboxCommand={operation_id:string;expected_revision:string;id:string;name:string;email:string;reply_to:string;enabled:boolean;registration:boolean;api_key:string;webhook_secret:string;transport?:MailTransport}
 const mailboxRevision=(v:unknown):v is string=>typeof v==='string'&&/^[1-9]\d{0,19}$/.test(v)&&BigInt(v)<=18446744073709551615n
 const mailboxID=(v:unknown):v is string=>typeof v==='string'&&/^mail_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v)
 export async function mailboxes(signal?:AbortSignal):Promise<MailboxDirectory>{
@@ -56,7 +57,8 @@ export async function mailboxes(signal?:AbortSignal):Promise<MailboxDirectory>{
  if(!d||!mailboxRevision(d.revision)||!Array.isArray(d.accounts)||d.accounts.length>100||d.registration_account_id!==null&&!mailboxID(d.registration_account_id))throw new APIError(0,'request.invalid_response')
  const accounts=d.accounts.map(a=>{
   if(!a||!mailboxID(a.id)||typeof a.name!=='string'||typeof a.email!=='string'||typeof a.reply_to!=='string'||typeof a.enabled!=='boolean'||typeof a.has_api_key!=='boolean'||typeof a.has_webhook_secret!=='boolean'||typeof a.registration!=='boolean'||a.registration!==(a.id===d.registration_account_id))throw new APIError(0,'request.invalid_response')
-  return {id:a.id,name:a.name,email:a.email,reply_to:a.reply_to,enabled:a.enabled,has_api_key:a.has_api_key,has_webhook_secret:a.has_webhook_secret,registration:a.registration}
+  if(a.transport&&(!['resend','smtp','quguo'].includes(a.transport.provider)||typeof a.transport.has_smtp_password!=='boolean'||typeof a.transport.has_relayme_secret!=='boolean'||typeof a.transport.has_imap_password!=='boolean'||a.transport.smtp?.password||a.transport.relayme?.secret||a.transport.imap?.password))throw new APIError(0,'request.invalid_response')
+  return {id:a.id,name:a.name,email:a.email,reply_to:a.reply_to,enabled:a.enabled,has_api_key:a.has_api_key,has_webhook_secret:a.has_webhook_secret,registration:a.registration,...(a.transport?{transport:a.transport}:{})}
  })
  if(new Set(accounts.map(a=>a.id)).size!==accounts.length||d.registration_account_id!==null&&!accounts.some(a=>a.id===d.registration_account_id))throw new APIError(0,'request.invalid_response')
  return {revision:d.revision,registration_account_id:d.registration_account_id,accounts}

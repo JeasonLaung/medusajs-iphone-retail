@@ -34,14 +34,15 @@ type Store struct {
 	Ring *protected.Ring
 }
 type Account struct {
-	ID               string `json:"id"`
-	Name             string `json:"name"`
-	Email            string `json:"email"`
-	ReplyTo          string `json:"reply_to"`
-	Enabled          bool   `json:"enabled"`
-	HasAPIKey        bool   `json:"has_api_key"`
-	HasWebhookSecret bool   `json:"has_webhook_secret"`
-	Registration     bool   `json:"registration"`
+	Transport        *PublicTransport `json:"transport,omitempty"`
+	ID               string           `json:"id"`
+	Name             string           `json:"name"`
+	Email            string           `json:"email"`
+	ReplyTo          string           `json:"reply_to"`
+	Enabled          bool             `json:"enabled"`
+	HasAPIKey        bool             `json:"has_api_key"`
+	HasWebhookSecret bool             `json:"has_webhook_secret"`
+	Registration     bool             `json:"registration"`
 }
 type Directory struct {
 	Revision              string    `json:"revision"`
@@ -52,16 +53,17 @@ type Directory struct {
 // Blank secrets preserve existing values. They are never returned or included
 // in audit JSON. Operation receipts encrypt the exact normalized request.
 type Command struct {
-	OperationID      string `json:"operation_id"`
-	ExpectedRevision string `json:"expected_revision"`
-	ID               string `json:"id"`
-	Name             string `json:"name"`
-	Email            string `json:"email"`
-	ReplyTo          string `json:"reply_to"`
-	APIKey           string `json:"api_key"`
-	WebhookSecret    string `json:"webhook_secret"`
-	Enabled          bool   `json:"enabled"`
-	Registration     bool   `json:"registration"`
+	Transport        *TransportConfig `json:"transport,omitempty"`
+	OperationID      string           `json:"operation_id"`
+	ExpectedRevision string           `json:"expected_revision"`
+	ID               string           `json:"id"`
+	Name             string           `json:"name"`
+	Email            string           `json:"email"`
+	ReplyTo          string           `json:"reply_to"`
+	APIKey           string           `json:"api_key"`
+	WebhookSecret    string           `json:"webhook_secret"`
+	Enabled          bool             `json:"enabled"`
+	Registration     bool             `json:"registration"`
 }
 type Result struct {
 	ID       string `json:"id"`
@@ -114,6 +116,13 @@ func normalize(in Command) (Command, error) {
 			return Command{}, ErrInput
 		}
 	}
+	if in.Transport != nil {
+		raw, _ := json.Marshal(in.Transport)
+		var parsed TransportConfig
+		if decodeTransport(raw, &parsed) != nil {
+			return Command{}, ErrInput
+		}
+	}
 	if !utf8.ValidString(in.WebhookSecret) || len(in.WebhookSecret) > 512 || strings.ContainsAny(in.WebhookSecret, " \t\r\n\x00") || in.Registration && !in.Enabled {
 		return Command{}, ErrInput
 	}
@@ -146,7 +155,11 @@ func (s Store) Directory(ctx context.Context, actor identity.User) (Directory, e
 			return ErrUnavailable
 		}
 		for _, row := range rows {
-			out.Accounts = append(out.Accounts, Account{ID: row.ID, Name: row.Name, Email: row.Email, ReplyTo: row.ReplyTo, Enabled: row.Enabled, HasAPIKey: len(row.APIKey) > 0, HasWebhookSecret: row.HasWebhookSecret, Registration: state.RegistrationAccountID != nil && *state.RegistrationAccountID == row.ID})
+			config, e := s.transport(tx, row.ID)
+			if e != nil {
+				return e
+			}
+			out.Accounts = append(out.Accounts, Account{Transport: publicTransport(config), ID: row.ID, Name: row.Name, Email: row.Email, ReplyTo: row.ReplyTo, Enabled: row.Enabled, HasAPIKey: config.Provider == "resend" && len(row.APIKey) > 0, HasWebhookSecret: row.HasWebhookSecret, Registration: state.RegistrationAccountID != nil && *state.RegistrationAccountID == row.ID})
 		}
 		return nil
 	})
@@ -237,7 +250,17 @@ func (s Store) Save(ctx context.Context, actor identity.User, input Command) (Re
 			}
 		}
 		defer clear(key)
-		if _, e := maildelivery.NewResend(string(key), (&mail.Address{Name: in.Name, Address: in.Email}).String(), in.ReplyTo); e != nil {
+		config := TransportConfig{Provider: "resend"}
+		if in.ID != "" {
+			config, e = s.transport(tx, id)
+			if e != nil {
+				return e
+			}
+		}
+		if in.Transport != nil {
+			config = mergeTransport(*in.Transport, config)
+		}
+		if _, e := makeSender(config, string(key), in.Name, in.Email, in.ReplyTo); e != nil {
 			return ErrInput
 		}
 		sealedKey, e := s.Ring.Seal(secretContext(id, "api_key"), key)
@@ -280,6 +303,11 @@ func (s Store) Save(ctx context.Context, actor identity.User, input Command) (Re
 			}
 		}
 		selected := state.RegistrationAccountID
+		if in.Transport != nil {
+			if e := s.saveTransport(tx, id, config); e != nil {
+				return e
+			}
+		}
 		if in.Registration {
 			selected = &id
 		} else if selected != nil && *selected == id {
@@ -296,7 +324,7 @@ func (s Store) Save(ctx context.Context, actor identity.User, input Command) (Re
 		if tx.Exec("INSERT INTO notification_mail_commands(operation_id,actor_id,request_payload,result_revision,account_id,created_at) VALUES(?,?,?,?,?,?)", in.OperationID, actor.ID, encrypted, revision, id, now).Error != nil {
 			return ErrUnavailable
 		}
-		after := Account{ID: id, Name: in.Name, Email: in.Email, ReplyTo: in.ReplyTo, Enabled: in.Enabled, HasAPIKey: true, HasWebhookSecret: webhookConfigured, Registration: in.Registration}
+		after := Account{Transport: publicTransport(config), ID: id, Name: in.Name, Email: in.Email, ReplyTo: in.ReplyTo, Enabled: in.Enabled, HasAPIKey: config.Provider == "resend", HasWebhookSecret: webhookConfigured, Registration: in.Registration}
 		audit, _ := json.Marshal(map[string]any{"before": before, "after": after, "revision": strconv.FormatUint(revision, 10), "previous_registration_account_id": state.RegistrationAccountID, "registration_account_id": selected})
 		if tx.Exec("INSERT INTO audit_events(id,actor_id,action,resource_id,data,created_at) VALUES(?,?,'notification_mail.save',?,?,?)", "audit_"+uuid.NewString(), actor.ID, id, string(audit), now).Error != nil {
 			return ErrUnavailable
@@ -356,7 +384,11 @@ func (s Store) sender(ctx context.Context, registration bool) (*maildelivery.Res
 			return ErrUnavailable
 		}
 		defer clear(key)
-		sender, e = maildelivery.NewResend(string(key), (&mail.Address{Name: current.Name, Address: current.Email}).String(), current.ReplyTo)
+		config, e := s.transport(tx, current.ID)
+		if e != nil {
+			return e
+		}
+		sender, e = makeSender(config, string(key), current.Name, current.Email, current.ReplyTo)
 		if e != nil {
 			return ErrUnavailable
 		}

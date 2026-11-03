@@ -18,10 +18,26 @@ import (
 	"net/mail"
 	"net/smtp"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
 )
+
+// Existing fake senders and Resend retain canonical UUID receipts. The inherited
+// gateway returns a distinct opaque submission ID, stored without truncation.
+func ValidSubmissionID(sender any, id string) bool {
+	if concrete, ok := sender.(*Resend); ok && concrete.dispatch != nil {
+		return regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.:-]{0,190}$`).MatchString(id)
+	}
+	return regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`).MatchString(id)
+}
+func CanRepeat(sender any) bool {
+	if capability, ok := sender.(interface{ SupportsIdempotency() bool }); ok {
+		return capability.SupportsIdempotency()
+	}
+	return true
+}
 
 type SMTPConfig struct {
 	Host          string `json:"host"`

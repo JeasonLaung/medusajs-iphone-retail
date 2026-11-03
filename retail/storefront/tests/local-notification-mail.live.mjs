@@ -75,7 +75,43 @@ try{
  dispatch('order-sent');await admin.reload();await expect(row).toContainText('Provider accepted')
  const projection=await context.request.get(adminOrigin+'/api/admin/notification-mail/order-jobs?offset=0');assert.equal(projection.status(),200)
  const body=await projection.text();for(const secret of ['request_envelope','payload_envelope','sender_fingerprint','provider_id','windows-notify@'])assert.ok(!body.includes(secret))
+ // Extend the existing mail subflow only: no payment, warehouse or after-sales
+ // command is repeated. Configure each inherited protocol via the actual UI.
+ for(const provider of ['smtp','quguo']){
+  await admin.getByRole('button',{name:'Edit mailbox',exact:true}).click();drawer=admin.getByRole('dialog')
+  await drawer.locator('.ant-select').first().click()
+  await admin.locator(`.ant-select-item-option[title="${provider==='smtp'?'SMTP':'Relayme API'}"]`).click()
+  if(provider==='smtp'){
+   for(const [label,value]of Object.entries({'SMTP host':'smtp.example.invalid','SMTP username':'fixture','SMTP password':'smtp-isolated-secret'}))await drawer.getByLabel(label,{exact:true}).fill(value)
+  }else{
+   for(const [label,value]of Object.entries({'Relayme API root URL':'https://relayme.example.invalid','Key ID':'fixture','Secret':'relayme-isolated-secret'}))await drawer.getByLabel(label,{exact:true}).fill(value)
+  }
+  await drawer.getByRole('checkbox',{name:'Configure IMAP receiving',exact:true}).check()
+  for(const [label,value]of Object.entries({'IMAP host':'imap.example.invalid','IMAP username':'fixture','IMAP password':'imap-isolated-secret'}))await drawer.getByLabel(label,{exact:true}).fill(value)
+  await saveMailboxWithLostReply(admin,drawer)
+  const configured=await context.request.get(adminOrigin+'/api/admin/notification-mail/accounts');assert.equal(configured.status(),200)
+  const publicRaw=await configured.text();for(const secret of ['smtp-isolated-secret','imap-isolated-secret','relayme-isolated-secret'])assert.ok(!publicRaw.includes(secret))
+  const saved=JSON.parse(publicRaw).accounts[0].transport
+  assert.equal(saved.provider,provider);assert.equal(saved.has_imap_password,true)
+  assert.equal(saved[provider==='smtp'?'has_smtp_password':'has_relayme_secret'],true)
+  await admin.getByRole('button',{name:'Edit mailbox',exact:true}).click();drawer=admin.getByRole('dialog')
+  await expect(drawer.getByLabel(provider==='smtp'?'SMTP password':'Secret',{exact:true})).toHaveValue('')
+  await expect(drawer.getByLabel('IMAP password',{exact:true})).toHaveValue('')
+  await admin.setViewportSize({width:390,height:900})
+  assert.equal(await drawer.evaluate(element=>element.scrollWidth<=innerWidth),true)
+  await admin.screenshot({path:resolve(logs,`mail-${provider}-mobile.png`),fullPage:true})
+  await drawer.getByRole('button',{name:'Save',exact:true}).click();await expect(drawer).not.toBeVisible()
+  dispatch('protocol-'+provider)
+  await admin.setViewportSize({width:1440,height:1000})
+ }
+ // Restore the original sender in this disposable database. This does not send
+ // another message; earlier Resend verification/order queue evidence remains.
+ await admin.getByRole('button',{name:'Edit mailbox',exact:true}).click();drawer=admin.getByRole('dialog')
+ await drawer.locator('.ant-select').first().click();await admin.locator('.ant-select-item-option[title="Resend"]').click()
+ await drawer.getByLabel('Resend API Key',{exact:true}).fill('re_windows_isolated_mail_key')
+ await drawer.getByRole('checkbox',{name:'Configure IMAP receiving',exact:true}).uncheck()
+ await drawer.getByRole('button',{name:'Save',exact:true}).click();await expect(drawer).not.toBeVisible()
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual(errors,[])
  await admin.screenshot({path:resolve(logs,'mail-admin-sent.png'),fullPage:true})
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'mail',actual_admin_mailbox_save:true,blank_secret_preserved:true,customer_registration_verification_login:true,link_from_dispatched_email:true,paid_order_existing_outbox:true,permanent_rejection_admin_retry_then_sent:true,same_frozen_mail_on_retry:true,lost_reply_exact_command_recovery:true,production_dispatchers_separate_processes:true,isolated_resend_transport:true,real_email_delivery:false,browser_errors:0},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'mail',actual_admin_mailbox_save:true,smtp_relayme_imap_configuration:true,protocol_credentials_encrypted:true,protocol_blank_secrets_preserved:true,protocol_mobile_forms:true,blank_secret_preserved:true,customer_registration_verification_login:true,link_from_dispatched_email:true,paid_order_existing_outbox:true,permanent_rejection_admin_retry_then_sent:true,same_frozen_mail_on_retry:true,lost_reply_exact_command_recovery:true,production_dispatchers_separate_processes:true,isolated_resend_transport:true,real_email_delivery:false,browser_errors:0},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

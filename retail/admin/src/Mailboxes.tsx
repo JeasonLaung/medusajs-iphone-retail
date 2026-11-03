@@ -6,15 +6,20 @@ import type {Copy} from './i18n'
 import OrderMailJobs from './OrderMailJobs'
 import EventMailJobs from './EventMailJobs'
 import {useAccess} from './Permissions'
+import MailboxTransportFields from './MailboxTransportFields'
 
-type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'>
+type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'|'transport'>&{imap_enabled:boolean}
 function Editor({copy,account,revision,onClose,onSaved,onExpired}:{copy:Copy;account?:Mailbox;revision:string;onClose():void;onSaved():void;onExpired():void}){
  const [form]=Form.useForm<Fields>(),[saving,setSaving]=useState(false),busy=useRef(false)
  const [attempt,setAttempt]=useState<MailboxCommand>(),[error,setError]=useState<'uncertain'|'conflict'|'forbidden'|'invalid'>()
  const enabled=Form.useWatch('enabled',form)
+ const provider=Form.useWatch(['transport','provider'],form)??'resend'
+ const zh=copy.mailboxes==='通知邮箱'
  const submit=async(values:Fields)=>{
   if(busy.current)return
-  const body=attempt??{...values,id:account?.id??'',operation_id:crypto.randomUUID(),expected_revision:revision}
+  const {imap_enabled,transport,...base}=values
+  const protocol=transport??{provider:'resend' as const}
+  const body=attempt??{...base,api_key:provider==='resend'?base.api_key??'':'',transport:{provider:protocol.provider,...(protocol.provider==='smtp'?{smtp:protocol.smtp}:protocol.provider==='quguo'?{relayme:protocol.relayme}:{}),...(imap_enabled?{imap:protocol.imap}:{})},id:account?.id??'',operation_id:crypto.randomUUID(),expected_revision:revision}
   busy.current=true;setSaving(true);setAttempt(body);setError(undefined)
   try{await saveMailbox(body);onSaved()}
   catch(e){
@@ -29,11 +34,12 @@ function Editor({copy,account,revision,onClose,onSaved,onExpired}:{copy:Copy;acc
  return <Drawer open title={account?copy.editMailbox:copy.newMailbox} width="min(560px, 100vw)" destroyOnHidden onClose={close} maskClosable={!saving} keyboard={!saving} closable={!saving} extra={<Space><Button onClick={close} disabled={saving}>{copy.cancel}</Button><Button aria-label={error==='uncertain'?copy.retrySave:copy.save} type="primary" loading={saving} disabled={error==='conflict'||error==='forbidden'} onClick={()=>form.submit()}>{error==='uncertain'?copy.retrySave:copy.save}</Button></Space>}>
   <Space direction="vertical" size={24} className="full-width">
    {error&&<Alert showIcon type={error==='uncertain'?'warning':'error'} message={error==='uncertain'?copy.mailUncertain:error==='conflict'?copy.mailConflict:error==='forbidden'?copy.editForbidden:copy.editInvalid}/>}
-   <Form form={form} layout="vertical" onFinish={submit} disabled={saving||!!attempt} initialValues={{name:account?.name??'',email:account?.email??'',reply_to:account?.reply_to??'',api_key:'',webhook_secret:'',enabled:account?.enabled??true,registration:account?.registration??false}}>
+   <Form form={form} layout="vertical" onFinish={submit} disabled={saving||!!attempt} initialValues={{name:account?.name??'',email:account?.email??'',reply_to:account?.reply_to??'',api_key:'',webhook_secret:'',enabled:account?.enabled??true,registration:account?.registration??false,imap_enabled:!!account?.transport?.imap,transport:{provider:account?.transport?.provider??'resend',smtp:account?.transport?.smtp??{host:'',port:465,username:'',password:'',encryption:'tls',skip_tls_verify:false},relayme:account?.transport?.relayme??{api_url:'',key_id:'',secret:''},imap:account?.transport?.imap??{host:'',port:993,username:'',password:'',encryption:'tls',cert_sha256:''}}}}>
     <Form.Item name="name" label={copy.senderName} rules={[{required:true,whitespace:true,message:copy.required},{max:160,message:copy.editTooLong}]}><Input maxLength={160}/></Form.Item>
     <Form.Item name="email" label={copy.senderEmail} rules={[{required:true,message:copy.required},{type:'email',message:copy.emailInvalid}]}><Input type="email" maxLength={254}/></Form.Item>
     <Form.Item name="reply_to" label={copy.replyTo} rules={[{type:'email',message:copy.emailInvalid}]}><Input type="email" maxLength={254}/></Form.Item>
-    <Form.Item name="api_key" label={copy.apiKey} extra={account?.has_api_key?copy.mailKeyKeep:copy.mailSecretNew} rules={[{required:!account?.has_api_key,message:copy.required}]}><Input.Password autoComplete="new-password" maxLength={512}/></Form.Item>
+    <MailboxTransportFields form={form} account={account} zh={zh}/>
+    {provider==='resend'&&<Form.Item name="api_key" label={copy.apiKey} extra={account?.has_api_key?copy.mailKeyKeep:copy.mailSecretNew} rules={[{required:!account?.has_api_key,message:copy.required}]}><Input.Password autoComplete="new-password" maxLength={512}/></Form.Item>}
     <Form.Item name="webhook_secret" label={copy.webhookSecret} extra={account?.has_webhook_secret?copy.mailKeyKeep:undefined}><Input.Password autoComplete="new-password" maxLength={512}/></Form.Item>
     <Form.Item name="enabled" valuePropName="checked"><Checkbox onChange={event=>{if(!event.target.checked)form.setFieldValue('registration',false)}}>{copy.mailEnabled}</Checkbox></Form.Item>
     <Form.Item name="registration" valuePropName="checked"><Checkbox disabled={!enabled||saving||!!attempt}>{copy.registrationSender}</Checkbox></Form.Item>
@@ -61,7 +67,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
     {title:copy.senderEmail,dataIndex:'email'},
     {title:copy.replyTo,dataIndex:'reply_to',render:(v:string)=>v||'—'},
     {title:copy.status,render:(_,a)=><Space direction="vertical"><Tag color={a.enabled?'success':'default'}>{a.enabled?copy.mailOn:copy.mailOff}</Tag>{a.registration&&<Tag color="processing">{copy.registrationSender}</Tag>}</Space>},
-    {title:copy.apiKey,render:(_,a)=>a.has_api_key?copy.configured:copy.unconfigured},
+    {title:copy.mailboxes==='通知邮箱'?'发信渠道':'Sending provider',render:(_,a)=><Space direction="vertical"><span>{a.transport?.provider==='smtp'?'SMTP':a.transport?.provider==='quguo'?'Relayme':'Resend'}</span><span>{(a.has_api_key||a.transport?.has_smtp_password||a.transport?.has_relayme_secret)?copy.configured:copy.unconfigured}</span></Space>},
     {title:copy.webhookSecret,render:(_,a)=>a.has_webhook_secret?copy.configured:copy.unconfigured},
     ...(access.can('mail.write')?[{title:copy.editMailbox,render:(_:unknown,a:Mailbox)=><Button onClick={()=>setEditor({account:a})}>{copy.editMailbox}</Button>}]:[]),
    ]}/>

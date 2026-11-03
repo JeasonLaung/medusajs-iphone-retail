@@ -83,7 +83,7 @@ func decodeCommand(raw []byte) (Command, error) {
 			return in, ErrInput
 		}
 		switch key {
-		case "operation_id", "expected_revision", "id", "name", "email", "reply_to", "api_key", "webhook_secret", "enabled", "registration":
+		case "operation_id", "expected_revision", "id", "name", "email", "reply_to", "api_key", "webhook_secret", "enabled", "registration", "transport":
 		default:
 			return in, ErrInput
 		}
@@ -96,12 +96,22 @@ func decodeCommand(raw []byte) (Command, error) {
 			if !bytes.Equal(trimmed, []byte("true")) && !bytes.Equal(trimmed, []byte("false")) {
 				return in, ErrInput
 			}
+		} else if key == "transport" {
+			var config TransportConfig
+			if decodeTransport(trimmed, &config) != nil {
+				return in, ErrInput
+			}
 		} else if len(trimmed) == 0 || trimmed[0] != '"' {
 			return in, ErrInput
 		}
 		fields[key] = value
 	}
-	if _, e = decoder.Token(); e != nil || len(fields) != 10 || decoder.Decode(new(any)) != io.EOF {
+	if _, e = decoder.Token(); e != nil || len(fields) != 10+func() int {
+		if fields["transport"] != nil {
+			return 1
+		}
+		return 0
+	}() || decoder.Decode(new(any)) != io.EOF {
 		return in, ErrInput
 	}
 	if json.Unmarshal(raw, &in) != nil {

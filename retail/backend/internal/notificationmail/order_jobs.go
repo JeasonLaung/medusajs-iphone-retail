@@ -52,7 +52,7 @@ func (s Store) OrderJobs(ctx context.Context, actor identity.User, offset int) (
 		}
 		now := time.Now().UTC()
 		for i := range out.Jobs {
-			out.Jobs[i].Retryable = canRetry(out.Jobs[i].Status, out.Jobs[i].FirstAttemptAt, now)
+			out.Jobs[i].Retryable = canRetry(out.Jobs[i].Status, out.Jobs[i].FirstAttemptAt, now) && (out.Jobs[i].ErrorCode == nil || *out.Jobs[i].ErrorCode != "channel_review_required")
 		}
 		return nil
 	})
@@ -111,11 +111,17 @@ func (s Store) RetryOrderJob(ctx context.Context, actor identity.User, id string
 			out.Replayed = true
 			return nil
 		}
-		var delivery struct{ FirstAttemptAt, LeaseUntil *time.Time }
-		if tx.Table("order_mail_deliveries").Select("first_attempt_at,lease_until").Where("notification_id=?", id).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&delivery).Error != nil {
+		var delivery struct {
+			FirstAttemptAt, LeaseUntil *time.Time
+			ErrorCode                  *string
+		}
+		if tx.Table("order_mail_deliveries").Select("first_attempt_at,lease_until,error_code").Where("notification_id=?", id).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&delivery).Error != nil {
 			return ErrConflict
 		}
 		now := time.Now().UTC()
+		if delivery.ErrorCode != nil && *delivery.ErrorCode == "channel_review_required" {
+			return ErrConflict
+		}
 		if job.Attempts != in.ExpectedAttempts || !canRetry(job.Status, delivery.FirstAttemptAt, now) || delivery.LeaseUntil != nil && delivery.LeaseUntil.After(now) {
 			return ErrConflict
 		}

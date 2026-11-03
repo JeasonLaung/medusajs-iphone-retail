@@ -97,7 +97,42 @@ func TestWindowsMailSubflow(t *testing.T) {
 		return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"id":"00000000-0000-4000-8000-000000000099"}`))}, nil
 	})
 	ctx := t.Context()
-	if phase == "verification" {
+	if phase == "protocol-smtp" || phase == "protocol-quguo" {
+		sender, e := mailbox.RegistrationSender(ctx)
+		if e != nil || sender == nil || sender.SupportsIdempotency() {
+			t.Fatal("configured protocol was not selected")
+		}
+		var row struct {
+			AccountID      string
+			ConfigEnvelope []byte
+		}
+		if db.Table("notification_mail_transports").Take(&row).Error != nil {
+			t.Fatal("encrypted protocol settings missing")
+		}
+		for _, secret := range []string{"smtp-isolated-secret", "imap-isolated-secret", "relayme-isolated-secret"} {
+			if bytes.Contains(row.ConfigEnvelope, []byte(secret)) {
+				t.Fatal("protocol credential persisted in plaintext")
+			}
+		}
+		raw, e := merchant.Open(protected.Context{Purpose: "notification-mail-transport", Table: "notification_mail_transports", Column: "config_envelope", Row: row.AccountID}, row.ConfigEnvelope)
+		if e != nil {
+			t.Fatal("protocol settings cannot be decrypted")
+		}
+		defer clear(raw)
+		var config notificationmail.TransportConfig
+		if json.Unmarshal(raw, &config) != nil || config.Provider != strings.TrimPrefix(phase, "protocol-") || config.IMAP == nil || config.IMAP.Password != "imap-isolated-secret" {
+			t.Fatal("saved protocol or blank IMAP password preservation differs")
+		}
+		if phase == "protocol-smtp" && (config.SMTP == nil || config.SMTP.Password != "smtp-isolated-secret") {
+			t.Fatal("blank SMTP password did not preserve credential")
+		}
+		if phase == "protocol-quguo" && (config.Relayme == nil || config.Relayme.Secret != "relayme-isolated-secret") {
+			t.Fatal("blank Relayme secret did not preserve credential")
+		}
+		if calls != 0 {
+			t.Fatal("configuration verification sent external mail")
+		}
+	} else if phase == "verification" {
 		ring, e := protected.ParseKeyring(os.Getenv("CUSTOMER_KEY_ACTIVE"), os.Getenv("CUSTOMER_KEYRING_JSON"))
 		if e != nil {
 			t.Fatal("customer ring unavailable")
