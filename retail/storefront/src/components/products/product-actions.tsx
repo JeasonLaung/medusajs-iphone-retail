@@ -17,10 +17,11 @@ import StorefrontTheme from './storefront-theme'
 import styles from './styles.module.css'
 import {cartInventoryLimitReached,type CartQuantities} from '../../lib/cart-quantities.ts'
 
-export type CartAddResult = {ok:true;quantities:CartQuantities} | {ok:false;error:'inventory'|'error'}
+export type CartAddResult = {ok:true;quantities:CartQuantities} | {ok:false;error:'inventory'|'error'|'creation_session'}
+type CartAddInput = {variantId:string;quantity:'1';countryCode:string}
 // Required boundary: a caller must explicitly supply a real commerce adapter.
 // Existing Gin catalog checkout=false must be passed as enabled:false.
-export type ProductCommerce = {enabled:false} | {enabled:true;addToCart:(input:{variantId:string;quantity:'1';countryCode:string})=>Promise<CartAddResult>;navigate?:(path:string)=>void}
+export type ProductCommerce = {enabled:false} | {enabled:true;addToCart:(input:CartAddInput)=>Promise<CartAddResult>;recoverCreation?:(input:CartAddInput)=>Promise<CartAddResult>;navigate?:(path:string)=>void}
 export type ProductActionsProps = ProductSelectionProps & {disabled?:boolean;cartError?:boolean;cartQuantities:CartQuantities;commerce:ProductCommerce}
 
 export default function ProductActions(props:ProductActionsProps) {
@@ -33,7 +34,7 @@ function Actions(props:ProductActionsProps) {
   const {variant:selectedVariant,options,purchaseOptions:productOptions,selectOption:choose}=useProductSelection(props)
   const variants=completeVariants(product)
   const [isAdding, setIsAdding] = useState(false)
-  const [feedback, setFeedback] = useState<"added" | "error" | "inventory" | null>(null)
+  const [feedback, setFeedback] = useState<"added" | "error" | "inventory" | "creation_session" | "recovery_error" | "restored" | null>(null)
   const [quantities, setQuantities] = useState(cartQuantities)
   useEffect(() => setQuantities(cartQuantities), [cartQuantities])
   const actionsRef = useRef<HTMLDivElement>(null)
@@ -48,7 +49,8 @@ function Actions(props:ProductActionsProps) {
   const inStock = available(selectedVariant)
   const atCartLimit = inStock && cartInventoryLimitReached(selectedVariant, quantities)
   const canAdd = commerce.enabled && inStock && !atCartLimit && !!selectedVariant && !!price && !disabled && !isAdding
-  const buttonText = isAdding ? copy.adding : !selectedVariant ? (Object.keys(options).length ? copy.unavailable : copy.select) : !inStock ? copy.out : atCartLimit ? copy.cartLimit : !price ? copy.pricePending : copy.add
+  const needsRecovery = commerce.enabled && !!commerce.recoverCreation && (feedback === 'creation_session' || feedback === 'recovery_error')
+  const buttonText = isAdding ? (needsRecovery ? copy.restoringCart : copy.adding) : !selectedVariant ? (Object.keys(options).length ? copy.unavailable : copy.select) : !inStock ? copy.out : atCartLimit ? copy.cartLimit : !price ? copy.pricePending : needsRecovery ? copy.restoreCart : copy.add
   const colours = product.display.colors
   const summary = productOptions.map((option) => options[option.id] && optionValueLabel(options[option.id], countryCode)).filter(Boolean).join(" · ") || selectedVariant?.title
   const headlineSummary = ["storage", "color", "condition"].map((name) => {
@@ -65,24 +67,26 @@ function Actions(props:ProductActionsProps) {
   const handleAdd = async () => {
     if (!canAdd || !selectedVariant || !commerce.enabled) return
     setIsAdding(true)
-    setFeedback(null)
+    if (!needsRecovery) setFeedback(null)
     try {
-      const result = await commerce.addToCart({variantId:selectedVariant.id,quantity:'1',countryCode})
+      const input = {variantId:selectedVariant.id,quantity:'1' as const,countryCode}
+      const result = await (needsRecovery ? commerce.recoverCreation!(input) : commerce.addToCart(input))
       if (result.ok) {
         setQuantities(result.quantities)
+        if (needsRecovery) { setFeedback('restored'); return }
         setFeedback("added")
         if (commerce.navigate) commerce.navigate(`/${countryCode}/cart`); else window.location.assign(`/${countryCode}/cart`)
       } else {
-        setFeedback(result.error)
+        setFeedback(needsRecovery ? 'recovery_error' : result.error)
       }
     } catch {
-      setFeedback("error")
+      setFeedback(needsRecovery ? 'recovery_error' : 'error')
     } finally {
       setIsAdding(false)
     }
   }
 
-  const feedbackContent = feedback === "error" ? copy.error : feedback === "inventory" ? <>{copy.inventoryError} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : atCartLimit ? <>{copy.cartLimitMessage} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === "added" ? <>{copy.added} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : cartError ? copy.error : null
+  const feedbackContent = feedback === 'creation_session' ? copy.creationSession : feedback === 'recovery_error' ? <>{copy.recoveryError} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === 'restored' ? copy.cartRestored : feedback === "error" ? copy.error : feedback === "inventory" ? <>{copy.inventoryError} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : atCartLimit ? <>{copy.cartLimitMessage} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === "added" ? <>{copy.added} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : cartError ? copy.error : null
 
   return <div className={styles.actions}>
     <div className={styles.productHeading} ref={priceRef}>

@@ -31,6 +31,89 @@ function fixture(){
 }
 const input={variantId:'variant_one',quantity:'1' as const,countryCode:'dk-en'}
 
+async function seedCreation(f:ReturnType<typeof fixture>,scope='old-scope'){
+ const pending={format:1,kind:'create',regionID:'region_eu',segment:'dk-en',variantID:'variant_one',quantity:'1',operationID:randomUUID(),scopeBinding:await f.options.bindScope(scope)}
+ f.data.set(cartIntentKey,JSON.stringify(pending))
+ return f.data.get(cartIntentKey)!
+}
+
+test('expired creation reports recovery, retains its intent, and explicit recovery never adds an item',async()=>{
+ const f=fixture();f.noCart();const original=await seedCreation(f)
+ let csrf:string|undefined,reads=0
+ const options={...f.options,readScopeCSRF:()=>csrf,client:{...f.options.client,current:async()=>{reads++;return f.options.client.current()},openScope:async()=>{const scope=await f.options.client.openScope();csrf=scope.csrfToken;return scope}}}
+ const c=createCartCommerce(options)
+ assert.deepEqual(await c.addToCart(input),{ok:false,error:'creation_session'})
+ assert.equal(reads,0);assert.equal(f.data.get(cartIntentKey),original)
+ const [a,b]=await Promise.all([c.recoverCreation!(input),c.recoverCreation!(input)])
+ assert.deepEqual(a,b);assert.equal(a.ok,true);assert.equal(reads,1)
+ assert.deepEqual(f.stats(),{posts:0,creations:0,quantity:0})
+ assert.notEqual(JSON.parse(f.data.get(cartIntentKey)!).operationID,JSON.parse(original).operationID)
+ assert.equal((await c.addToCart(input)).ok,true)
+ assert.deepEqual(f.stats(),{posts:1,creations:1,quantity:1});assert.equal(f.data.size,0)
+})
+
+test('creation recovery reuses the original operation for an unchanged scope and locale',async()=>{
+ const f=fixture();f.noCart();const original=JSON.parse(await seedCreation(f,'a'.repeat(64)))
+ const c=createCartCommerce(f.options)
+ assert.equal((await c.recoverCreation!({...input,variantId:'different'})).ok,true)
+ const next=JSON.parse(f.data.get(cartIntentKey)!)
+ assert.equal(next.operationID,original.operationID);assert.equal(next.scopeBinding,original.scopeBinding)
+ assert.equal(next.variantID,'different');assert.equal(f.stats().creations,0)
+ const before=f.data.get(cartIntentKey)
+ assert.equal((await createCartCommerce({...f.options,segment:'dk-zh'}).recoverCreation!({...input,countryCode:'dk-zh'})).ok,false)
+ assert.equal(f.data.get(cartIntentKey),before)
+})
+
+test('a committed creation with lost response is restored without another creation and still binds the customer',async()=>{
+ const f=fixture();await seedCreation(f)
+ const events:string[]=[]
+ const options={...f.options,readScopeCSRF:()=>undefined,client:{...f.options.client,retrieveAmounts:async()=>({...await f.options.client.retrieveAmounts(),lines:[]})},customer:{current:async()=> 'account_new',transfer:async(cartID:string,_account:string,command:{operation_id:string;version:string})=>{events.push('bind');return {cart_id:cartID,version:command.version,replayed:true}}}}
+ const c=createCartCommerce(options)
+ assert.equal((await c.recoverCreation!(input)).ok,true)
+ assert.equal(JSON.parse(f.data.get(cartIntentKey)!).kind,'prepare')
+ assert.deepEqual(f.stats(),{posts:0,creations:0,quantity:0})
+ assert.equal((await c.addToCart(input)).ok,true)
+ assert.deepEqual(events,['bind']);assert.equal(f.stats().creations,0);assert.equal(f.stats().posts,1)
+})
+
+test('creation HTTP 401 offers recovery, and dependency errors never discard the old intent',async()=>{
+ const f=fixture();f.noCart()
+ const c=createCartCommerce({...f.options,client:{...f.options.client,create:async()=>{throw new CartError('session',401)}}})
+ assert.deepEqual(await c.addToCart(input),{ok:false,error:'creation_session'})
+ const original=f.data.get(cartIntentKey)
+ assert.equal(JSON.parse(original!).kind,'create')
+ for(const client of [
+  {...f.options.client,current:async()=>{throw new CartError('unavailable',503)}},
+  {...f.options.client,openScope:async()=>{throw new CartError('unavailable',503)}},
+ ]){
+  assert.equal((await createCartCommerce({...f.options,client}).recoverCreation!(input)).ok,false)
+  assert.equal(f.data.get(cartIntentKey),original)
+ }
+})
+
+test('creation recovery cannot replace uncertain additions, corrupt records, or other unfinished checkout commands',async()=>{
+ const f=fixture();f.lose();await createCartCommerce(f.options).addToCart(input)
+ const original=f.data.get(cartIntentKey)
+ assert.equal((await createCartCommerce(f.options).recoverCreation!(input)).ok,false)
+ assert.equal(f.data.get(cartIntentKey),original);assert.equal(f.stats().posts,1)
+ const blocked=fixture();const pending=await seedCreation(blocked);blocked.data.set(contextIntentKey,'pending')
+ assert.equal((await createCartCommerce(blocked.options).recoverCreation!(input)).ok,false)
+ assert.equal(blocked.data.get(cartIntentKey),pending)
+ blocked.data.clear();blocked.data.set(cartIntentKey,'invalid')
+ assert.equal((await createCartCommerce(blocked.options).recoverCreation!(input)).ok,false)
+ assert.equal(blocked.data.get(cartIntentKey),'invalid')
+})
+
+test('creation recovery refuses a different region or a cart that already contains items',async()=>{
+ for(const scenario of ['foreign','nonempty','amounts-outage']){
+  const f=fixture(),original=await seedCreation(f)
+  if(scenario==='foreign')f.foreignCart()
+  if(scenario==='amounts-outage')f.failRead()
+  assert.equal((await createCartCommerce(f.options).recoverCreation!(input)).ok,false)
+  assert.equal(f.data.get(cartIntentKey),original);assert.equal(f.stats().creations,0);assert.equal(f.stats().posts,0)
+ }
+})
+
 test('commerce coalesces concurrent clicks and creates only when no current cart',async()=>{
  const f=fixture(),c=createCartCommerce(f.options)
  const [a,b]=await Promise.all([c.addToCart(input),c.addToCart(input)])

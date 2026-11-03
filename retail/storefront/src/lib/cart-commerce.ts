@@ -56,13 +56,19 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
   o.storage.setItem(cartIntentKey,raw)
   if(o.storage.getItem(cartIntentKey)!==raw)throw fail()
  }
- let active:{variantID:string;promise:Promise<CartAddResult>}|null=null
+ const blocked=()=>[contextIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,customerCartIntentKey].some(key=>o.storage.getItem(key)!==null)
+ const scopeMatches=async(pending:Extract<Intent,{kind:'create'}>)=>{
+  const csrf=o.readScopeCSRF()
+  return canonical(csrf,token)&&await o.bindScope(csrf)===pending.scopeBinding
+ }
+ let active:{variantID:string;recover:boolean;promise:Promise<CartAddResult>}|null=null
  const addToCart:Extract<ProductCommerce,{enabled:true}>['addToCart']=async input=>{
   if(input.countryCode!==o.segment||input.quantity!=='1'||!canonical(input.variantId,id))return {ok:false,error:'error'}
   try{return await o.exclusive(async():Promise<CartAddResult>=>{
-   if(o.storage.getItem(contextIntentKey)!==null||o.storage.getItem(contactIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null||o.storage.getItem(customerCartIntentKey)!==null)throw fail()
+   if(blocked())throw fail()
    let pending=readIntent(o.storage.getItem(cartIntentKey))
    let resuming=pending!==null
+   if(pending?.kind==='create'&&(!await scopeMatches(pending)||pending.regionID!==o.regionID||pending.segment!==o.segment||pending.variantID!==input.variantId))return {ok:false,error:'creation_session'}
    if(pending&&(pending.regionID!==o.regionID||pending.segment!==o.segment||pending.variantID!==input.variantId))throw fail()
    const base:Base={format:1,regionID:o.regionID,segment:o.segment,variantID:input.variantId,quantity:'1'}
    if(!pending){
@@ -79,7 +85,7 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
    try{
     if(pending.kind==='create'){
      const csrf=o.readScopeCSRF()
-     if(!canonical(csrf,token)||await o.bindScope(csrf)!==pending.scopeBinding)throw fail()
+     if(!canonical(csrf,token)||await o.bindScope(csrf)!==pending.scopeBinding)return {ok:false,error:'creation_session'}
      const created=await o.client.create({operationID:pending.operationID,regionID:o.regionID,locale:o.segment.endsWith('-zh')?'zh-CN':'en-GB'},{csrfToken:csrf})
      if(!validCart(created.cart))throw fail()
      pending=o.customer?{...base,kind:'prepare',cartID:created.cart.id,version:created.cart.version}:{...base,kind:'add',cartID:created.cart.id,version:created.cart.version,operationID:o.uuid()}
@@ -109,6 +115,7 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
      save(pending)
     }
    }catch(error){
+    if(pending.kind==='create'&&error instanceof CartError&&error.status===401)return {ok:false,error:'creation_session'}
     // Only a definite HTTP rejection permits a later fresh user operation.
     // Missing cookies, storage faults, malformed replies or unknown errors keep
     // the original intent: never guess that its POST did not commit.
@@ -125,12 +132,38 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
    return {ok:true,quantities}
   })}catch{return {ok:false,error:'error'}}
  }
- return {enabled:true,addToCart(input){
-  if(active)return active.variantID===input.variantId&&input.countryCode===o.segment&&input.quantity==='1'?active.promise:Promise.resolve({ok:false,error:'error'})
-  const promise=addToCart(input).finally(()=>{active=null})
-  active={variantID:input.variantId,promise}
+ // Explicit recovery is limited to creation: that stage can only have created
+ // an empty cart, never added an item or started a payment. Never discard an
+ // uncertain add/bind/refresh. Read failures retain the original journal.
+ const recoverCreation:NonNullable<Extract<ProductCommerce,{enabled:true}>['recoverCreation']>=async input=>{
+  try{return await o.exclusive(async():Promise<CartAddResult>=>{
+   if(input.countryCode!==o.segment||input.quantity!=='1'||!canonical(input.variantId,id)||blocked())throw fail()
+   const pending=readIntent(o.storage.getItem(cartIntentKey))
+   if(pending?.kind!=='create')throw fail()
+   const base:Base={format:1,regionID:o.regionID,segment:o.segment,variantID:input.variantId,quantity:'1'}
+   const cart=await o.client.current()
+   if(cart){
+    if(!validCart(cart))throw fail()
+    const amounts=await o.client.retrieveAmounts(cart.id)
+    if(!amounts||amounts.currency_code!==o.currency||amounts.version!==cart.version||amounts.lines.length)throw fail()
+    save(o.customer?{...base,kind:'prepare',cartID:cart.id,version:cart.version}:{...base,kind:'add',cartID:cart.id,version:cart.version,operationID:o.uuid()})
+   }else{
+    const scope=await o.client.openScope(),scopeBinding=await o.bindScope(scope.csrfToken)
+    // A still-valid scope must replay its original UUID and request body.
+    // Only a new scope may start a new empty-cart creation operation.
+    if(scopeBinding===pending.scopeBinding&&(pending.regionID!==o.regionID||pending.segment!==o.segment))throw fail()
+    save({...base,kind:'create',scopeBinding,operationID:scopeBinding===pending.scopeBinding?pending.operationID:o.uuid()})
+   }
+   return {ok:true,quantities:{}}
+  })}catch{return {ok:false,error:'creation_session'}}
+ }
+ const run=(input:Parameters<typeof addToCart>[0],recover:boolean):Promise<CartAddResult>=>{
+  if(active)return active.recover===recover&&active.variantID===input.variantId&&input.countryCode===o.segment&&input.quantity==='1'?active.promise:Promise.resolve({ok:false,error:'error'})
+  const promise=(recover?recoverCreation(input):addToCart(input)).finally(()=>{active=null})
+  active={variantID:input.variantId,recover,promise}
   return promise
- }}
+ }
+ return {enabled:true,addToCart:input=>run(input,false),recoverCreation:input=>run(input,true)}
 }
 
 // Explicit opt-in only; catalog checkout=false must never turn this on.

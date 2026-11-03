@@ -664,6 +664,7 @@ def verify_buyback_return_mail_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    checkout_readiness = scenario == 'checkout-readiness'
     customer_groups = scenario == 'customer-groups'
     if customer_groups and resume is None:
         raise RuntimeError('Customer groups require a verified account checkpoint')
@@ -866,6 +867,16 @@ def main(language, scenario='account', resume=None):
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund or non_device_refund else 'false'
+        if checkout_readiness:
+            # Read available payment methods, but the browser probe never submits
+            # a payment. Compare durable payment/stock facts independently below.
+            env['CHECKOUT_PAYMENT_ENABLED'] = 'true'
+            readiness_tables = ['orders', 'payments', 'payment_captures', 'payment_refunds',
+                                'cart_checkout_attempts', 'cart_completion_receipts',
+                                'payment_effect_journal', 'inventory_levels', 'inventory_reservations']
+            def readiness_fingerprint():
+                return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *readiness_tables)).hexdigest()
+            readiness_before = readiness_fingerprint()
         if cart_login:
             if sql(database, 'SELECT version FROM customer_cart_runtime WHERE id=1') != '1':
                 raise RuntimeError('Customer cart runtime version mismatch')
@@ -1045,6 +1056,8 @@ def main(language, scenario='account', resume=None):
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         if scenario == 'payment-retry':
             script = 'tests/local-payment-retry.live.mjs'
+        if checkout_readiness:
+            script = 'tests/local-checkout-readiness.live.mjs'
         if resume and payment_context:
             browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
             script = 'tests/local-payment-context-resume.live.mjs'
@@ -1173,8 +1186,19 @@ def main(language, scenario='account', resume=None):
                     raise RuntimeError('Expected exactly three inspection receipts/events; failed command must roll back')
                 report['sql_inspection_receipts_and_events'] = [int(v) for v in facts]
 
-        if report['verified_accounts'] != (0 if product_entry or scenario == 'payment-retry' else 1):
+        if report['verified_accounts'] != (0 if product_entry or scenario == 'payment-retry' or checkout_readiness else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
+        if checkout_readiness:
+            if readiness_fingerprint() != readiness_before:
+                raise RuntimeError('Checkout loading probe changed payment/order/stock facts')
+            report['original_payment_order_stock_fingerprint_unchanged'] = True
+            for cart_id in report['cart_ids']:
+                if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id):
+                    raise RuntimeError('Invalid readiness cart identity')
+                facts = sql(database, "SELECT (SELECT COUNT(*) FROM cart_creation_operations WHERE cart_id='"+cart_id+"'),(SELECT COUNT(*) FROM cart_checkout_attempts WHERE cart_id='"+cart_id+"'),(SELECT version FROM cart_ownership WHERE cart_id='"+cart_id+"')").split('\t')
+                if facts != ['1', '0', '4']:
+                    raise RuntimeError('Readiness cart creation/payment/version facts differ: '+str(facts))
+            report['sql_readiness_facts'] = dict(carts=len(report['cart_ids']), each_creation_receipt=1, each_payment_attempts=0, each_version=4)
         if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail or customer_groups):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
@@ -1599,6 +1623,8 @@ if __name__ == '__main__':
         main('en', 'payment-context-changed')
     elif sys.argv[1:] == ['--scenario=payment-retry']:
         main('en', 'payment-retry')
+    elif sys.argv[1:] == ['--scenario=checkout-readiness']:
+        main('en', 'checkout-readiness')
     elif sys.argv[1:] == ['--scenario=payment-context-restore']:
         main('en', 'payment-context-restore')
     elif len(sys.argv) == 5 and sys.argv[1] == '--context-restore-fault':
