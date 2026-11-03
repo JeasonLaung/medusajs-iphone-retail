@@ -13,6 +13,7 @@ await mkdir(requestedBase,{recursive:true})
 const base=await realpath(requestedBase)
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
 const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits','group-save','group-restore']
+choices.push('retry-canceled','retry-expired','retry-failed')
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
 const paypalContext=args.includes('--paypal-context'),paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
 const paidRecovery=args.includes('--paid-order-recovery')

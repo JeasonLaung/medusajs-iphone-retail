@@ -72,7 +72,8 @@ export function browserContextCommands(client:CartClient){
  const draft=createContextCommands(options),payment=createPaymentContextCommands(options)
  return {
   pending:()=>payment.available()?payment.pending():draft.pending(),
-  canRestore:()=>payment.available(),
+  canRestore:()=>payment.available()&&payment.pending()?.kind!=='payment-retry',
+  retryFailed:(cartID?:string)=>payment.retryFailed(cartID),
   restore:()=>payment.restore(),
   apply:async(choice:Choice)=>{
    if(payment.available()||localStorage.getItem(paymentIntentKey)!==null){

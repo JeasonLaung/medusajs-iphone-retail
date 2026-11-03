@@ -1,0 +1,538 @@
+{
+  "passed": true,
+  "actual_gin_mysql_redis_astro_chromium": true,
+  "real_provider_called": false,
+  "full_business_flow_executed": false,
+  "primary": {
+    "owner": "d0a543a5c002",
+    "passed": true,
+    "raw_report": "logs/gin-migration/context-payment-d0a543a5c002/report.json",
+    "raw_report_sha256": "365404a00ea5cc77cec542efea94bccf92cfff96269001cb30615fd5ef42e2e7",
+    "browser_result_sha256": "d1fa6b775385a281fcb5bbd52937e46f9c462168fd7c6473bd7687568de250c9",
+    "fixture_log_sha256": "272a96aef36288e817c50c4fe436fd5751428b2dec8da53a255a5eda4aa28834",
+    "binary_sha256": "f4488f87026dd8fb7b9ee498b98293bdd6135ef25e222c7f04f78989ef5f5b84",
+    "finished_utc": "2026-11-03T00:57:02.753Z",
+    "migrations": 107,
+    "frozen_source_verified": true,
+    "owned_resources_removed": true,
+    "browser_cases": [
+      {
+        "scenario": "retry-canceled",
+        "lang": "en",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "199b0b60-ddd9-4b43-869e-54e87398ba38",
+        "replacement": "804ca7a8-3d2f-4f63-9411-6111d362e030",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-expired",
+        "lang": "en",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "5100481b-95f7-4731-b0d3-d3fb17472968",
+        "replacement": "0f1656e1-32d7-4263-b591-9657c54e9806",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-failed",
+        "lang": "en",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "37d808fb-04f0-4566-aeae-3d728e4ff58f",
+        "replacement": "0cef7189-97d9-49c2-8221-60e124ae7970",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "unchanged",
+        "lang": "en",
+        "width": 390,
+        "database": {
+          "version": 6,
+          "creates": 1,
+          "deletes": 0,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        },
+        "lost_success_response": true
+      },
+      {
+        "scenario": "continuous",
+        "lang": "en",
+        "width": 390
+      },
+      {
+        "scenario": "group-restore",
+        "lang": "en",
+        "width": 390,
+        "database": {
+          "version": 10,
+          "creates": 3,
+          "deletes": 2,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-canceled",
+        "lang": "en",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "b6f4a695-0783-4f12-995a-42542fed4a84",
+        "replacement": "138e8f9d-04d2-4164-9224-7b914cd1e821",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-expired",
+        "lang": "en",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "002207ec-63a4-49d6-a297-a9aeb8210e56",
+        "replacement": "3f2b0f62-f308-42df-a54e-8b034751e1ba",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-failed",
+        "lang": "en",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "7d59dd32-460e-4438-acd3-6c7164bd4c78",
+        "replacement": "8a46165d-2459-4579-bec0-73eac38bb3b3",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "unchanged",
+        "lang": "en",
+        "width": 1440,
+        "database": {
+          "version": 6,
+          "creates": 1,
+          "deletes": 0,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        },
+        "lost_success_response": true
+      },
+      {
+        "scenario": "continuous",
+        "lang": "en",
+        "width": 1440
+      },
+      {
+        "scenario": "group-restore",
+        "lang": "en",
+        "width": 1440,
+        "database": {
+          "version": 10,
+          "creates": 3,
+          "deletes": 2,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-canceled",
+        "lang": "zh",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "d79b598e-8434-4f43-8153-c62dcf1cb446",
+        "replacement": "20ecb04f-0f3a-42ec-abf6-9ab61570a563",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-expired",
+        "lang": "zh",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "dc1550ed-4215-4ef8-a5cf-a80226a62145",
+        "replacement": "5dc0bec8-2b4e-423e-bf2d-cc10fa907388",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-failed",
+        "lang": "zh",
+        "width": 390,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "11982427-5aed-40e9-bfb7-9380f8ba038a",
+        "replacement": "d366b389-b954-4cf4-a566-9694c8926781",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "unchanged",
+        "lang": "zh",
+        "width": 390,
+        "database": {
+          "version": 6,
+          "creates": 1,
+          "deletes": 0,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        },
+        "lost_success_response": true
+      },
+      {
+        "scenario": "continuous",
+        "lang": "zh",
+        "width": 390
+      },
+      {
+        "scenario": "group-restore",
+        "lang": "zh",
+        "width": 390,
+        "database": {
+          "version": 10,
+          "creates": 3,
+          "deletes": 2,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-canceled",
+        "lang": "zh",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "9c2d0eae-08a0-43b8-95ca-0ed701fe529f",
+        "replacement": "8baf5b15-9c5c-4b16-b9a2-fa548772eb8c",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-expired",
+        "lang": "zh",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "f2eb4734-eb72-4d08-92af-f0aa15ec9b68",
+        "replacement": "7fd31ceb-11cb-4518-a038-8a4ce91c23b8",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "retry-failed",
+        "lang": "zh",
+        "width": 1440,
+        "late_failure_atomic": true,
+        "lost_success_recovered": true,
+        "same_uuid": true,
+        "original": "a0a29503-1a16-42c1-a937-55f20ea9f81b",
+        "replacement": "30908ce7-2549-42dd-b4a2-f61aa9644fe5",
+        "before_total": "158.75",
+        "after_total": "158.75",
+        "database": {
+          "version": 7,
+          "creates": 2,
+          "deletes": 1,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      },
+      {
+        "scenario": "unchanged",
+        "lang": "zh",
+        "width": 1440,
+        "database": {
+          "version": 6,
+          "creates": 1,
+          "deletes": 0,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        },
+        "lost_success_response": true
+      },
+      {
+        "scenario": "continuous",
+        "lang": "zh",
+        "width": 1440
+      },
+      {
+        "scenario": "group-restore",
+        "lang": "zh",
+        "width": 1440,
+        "database": {
+          "version": 10,
+          "creates": 3,
+          "deletes": 2,
+          "live_sessions": 1,
+          "receipts": 1,
+          "protected_unchanged": true
+        }
+      }
+    ],
+    "browser_errors": []
+  },
+  "paid_order_regression": {
+    "owner": "4ffdc257127c",
+    "passed": true,
+    "raw_report": "logs/gin-migration/context-payment-4ffdc257127c/report.json",
+    "raw_report_sha256": "c13ec1d7a5c82a13a896635d8c3834972f8be472e83dd0f9e2237782a5087645",
+    "browser_result_sha256": "f988503c1c7ac0bd16e4c27c97afa61c22973f2c4df481f9df4ca7f9700a82a4",
+    "fixture_log_sha256": "ba7823088e6db3e4c68fa17981c5fe48d5c3fa8d921f946ab6934f14a7081915",
+    "binary_sha256": "f4488f87026dd8fb7b9ee498b98293bdd6135ef25e222c7f04f78989ef5f5b84",
+    "finished_utc": "2026-11-03T00:55:18.651Z",
+    "migrations": 107,
+    "frozen_source_verified": true,
+    "owned_resources_removed": true,
+    "browser_cases": [
+      {
+        "scenario": "paid-conflict",
+        "lang": "en",
+        "width": 390,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "zh",
+        "width": 390,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "en",
+        "width": 1440,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "paid-conflict",
+        "lang": "zh",
+        "width": 1440,
+        "lost_success_response": true,
+        "reload_recovered": true,
+        "double_click_single_request": true
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "en",
+        "width": 390,
+        "order_id": "order_136c37e1-b6d7-4c93-8cce-a55ed64d7999"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "zh",
+        "width": 390,
+        "order_id": "order_136c37e1-b6d7-4c93-8cce-a55ed64d7999"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "en",
+        "width": 1440,
+        "order_id": "order_136c37e1-b6d7-4c93-8cce-a55ed64d7999"
+      },
+      {
+        "scenario": "completed-receipt-replay",
+        "lang": "zh",
+        "width": 1440,
+        "order_id": "order_136c37e1-b6d7-4c93-8cce-a55ed64d7999"
+      }
+    ],
+    "browser_errors": []
+  },
+  "source_sha256": {
+    "retail/backend/internal/cart/payment_refresh.go": "5cbae7989e872b573f1cc900b8e395a4ca55c98a97c09e31a74adecd045dfd18",
+    "retail/backend/internal/cart/context_payment_complete.go": "346587c0b9d78bf89f17b7d96f1f032013ac3a0e1af1add5e9c4761f04825104",
+    "retail/backend/internal/cart/context_payment_preview.go": "5afcbf5a41ac8240d1a4bb62e4153147c56cde7c032e05295a3e1ebf9ee718e8",
+    "retail/backend/internal/identity/context_payment_browser_test.go": "d2a2e9d60c90140fa6e6d05d37e3295efdf5973378a36a1c8cd84f2fbf28288e",
+    "retail/storefront/src/lib/payment-context.ts": "ef0f4cf3ebe7d75834156331f1bdac132a46d824f5d1dc3e2d055b07213c67fa",
+    "retail/storefront/src/lib/cart-context.ts": "1561514e10f13aff5fffa44f55b52fd2727722aa5514ad43070a28c072dc2382",
+    "retail/storefront/src/components/checkout/payment-result/index.tsx": "575aa71090d114e9a35d0f0a48b7a1e6c5b179e6db0d14eddc92186c69833402",
+    "retail/storefront/src/components/checkout/i18n.ts": "045fc5e2249d8e1280e21606ac9a828c87405441927166f274da6468ff60e68a",
+    "retail/storefront/tests/payment-context.test.ts": "824bcb9ff4d1e9a65c1f486e41d024b7eaf207f269429277a184d8090129537a",
+    "retail/scripts/test-context-payment-joint.mjs": "2d5c25a69ccb6b31d5f91c2f509c034cd10413ee02b2f898a47fb77b47967e64",
+    "retail/admin/tests/context-payment.native.mjs": "9c92430c4c6933cfec7a4e088bf0c94c357627f13bbd3061851891874ea8f1c6"
+  },
+  "checks": {
+    "frontend_tests": 275,
+    "frontend_test_log_sha256": "4a9d8690baf8079d253abd6b1fbf28f4ed5b4362ef52cdad5a1c3ff0def5e49f",
+    "go_full_test": true,
+    "go_test_log_sha256": "6c26e50b2f8c9ddc867911310f479d56f67d80f39e5369548985ffd0622effa7",
+    "go_vet": [
+      "cart",
+      "identity"
+    ],
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 29,
+    "astro_log_sha256": "f97f706702cf031e316548802b271552eed48f3d76448ead0843905716862289"
+  },
+  "main_preview": {
+    "api_sha256": "19b2a9713788dfca2c5d4c3024d67596e249416f5aa86ffc28f345666ccdfcd1",
+    "health": [
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9200/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/gb-en/store",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/gb-en/payment-result",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/gb-zh/payment-result",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": null,
+        "reason": "legacy preview intentionally stopped"
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": null,
+        "reason": "legacy preview intentionally stopped"
+      }
+    ],
+    "workers": [
+      {
+        "worker": "order-payment-worker",
+        "processes": 1
+      },
+      {
+        "worker": "order-refund-worker",
+        "processes": 1
+      }
+    ],
+    "updated_via": "scripts/start-retail.ps1",
+    "recent_logs_checked": true,
+    "checked_utc": "2026-11-03T00:59:25.983Z"
+  },
+  "remaining": [
+    "real provider terminal-payment retry acceptance",
+    "PayPal-specific authorization and cancellation branches",
+    "production callbacks",
+    "real mail delivery",
+    "remaining C01-C11 requirements"
+  ]
+}

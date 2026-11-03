@@ -261,6 +261,45 @@ async function accountCase(context,seed,scenario,lang,width){
  cases.push({scenario,lang,width,real_database_facts:after,payment_journal_unchanged:!changed,lost_response_replayed:lost,foreign_account_denied:true})
  await control('case-done')
 }
+async function failedPaymentCase(seed,scenario,lang,width,writes){
+ const amounts=()=>page.evaluate(async id=>{const r=await fetch(`/api/store/carts/${id}/amounts`);if(!r.ok)throw Error('amounts '+r.status);return r.json()},seed.cart_id)
+ await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')
+ await expect(page.getByTestId('submit-payment-button')).toBeEnabled()
+ await page.getByTestId('submit-payment-button').click()
+ await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const original=await journal(paymentKey),before=await amounts()
+ await control('mode/'+scenario.slice(6))
+ await page.goto(origin+'/dk-'+lang+'/payment-result?cart_id='+seed.cart_id)
+ const result=page.getByTestId('payment-result'),retry=page.getByRole('button',{name:lang==='zh'?'返回结账':'Return to checkout',exact:true})
+ await expect(result).toHaveAttribute('data-status','failed');await expect(retry).toBeEnabled()
+ await control('context-receipt-fault/on')
+ await retry.click();await expect(page.getByRole('alert')).toBeVisible()
+ const intent=await journal(contextKey),frozen=await control('facts')
+ assert.equal(intent.kind,'payment-retry');assert.equal(intent.version,'5')
+ assert.equal(frozen.version,5);assert.equal(frozen.checkout,original.operationID);assert.equal(frozen.refresh,intent.operationID);assert.equal(frozen.live_sessions,1);assert.equal(frozen.receipts,0);assert.equal(frozen.deletes,1);assert.equal(frozen.creates,1);assert(frozen.protected_unchanged)
+ await control('context-receipt-fault/off')
+ let lost=false
+ await page.route('**/context-payment',async route=>{const response=await route.fetch();assert.equal(response.status(),200);const body=await response.json();assert.equal(body.state,'saved');assert.equal(body.completion.payment,null);lost=true;await route.abort('failed')})
+ await retry.click();await expect.poll(()=>lost).toBe(true);await expect(page.getByRole('alert')).toBeVisible()
+ const retired=await control('facts')
+ assert.equal(retired.version,6);assert.equal(retired.checkout,null);assert.equal(retired.refresh,null);assert.equal(retired.live_sessions,0);assert.equal(retired.receipts,1);assert.equal(retired.deletes,1);assert.equal(retired.creates,1);assert(retired.protected_unchanged)
+ assert.deepEqual(await journal(contextKey),intent);assert.deepEqual(await journal(paymentKey),original)
+ await page.unroute('**/context-payment');await page.reload()
+ await expect(page).toHaveURL(origin+'/dk-'+lang+'/checkout?step=payment')
+ await expect(page.getByTestId('submit-payment-button')).toBeEnabled()
+ assert.equal(await journal(contextKey),null);assert.equal(await journal(paymentKey),null)
+ const after=await amounts();assert.deepEqual(after.totals,before.totals);assert.equal(after.currency_code,before.currency_code)
+ await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const replacement=await journal(paymentKey),facts=await control('facts')
+ assert.equal(replacement.version,'6');assert.notEqual(replacement.operationID,original.operationID)
+ assert.equal(facts.version,7);assert.equal(facts.creates,2);assert.equal(facts.deletes,1);assert.equal(facts.live_sessions,1);assert.equal(facts.receipts,1);assert.equal(facts.attempts.length,2);assert(facts.protected_unchanged)
+ assert(writes.length>=3&&writes.every(w=>w.key===intent.operationID&&w.body.version==='5'&&JSON.stringify(w.body)===JSON.stringify(writes[0].body)))
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true)
+ await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)})
+ cases.push({scenario,lang,width,late_failure_atomic:true,lost_success_recovered:true,same_uuid:true,original:original.operationID,replacement:replacement.operationID,before,after,real_database_facts:facts})
+ await control('case-done')
+}
+
 try{
  const matrix=process.env.CONTEXT_MATRIX==='1',scenarios=JSON.parse(process.env.CONTEXT_SCENARIOS)
  for(const lang of matrix?['en','zh']:['en'])for(const width of matrix?[390,1440]:[390])for(const scenario of scenarios){
@@ -270,6 +309,7 @@ try{
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
   const seed=await control('new'),url=origin+'/dk-'+lang+'/about?joint=payment#contact'
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
+  if(scenario.startsWith('retry-')){await failedPaymentCase(seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario.startsWith('group-')){await groupCase(context,seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario==='retired-edits'){await retiredEditsCase(seed,lang,width);await context.close();continue}
   if(scenario.startsWith('currency-')){await currencyCase(seed,scenario,lang,width,writes);await context.close();continue}

@@ -117,8 +117,8 @@ func (p *contextBrowserProvider) observation(r payments.SessionRequest, id strin
 	if status == "" {
 		status = "pending"
 	}
-	action := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "successful", "authorized": "authorized"}[status]
-	local := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "authorized", "authorized": "authorized"}[status]
+	action := map[string]string{"pending": "pending", "canceled": "canceled", "expired": "failed", "failed": "failed", "paid": "successful", "authorized": "authorized"}[status]
+	local := map[string]string{"pending": "pending", "canceled": "canceled", "expired": "error", "failed": "error", "paid": "authorized", "authorized": "authorized"}[status]
 	raw, _ := json.Marshal(map[string]any{"id": id, "status": status, "amount": map[string]string{"value": r.Amount, "currency": strings.ToUpper(r.Currency)}, "metadata": map[string]string{"session_id": r.SessionID, "cart_id": inScope(r)}, "_links": map[string]any{"checkout": map[string]string{"href": "https://www.mollie.com/checkout/contextjoint"}}})
 	if status == "paid" || status == "authorized" {
 		// Completed provider sessions need not retain a checkout link.
@@ -304,13 +304,13 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	})
 	fixture.POST("/mode/:mode", func(c *gin.Context) {
 		mode := c.Param("mode")
-		if mode != "normal" && mode != "restore" && mode != "delete-unknown" && mode != "create-unknown" && mode != "canceled" && mode != "paid" && mode != "replacement-paid" && mode != "replacement-authorized" {
+		if mode != "normal" && mode != "restore" && mode != "delete-unknown" && mode != "create-unknown" && mode != "canceled" && mode != "expired" && mode != "failed" && mode != "paid" && mode != "replacement-paid" && mode != "replacement-authorized" {
 			c.Status(400)
 			return
 		}
 		adapter.mu.Lock()
 		adapter.mode = mode
-		if mode == "canceled" || mode == "paid" {
+		if mode == "canceled" || mode == "expired" || mode == "failed" || mode == "paid" {
 			for id := range adapter.status {
 				adapter.status[id] = mode
 			}
@@ -429,6 +429,14 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 			t.Error(e)
 			c.Status(503)
 			return
+		}
+		c.Status(200)
+	})
+	fixture.POST("/context-receipt-fault/:enabled", func(c *gin.Context) {
+		if c.Param("enabled") == "on" {
+			exec("CREATE TRIGGER context_receipt_fault BEFORE INSERT ON cart_context_operations FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned terminal retry rollback'")
+		} else {
+			exec("DROP TRIGGER context_receipt_fault")
 		}
 		c.Status(200)
 	})

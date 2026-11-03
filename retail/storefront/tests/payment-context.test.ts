@@ -16,7 +16,9 @@ function fixture(retain=false,providerID?:PayPalProviderID){
  const calls:{version:string;operationID:string;restore:boolean}[]=[]
  const done=new Set<string>()
  const storage={getItem:(key:string)=>data.get(key)??null,setItem:(key:string,value:string)=>{if(writeFailure)throw Error('storage');data.set(key,value)},removeItem:(key:string)=>{if(removeFailure&&key===contextIntentKey)throw Error('storage');data.delete(key)}}
- const client:Pick<CartClient,'current'|'startPayment'|'contextPayment'|'retrieveAmounts'|'paymentOptions'>={
+ let observedState:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'='failed'
+ const client:Pick<CartClient,'current'|'startPayment'|'contextPayment'|'retrieveAmounts'|'paymentOptions'|'paymentStatus'>={
+  paymentStatus:async()=>({cart_id:cart.id,version:cart.version,state:observedState}),
   current:async()=>{if(readFailure)throw Error('read');return {...cart}},
   startPayment:async(_id,input)=>{starts++;assert.deepEqual(input,{operationID:originalID,version:'4',...(providerID?{providerID}:{})});return {cart_id:'cart',version:cart.version,operation_id:originalID,state:providerID?'sdk_ready':'ready',checkout_url:providerID?null:'https://www.mollie.com/checkout/owned',...(providerID?{provider_id:providerID,provider_order_id:'5O190127TN364715T'}:{})}},
   contextPayment:async(_id,input,_auth,restore=false)=>{
@@ -24,7 +26,7 @@ function fixture(retain=false,providerID?:PayPalProviderID){
    if(processing)return {state:'requires_recovery'}
    const key=input.operationID+':'+restore
    const replayed=done.has(key)
-   if(!replayed){mutations++;done.add(key);cart={...cart,version:'6',locale:restore?'en':choice.locale};payment=restore?{operation_id:operationID,version:'5'}:retain?{operation_id:originalID,version:'4'}:null}
+   if(!replayed){mutations++;done.add(key);cart={...cart,version:'6',locale:restore?'en':input.locale};payment=restore?{operation_id:operationID,version:'5'}:retain?{operation_id:originalID,version:'4'}:null}
    if(loseResponse)throw new CartError('unavailable',null,true)
    const result:ContextPaymentProgress=restore?{state:'restored',completion:{cart:{...cart},payment}}:{state:'saved',receipt:{cart_id:'cart',version:'6',replayed},completion:{cart:{...cart},payment}}
    return result
@@ -33,8 +35,32 @@ function fixture(retain=false,providerID?:PayPalProviderID){
   paymentOptions:async()=>({cart_id:'cart',version:cart.version,attempt_started:payment!==null,providers:payment?[]:[{id:'pp_mollie-hosted-checkout_mollie'}],...(payment&&providerID?{active_provider:{id:providerID,paypal:{client_id:'artificial_client',currency:'EUR',intent:'capture',environment:'sandbox'}}}:{})}),
  }
  const make=()=>createPaymentContextCommands({client,storage,readCSRF:()=>csrf,uuid:()=>{ids++;return operationID},exclusive:async work=>work()})
- return {data,storage,client,make,calls,original,ids:()=>ids,starts:()=>starts,mutations:()=>mutations,lose:(v:boolean)=>{loseResponse=v},readFail:(v:boolean)=>{readFailure=v},mixed:(v:boolean)=>{mixedVersion=v},removeFail:(v:boolean)=>{removeFailure=v},writeFail:(v:boolean)=>{writeFailure=v},processing:(v:boolean)=>{processing=v}}
+ return {data,storage,client,make,calls,original,status:(v:typeof observedState)=>{observedState=v},ids:()=>ids,starts:()=>starts,mutations:()=>mutations,lose:(v:boolean)=>{loseResponse=v},readFail:(v:boolean)=>{readFailure=v},mixed:(v:boolean)=>{mixedVersion=v},removeFail:(v:boolean)=>{removeFailure=v},writeFail:(v:boolean)=>{writeFailure=v},processing:(v:boolean)=>{processing=v}}
 }
+
+test('failed payment retirement survives lost success and reload without replaying or creating payment',async()=>{
+ const f=fixture();f.lose(true)
+ await assert.rejects(f.make().retryFailed('cart'))
+ const intent=JSON.parse(f.data.get(contextIntentKey)!)
+ assert.equal(intent.kind,'payment-retry');assert.equal(intent.version,'5');assert.equal(intent.locale,'en')
+ assert.equal(f.starts(),0);assert.equal(f.mutations(),1)
+ f.lose(false)
+ const result=await f.make().retryFailed('cart')
+ assert.equal(result.cart.version,'6');assert.equal(result.cart.locale,'en')
+ assert.equal(f.starts(),0);assert.equal(f.mutations(),1);assert.equal(f.ids(),1)
+ assert.equal(f.data.has(paymentIntentKey),false);assert.equal(f.data.has(contextIntentKey),false)
+ assert(f.calls.every(c=>c.operationID===intent.operationID&&c.version==='5'&&!c.restore))
+})
+
+test('retry refuses live, paid, review, wrong-cart and retained bindings',async()=>{
+ for(const state of ['pending','authorized','paid_pending_order','requires_review'] as const){
+  const f=fixture();f.status(state);await assert.rejects(f.make().retryFailed('cart'))
+  assert.equal(f.mutations(),0);assert.equal(f.ids(),0);assert.equal(f.starts(),0)
+ }
+ const wrong=fixture();await assert.rejects(wrong.make().retryFailed('foreign'));assert.equal(wrong.mutations(),0)
+ const retained=fixture(true);await assert.rejects(retained.make().retryFailed('cart'));assert(retained.data.has(paymentIntentKey));assert(retained.data.has(contextIntentKey))
+ await assert.rejects(retained.make().restore());assert.equal(retained.starts(),0)
+})
 
 test('payment context persists exact command before dispatch and retires only an acknowledged payment',async()=>{
  const f=fixture();const result=await f.make().apply({...choice,location:'/dk-zh/store'} as typeof choice)

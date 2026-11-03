@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react"
 import {browserCartClient,cartCSRFFromCookies} from "../../../lib/cart-client"
 import {clearCompletedPayment} from '../../../lib/checkout-payment'
 import {checkPaymentResult} from "../../../lib/payment-result-state"
+import {browserContextCommands} from '../../../lib/cart-context'
 import BrandLogo from "../../layout/brand-logo"
 import { getCheckoutCopy } from "../i18n"
 import styles from "./styles.module.css"
 
 type Status = "checking" | "pending" | "paid_pending_order" | "failed" | "invalid" | "error" | "confirmed"
-type Result = { status: Status; order_url?: string; retry_url?: string }
+type Result = { status: Status; order_url?: string; retry_error?: boolean }
 
 export default function PaymentResult({ countryCode, cartId }: { countryCode: string; cartId?: string }) {
   const copy = getCheckoutCopy(countryCode)
@@ -24,6 +25,17 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     const api=browserCartClient()
     async function check() {
       attempts++
+      try {
+        const recovery=browserContextCommands(api)
+        if(recovery.pending()?.kind==='payment-retry'){
+          await recovery.retryFailed(cartId)
+          if(!stopped)window.location.replace(`/${countryCode}/checkout?step=payment`)
+          return
+        }
+      } catch {
+        if(!stopped){setResult({status:'error',retry_error:true});checking.current=false;setBusy(false)}
+        return
+      }
       const checked = await checkPaymentResult(api,cartId,cartCSRFFromCookies(document.cookie,location.protocol==='https:'))
       const next: Result = {...checked,...(checked.status==='confirmed'&&checked.orderID?{order_url:`/${countryCode}/order/${encodeURIComponent(checked.orderID)}/confirmed`}:{})}
       if (stopped) return
@@ -62,6 +74,16 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     setRun(value => value + 1)
   }
 
+  async function returnToCheckout() {
+    if(checking.current)return
+    checking.current=true;setBusy(true);setResult({status:'failed'})
+    try {
+      await browserContextCommands(browserCartClient()).retryFailed(cartId)
+      window.location.assign(`/${countryCode}/checkout?step=payment`)
+    } catch { setResult({status:'failed',retry_error:true}) }
+    finally { checking.current=false;setBusy(false) }
+  }
+
   const messages = {
     checking: [copy.paymentCheckingTitle, copy.paymentCheckingBody],
     pending: [copy.paymentWaitingTitle, copy.paymentWaitingBody],
@@ -85,12 +107,13 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
         <p className={styles.eyebrow}>{copy.paymentResultTitle}</p>
         <h1 id="payment-result-title">{title}</h1>
         <p className={styles.description}>{description}</p>
+        {result.retry_error&&<p role="alert" className={styles.description}>{copy.paymentRetryUnconfirmed}</p>}
       </div>
       <div className={styles.actions}>
         {(result.status === "paid_pending_order" || result.status === "error" || result.status === "pending" && !busy) &&
           <button className={styles.primary} type="button" disabled={busy} aria-busy={busy} onClick={retry}>{busy ? copy.paymentCheckingTitle : copy.paymentCheckAgain}</button>}
-        {result.status === "failed" && result.retry_url &&
-          <a className={styles.primary} href={result.retry_url}>{copy.paymentReturnCheckout}</a>}
+        {result.status === "failed" &&
+          <button className={styles.primary} type="button" disabled={busy} aria-busy={busy} onClick={()=>void returnToCheckout()}>{copy.paymentReturnCheckout}</button>}
         {result.status === "confirmed" && result.order_url &&
           <a className={styles.primary} href={result.order_url}>{copy.paymentViewOrder}</a>}
         {result.status !== "checking" && result.status !== "confirmed" &&

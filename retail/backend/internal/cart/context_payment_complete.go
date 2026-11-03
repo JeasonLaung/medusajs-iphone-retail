@@ -13,8 +13,8 @@ import (
 )
 
 // CompleteContextPayment owns the local final save. An unchanged amount keeps
-// the original checkout; changed amount/currency requires every protected delete
-// receipt to succeed before updating the collection and retiring its checkout.
+// a live original checkout. Changed amounts/currencies or terminal unpaid
+// sessions require every protected delete receipt before checkout retirement.
 // No provider is called by this command.
 func CompleteContextPayment(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in ContextCommand, options InitialPaymentOptions) (ContextResult, error) {
 	if err := contextPaymentInput(db, store, ref, in, options); err != nil {

@@ -138,7 +138,8 @@ func previewContextPayment(ctx context.Context, tx *gorm.DB, store string, ref s
 		return fail(err)
 	}
 	// Validate original source ownership and unpaid status even for a no-op
-	// payment plan. Unchanged amount/currency must retain all its sessions.
+	// payment plan. Unchanged amounts retain live sessions; terminal unpaid
+	// sessions still require explicit protected retirement.
 	sourcePlan := payment
 	if sourcePlan.CollectionID != "" {
 		sourcePlan.UpdateCollection = true

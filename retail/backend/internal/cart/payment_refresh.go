@@ -72,5 +72,23 @@ func preparePaymentRefreshOperation(ctx context.Context, tx *gorm.DB, store stri
 	}
 	// The enclosing command has an already-fetched owned cart, matching the
 	// original input.cart branch (a missing collection is a no-op, not creation).
-	return PlanPaymentRefresh(PaymentRefreshFacts{InputCartProvided: true, Amount: total, Currency: cart.CurrencyCode, Collection: active})
+	plan, err := PlanPaymentRefresh(PaymentRefreshFacts{InputCartProvided: true, Amount: total, Currency: cart.CurrencyCode, Collection: active})
+	if err != nil {
+		return failed, err
+	}
+	// A terminal unpaid checkout cannot be reused merely because its amount
+	// stayed equal. Confine retirement to the existing explicit context
+	// coordinator: durable provider verification and final save are still
+	// required. Ordinary draft writes must never release a checkout freeze.
+	if scope, ok := ctx.Value(contextPreviewScopeKey{}).(contextPreviewScope); ok && scope.checkoutOperation != "" && active != nil && !plan.UpdateCollection {
+		var attempt initialAttempt
+		if initialWhere(tx, ref, InitialPaymentCommand{OperationID: scope.checkoutOperation}).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&attempt).Error != nil {
+			return failed, ErrStorage
+		}
+		if attempt.Activated && !attempt.NeedsReview && statusState(attempt) == "failed" {
+			plan.Changed, plan.UpdateCollection = true, true
+			plan.DeleteSessionIDs = append([]string{}, active.SessionIDs...)
+		}
+	}
+	return plan, nil
 }

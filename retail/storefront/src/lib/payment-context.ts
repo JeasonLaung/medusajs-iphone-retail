@@ -3,9 +3,9 @@ import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promot
 import {paymentIntentKey,readPaymentIntent,bindPaymentIntent} from './checkout-payment.ts'
 
 type Choice={regionID:string;currency:string;locale:string}
-type Intent=Choice&{cartID:string;version:string;operationID:string;kind:'payment-save'|'payment-restore'}
+type Intent=Choice&{cartID:string;version:string;operationID:string;kind:'payment-save'|'payment-restore'|'payment-retry'}
 type Options={
- client:Pick<CartClient,'current'|'startPayment'|'contextPayment'|'retrieveAmounts'|'paymentOptions'>
+ client:Pick<CartClient,'current'|'startPayment'|'contextPayment'|'retrieveAmounts'|'paymentOptions'>&Partial<Pick<CartClient,'paymentStatus'>>
  storage:Pick<Storage,'getItem'|'setItem'|'removeItem'>
  readCSRF:()=>string|undefined;uuid:()=>string
  exclusive:<T>(action:()=>Promise<T>)=>Promise<T>
@@ -29,12 +29,12 @@ export function createPaymentContextCommands(o:Options){
   const raw=o.storage.getItem(contextIntentKey);if(raw===null)return null
   let v:Intent
   try{if(raw.length>1024)throw fail();v=JSON.parse(raw)}catch{throw fail()}
-  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==7||!choiceOK(v)||!valid(v.cartID,id)||!version(v.version)||!valid(v.operationID,uuid)||!['payment-save','payment-restore'].includes(v.kind))throw fail()
+  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==7||!choiceOK(v)||!valid(v.cartID,id)||!version(v.version)||!valid(v.operationID,uuid)||!['payment-save','payment-restore','payment-retry'].includes(v.kind))throw fail()
   return v
  }
  const available=()=>{
   const raw=o.storage.getItem(contextIntentKey);if(raw===null)return false
-  try{const v=JSON.parse(raw);return v?.kind==='payment-save'||v?.kind==='payment-restore'}catch{return false}
+  try{const v=JSON.parse(raw);return v?.kind==='payment-save'||v?.kind==='payment-restore'||v?.kind==='payment-retry'}catch{return false}
  }
  const write=(intent:Intent)=>{
   const raw=JSON.stringify(intent);o.storage.setItem(contextIntentKey,raw)
@@ -49,6 +49,7 @@ export function createPaymentContextCommands(o:Options){
   const result=await o.client.contextPayment(intent.cartID,{operationID:intent.operationID,version:intent.version,regionID:intent.regionID,locale:intent.locale},{csrfToken:csrf()},intent.kind==='payment-restore')
   if(!('completion' in result))throw new PaymentContextWaiting(result.state)
   const {cart,payment}=result.completion
+  if(intent.kind==='payment-retry'&&(result.state!=='saved'||payment!==null))throw fail()
   // Pair three current reads with the server's reauthorized binding before
   // changing either local journal. A stale/mixed response cannot release it.
   const [current,amounts,options]=await Promise.all([o.client.current(),o.client.retrieveAmounts(intent.cartID),o.client.paymentOptions(intent.cartID)])
@@ -86,8 +87,27 @@ export function createPaymentContextCommands(o:Options){
  })
  const restore=()=>o.exclusive(async()=>{
   unblocked();let intent=pending();if(!intent)throw fail()
+  if(intent.kind==='payment-retry')throw fail()
   if(intent.kind!=='payment-restore'){intent={...intent,kind:'payment-restore'};write(intent)}
   return finish(intent)
  })
- return {pending,available,apply,restore}
+ const retryFailed=(expectedCartID?:string)=>o.exclusive(async()=>{
+  unblocked()
+  let intent=pending()
+  if(intent&&(intent.kind!=='payment-retry'||expectedCartID&&intent.cartID!==expectedCartID))throw fail()
+  if(!intent){
+   const cart=await o.client.current()
+   if(!cart||expectedCartID&&cart.id!==expectedCartID||!version(cart.version)||!o.client.paymentStatus)throw fail()
+   const original=readPaymentIntent(o.storage)
+   if(original&&original.cartID!==cart.id)throw fail()
+   const state=await o.client.paymentStatus(cart.id,{csrfToken:csrf()})
+   if(state.state!=='failed'||state.cart_id!==cart.id||state.version!==cart.version)throw fail()
+   intent={cartID:cart.id,version:cart.version,operationID:o.uuid(),regionID:cart.region_id,currency:cart.currency_code,locale:cart.locale,kind:'payment-retry'}
+   write(intent)
+  }
+  // Reuse the context coordinator's immutable operation and protected delete
+  // receipts. Never replay the old CREATE or initiate its replacement here.
+  return finish(intent)
+ })
+ return {pending,available,apply,restore,retryFailed}
 }
