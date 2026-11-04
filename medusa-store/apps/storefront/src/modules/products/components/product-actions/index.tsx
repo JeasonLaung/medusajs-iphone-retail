@@ -11,7 +11,7 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import GradeBadge, { isGrade } from "@modules/common/components/grade-badge"
 import SelectionRow from "@modules/common/components/selection-row"
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { unstable_rethrow, useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { getProductCopy, optionLabel, optionValueLabel } from "../../i18n"
 import { variantOptions as optionMap, variantInStock as available, completeVariants, preferredOptionVariant, purchaseOptions, variantSlug, variantFromLocation } from "@lib/util/product-variants"
@@ -116,7 +116,9 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
       } else {
         setFeedback(result.error)
       }
-    } catch {
+    } catch (error) {
+      // A successful server action redirects by throwing a Next.js control signal.
+      unstable_rethrow(error)
       setFeedback("error")
     } finally {
       setIsAdding(false)

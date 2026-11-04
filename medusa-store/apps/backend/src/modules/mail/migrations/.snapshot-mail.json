@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -83,6 +85,140 @@
           "comment": null,
           "enumItems": [],
           "mappedType": "boolean"
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'resend'",
+          "comment": null,
+          "enumItems": [
+            "resend",
+            "relayme"
+          ],
+          "mappedType": "enum"
+        },
+        "api_url": {
+          "name": "api_url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "relayme_key_id": {
+          "name": "relayme_key_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "imap_host": {
+          "name": "imap_host",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "imap_port": {
+          "name": "imap_port",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "993",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "imap_username": {
+          "name": "imap_username",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "imap_password": {
+          "name": "imap_password",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "imap_tls": {
+          "name": "imap_tls",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'tls'",
+          "comment": null,
+          "enumItems": [
+            "tls",
+            "starttls"
+          ],
+          "mappedType": "enum"
         },
         "api_key": {
           "name": "api_key",
@@ -188,7 +324,9 @@
         },
         {
           "keyName": "mail_account_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -310,7 +448,13 @@
           "scale": null,
           "default": "'draft'",
           "comment": null,
-          "enumItems": ["draft", "queued", "sending", "paused", "completed"],
+          "enumItems": [
+            "draft",
+            "queued",
+            "sending",
+            "paused",
+            "completed"
+          ],
           "mappedType": "enum"
         },
         "created_by": {
@@ -401,7 +545,9 @@
         },
         {
           "keyName": "mail_campaign_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -448,6 +594,22 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "''",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "notes": {
+          "name": "notes",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -623,7 +785,9 @@
         },
         {
           "keyName": "mail_contact_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -918,7 +1082,9 @@
         },
         {
           "keyName": "mail_delivery_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -1027,6 +1193,22 @@
           "enumItems": [],
           "mappedType": "datetime"
         },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'{}'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -1099,7 +1281,9 @@
         },
         {
           "keyName": "mail_event_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -1157,7 +1341,14 @@
           "scale": null,
           "default": "'draft'",
           "comment": null,
-          "enumItems": ["inbox", "draft", "outbox", "sent", "archive", "trash"],
+          "enumItems": [
+            "inbox",
+            "draft",
+            "outbox",
+            "sent",
+            "archive",
+            "trash"
+          ],
           "mappedType": "enum"
         },
         "previous_folder": {
@@ -1189,7 +1380,10 @@
           "scale": null,
           "default": "'outbound'",
           "comment": null,
-          "enumItems": ["inbound", "outbound"],
+          "enumItems": [
+            "inbound",
+            "outbound"
+          ],
           "mappedType": "enum"
         },
         "from_address": {
@@ -1618,7 +1812,9 @@
         },
         {
           "keyName": "mail_message_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -1774,7 +1970,9 @@
         },
         {
           "keyName": "mail_template_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,

@@ -43,6 +43,7 @@ function cartAction(createLineItem, { completedAt = null, cartId = "cart_test", 
   const updated = []
   const redirects = []
   const shipping = []
+  const mutations = []
   const actions = loadSource("lib/data/cart.ts", {
     "@lib/config": { sdk: {
       client: { fetch: async (url, options) => {
@@ -51,6 +52,8 @@ function cartAction(createLineItem, { completedAt = null, cartId = "cart_test", 
       } },
       store: { cart: {
         createLineItem,
+        updateLineItem: async (...args) => { mutations.push(["update", ...args]) },
+        deleteLineItem: async (...args) => { mutations.push(["delete", ...args]) },
         create: async (data) => {
           created.push(data)
           return { cart: { id: "cart_new", region_id: data.region_id } }
@@ -73,9 +76,80 @@ function cartAction(createLineItem, { completedAt = null, cartId = "cart_test", 
     "@lib/util/storefront-route": loadSource("lib/util/storefront-route.ts"),
   })
   return { add: (options = {}) => actions.addToCart({ variantId: variant.id, quantity: 1, countryCode: "dk-en", ...options }),
+    update: () => actions.updateLineItem({ lineId: "line_test", quantity: 2 }),
+    remove: () => actions.deleteLineItem("line_test"),
     setShipping: () => actions.setShippingMethod({ cartId: "cart_test", shippingMethodId: "shipping_test" }),
-    tags, requests, created, saved, updated, redirects, shipping }
+    tags, requests, created, saved, updated, redirects, shipping, mutations }
 }
+
+test("quantity updates and removal avoid returning an unused full cart and still invalidate totals", async () => {
+  const action = cartAction(async () => ({}))
+  await action.update()
+  await action.remove()
+  assert.deepEqual(action.mutations, [
+    ["update", "cart_test", "line_test", { quantity: 2 }, { fields: "id" }, {}],
+    ["delete", "cart_test", "line_test", { fields: "id" }, {}],
+  ])
+  assert.deepEqual(action.tags, ["carts", "fulfillment", "carts", "fulfillment"])
+})
+
+test("render reads share a cart within one request, while live mutation reads bypass memoization", async () => {
+  const react = require(path.join(path.dirname(require.resolve("react/package.json")), "cjs/react.react-server.development.js"))
+  const internal = react.__SERVER_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
+  const previous = internal.A
+  let requests = 0
+  const reads = loadSource("lib/data/cart.ts", {
+    react,
+    "@lib/config": { sdk: { client: { fetch: async () => ({ cart: { id: `cart_${++requests}` } }) } } },
+    "@lib/util/medusa-error": {}, "@lib/util/cart-inventory": {},
+    "next/cache": {}, "next/navigation": {},
+    "./cookies": { getCartId: async () => "cart_test", getAuthHeaders: async () => ({}), getCacheOptions: async () => ({}) },
+    "./regions": {}, "./locale-actions": {}, "@lib/constants": {}, "@lib/util/storefront-route": {},
+  })
+  const startRender = () => {
+    const entries = new Map()
+    internal.A = { getCacheForType: (factory) => {
+      if (!entries.has(factory)) entries.set(factory, factory())
+      return entries.get(factory)
+    } }
+  }
+  try {
+    startRender()
+    const carts = await Promise.all([reads.retrieveCart(), reads.retrieveCart(), reads.retrieveCart()])
+    assert.equal(requests, 1)
+    assert.ok(carts.every(cart => cart === carts[0]))
+    await reads.retrieveCart(undefined, "id", "no-store")
+    await reads.retrieveCart(undefined, "id", "no-store")
+    assert.equal(requests, 3)
+    startRender()
+    assert.equal((await reads.retrieveCart()).id, "cart_4")
+  } finally { internal.A = previous }
+})
+
+test("cart stock lookup only serializes selected variants and keeps inventory fields", async () => {
+  const calls = []
+  const selected = { ...variant, options: [{ option_id: "color", value: "Pink" }], metadata: { slug: "iphone-17e-256gb-pink-A85" } }
+  const actions = loadSource("lib/data/cart.ts", {
+    "@lib/config": { sdk: { store: { product: { list: async (...args) => {
+      calls.push(args)
+      return { products: [{ variants: [selected, { id: "unused_variant" }] }] }
+    } } } } },
+    "@lib/util/medusa-error": {}, "@lib/util/cart-inventory": {},
+    "next/cache": {}, "next/navigation": {}, "./cookies": { getAuthHeaders: async () => ({}) },
+    "./regions": {}, "./locale-actions": {}, "@lib/constants": {}, "@lib/util/storefront-route": {},
+  })
+  assert.deepEqual(await actions.retrieveCartVariants(null), {})
+  assert.equal(calls.length, 0)
+  const result = await actions.retrieveCartVariants({ region_id: "region_test", items: [
+    { product_id: "product_test", variant_id: variant.id }, { product_id: "product_test", variant_id: variant.id },
+  ] })
+  assert.deepEqual(result, { [variant.id]: selected })
+  assert.deepEqual(calls[0][0].id, ["product_test"])
+  assert.equal(calls[0][0].limit, 1)
+  assert.match(calls[0][0].fields, /variants.inventory_quantity/)
+  assert.match(calls[0][0].fields, /variants.manage_inventory/)
+  assert.equal(calls[0][1]["cache-control"], "no-cache")
+})
 
 test("adding after checkout uses a new cart and bypasses stale cached completion state", async () => {
   let addedTo
@@ -151,6 +225,55 @@ test("inventory rejection stays on the product page even when redirect is reques
   assert.deepEqual(await action.add({ redirectToCart: true }), { ok: false, error: "inventory" })
   assert.deepEqual(action.redirects, [])
 })
+
+// Exercise the actual click handler without mounting unrelated product UI.
+function productAddHandler(addToCart, countryCode) {
+  const file = path.join(__dirname, "../src/modules/products/components/product-actions/index.tsx")
+  const source = fs.readFileSync(file, "utf8")
+  const tree = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+  let handler
+  function visit(node) {
+    if (ts.isVariableDeclaration(node) && node.name.getText(tree) === "handleAdd") handler = node.initializer.getText(tree)
+    ts.forEachChild(node, visit)
+  }
+  visit(tree)
+  assert.ok(handler, "ProductActions must expose its add handler")
+  const code = ts.transpileModule(`module.exports = ${handler}`, {
+    compilerOptions: { target: ts.ScriptTarget.ES2021, module: ts.ModuleKind.CommonJS },
+  }).outputText
+  const feedback = [], adding = [], routes = [], quantities = []
+  const context = {
+    canAdd: true, selectedVariant: variant, countryCode, addToCart,
+    setIsAdding: (value) => adding.push(value), setFeedback: (value) => feedback.push(value),
+    setQuantities: (value) => quantities.push(value), router: { push: (url) => routes.push(url) },
+    unstable_rethrow: require("next/navigation").unstable_rethrow,
+  }
+  const loaded = { exports: {} }
+  new Function("module", ...Object.keys(context), code)(loaded, ...Object.values(context))
+  return { run: loaded.exports, feedback, adding, routes, quantities }
+}
+
+for (const countryCode of ["dk-en", "dk-zh"]) {
+  test(`${countryCode}: successful server redirect never displays an add failure`, async () => {
+    const { getRedirectError } = require("next/dist/client/components/redirect")
+    const redirect = getRedirectError(`/${countryCode}/cart`, "push")
+    const handler = productAddHandler(async () => { throw redirect }, countryCode)
+    await assert.rejects(handler.run(), (error) => error === redirect)
+    assert.deepEqual(handler.feedback, [null])
+    assert.deepEqual(handler.routes, [])
+    assert.deepEqual(handler.adding, [true, false])
+  })
+
+  test(`${countryCode}: real request and inventory failures still display feedback`, async () => {
+    const request = productAddHandler(async () => { throw new Error("Network unavailable") }, countryCode)
+    await request.run()
+    assert.deepEqual(request.feedback, [null, "error"])
+    const stock = productAddHandler(async () => ({ ok: false, error: "inventory" }), countryCode)
+    await stock.run()
+    assert.deepEqual(stock.feedback, [null, "inventory"])
+    assert.deepEqual(stock.routes, [])
+  })
+}
 
 test("direct cart navigation preserves English as well as Chinese", async () => {
   const action = cartAction(async () => ({ cart: { items: [] } }), { locale: "en" })

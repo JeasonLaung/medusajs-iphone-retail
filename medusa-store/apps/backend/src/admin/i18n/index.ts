@@ -1,3 +1,5 @@
+import trustpilotEn from "./json/trustpilot-en.json"
+import trustpilotZh from "./json/trustpilot-zh.json"
 import seoEn from "./json/seo-en.json"
 import seoZh from "./json/seo-zh.json"
 import serviceEn from "./json/customer-service-en.json"
@@ -22,6 +24,6 @@ import webhooksEn from "./json/webhooks-en.json"
 import webhooksZh from "./json/webhooks-zh.json"
 
 export default {
-  en: { translation: { ...en, buyPolicies: policyEn, seo: seoEn, analytics: analyticsEn, buyback: buybackEn, mail: mailEn, reviews: reviewsEn, webhooks: webhooksEn, warehouseAccess: warehouseEn, customerService: serviceEn } },
-  zhCN: { translation: { ...zhCN, buyPolicies: policyZh, seo: seoZh, analytics: analyticsZh, buyback: buybackZh, mail: mailZh, reviews: reviewsZh, webhooks: webhooksZh, warehouseAccess: warehouseZh, customerService: serviceZh } },
+  en: { translation: { ...en, trustpilot: trustpilotEn, buyPolicies: policyEn, seo: seoEn, analytics: analyticsEn, buyback: buybackEn, mail: mailEn, reviews: reviewsEn, webhooks: webhooksEn, warehouseAccess: warehouseEn, customerService: serviceEn } },
+  zhCN: { translation: { ...zhCN, trustpilot: trustpilotZh, buyPolicies: policyZh, seo: seoZh, analytics: analyticsZh, buyback: buybackZh, mail: mailZh, reviews: reviewsZh, webhooks: webhooksZh, warehouseAccess: warehouseZh, customerService: serviceZh } },
 }

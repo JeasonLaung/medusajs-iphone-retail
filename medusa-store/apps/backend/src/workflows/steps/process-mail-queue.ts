@@ -10,6 +10,7 @@ import {
   publicMailUrl,
 } from "../../modules/mail/security"
 import { arrayValue, type MailAttachment } from "../../modules/mail/types"
+import { submitRelayme } from "../../modules/mail/relayme"
 
 // One provider request per second; the next minute's run handles transient failures.
 const pace = () => new Promise((resolve) => setTimeout(resolve, 1000))
@@ -45,6 +46,12 @@ export async function submitMail(
   }
 }
 
+async function submitAccountMail(account: { provider: string; api_url: string; api_key: string }, id: string, payload: CreateEmailOptions) {
+  return account.provider === "relayme"
+    ? submitRelayme(account, payload)
+    : submitMail(new Resend(decryptSecret(account.api_key)), id, payload)
+}
+
 export const processMailQueueStep = createStep(
   "process-mail-queue",
   async (_: Record<string, never>, { container }) => {
@@ -68,6 +75,10 @@ export const processMailQueueStep = createStep(
       }
       const account = await service.retrieveMailAccount(message.account_id)
       if (!account.enabled) continue
+      if (account.provider === "relayme" && message.status === "sending") {
+        await service.updateMailMessages({ id: message.id, status: "failed", error: "relayme_submission_unknown" })
+        continue
+      }
       if (expired(message.first_attempt_at)) {
         await service.updateMailMessages({
           id: message.id,
@@ -83,8 +94,8 @@ export const processMailQueueStep = createStep(
         attempts,
         first_attempt_at: message.first_attempt_at || new Date(),
       })
-      const result = await submitMail(
-        new Resend(decryptSecret(account.api_key)),
+      const result = await submitAccountMail(
+        account,
         message.id,
         {
           from: message.from_address,
@@ -134,13 +145,16 @@ export const processMailQueueStep = createStep(
       if (processed >= 10) break
       const account = await service.retrieveMailAccount(campaign.account_id)
       if (!account.enabled) continue
-      const resend = new Resend(decryptSecret(account.api_key))
       await service.updateMailCampaigns({ id: campaign.id, status: "sending" })
       const deliveries = await service.listMailDeliveries(
         { campaign_id: campaign.id, status: ["queued", "sending"] },
         { take: 10 - processed, order: { created_at: "ASC" } }
       )
       for (const delivery of deliveries) {
+        if (account.provider === "relayme" && delivery.status === "sending") {
+          await service.updateMailDeliveries({ id: delivery.id, status: "failed", error: "relayme_submission_unknown" })
+          continue
+        }
         const contact = await service.retrieveMailContact(delivery.contact_id)
         if (!contact.subscribed || contact.suppressed) {
           await service.updateMailDeliveries({
@@ -168,7 +182,7 @@ export const processMailQueueStep = createStep(
           attempts,
           first_attempt_at: delivery.first_attempt_at || new Date(),
         })
-        const result = await submitMail(resend, delivery.id, {
+        const result = await submitAccountMail(account, delivery.id, {
           from: `${account.name} <${account.email}>`,
           to: delivery.email,
           replyTo: account.reply_to || account.email,

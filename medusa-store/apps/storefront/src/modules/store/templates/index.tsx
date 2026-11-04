@@ -1,7 +1,7 @@
 "use client"
 
 import type { SearchClient } from "instantsearch.js"
-import { ArrowUturnLeft, ShieldCheck, Star } from "@medusajs/icons"
+import { ArrowUturnLeft, ShieldCheck } from "@medusajs/icons"
 import { theme } from "antd"
 import { useParams } from "next/navigation"
 import { useMemo } from "react"
@@ -19,6 +19,8 @@ import useIsMobile from "@lib/hooks/use-is-mobile"
 import { getStoreCopy } from "@modules/store/i18n"
 import type { BuyPolicies } from "@lib/data/buy-policies"
 import styles from "./styles.module.css"
+import type { TrustpilotSettings } from "types/trustpilot"
+import TrustpilotWidget from "@modules/common/components/trustpilot"
 
 const PRODUCT_LIMIT = 50
 
@@ -27,6 +29,7 @@ type StoreTemplateProps = {
   requestUrl: string
   searchData: StoreSearchData
   policies: BuyPolicies | null
+  trustpilot: TrustpilotSettings | null
 }
 
 const StoreTemplate = ({
@@ -34,6 +37,7 @@ const StoreTemplate = ({
   requestUrl,
   searchData,
   policies,
+  trustpilot,
 }: StoreTemplateProps) => {
   const { countryCode } = useParams<{ countryCode: string }>()
   const copy = getStoreCopy(countryCode)
@@ -48,7 +52,6 @@ const StoreTemplate = ({
     return copy[unit].replace("{count}", number.format(count))
   }
   const highlights = [
-    { Icon: Star, title: "4.4", description: copy.rating, note: "" },
     { Icon: ShieldCheck, title: period(policies?.warranty_months, "months"), description: copy.warranty, note: note(policies?.warranty_note) },
     { Icon: ArrowUturnLeft, title: period(policies?.return_days, "days"), description: copy.returns, note: note(policies?.return_note) },
   ]
@@ -77,8 +80,9 @@ const StoreTemplate = ({
         <ul
           className={styles.highlights}
           aria-label={copy.highlightsLabel}
-          style={{ background: token.colorBgLayout, color: token.colorText }}
+          style={{ background: token.colorBgLayout, color: token.colorText, gridTemplateColumns: `repeat(${trustpilot ? 3 : 2}, minmax(0, 1fr))` }}
         >
+          {trustpilot && <li className={styles.highlight}><TrustpilotWidget settings={trustpilot} locale={countryCode} variant="summary" /></li>}
           {highlights.map(({ Icon, title, description, note }) => (
             <li key={description} className={styles.highlight}>
               <span aria-hidden="true" style={{ color: token.colorPrimary }}><Icon /></span>

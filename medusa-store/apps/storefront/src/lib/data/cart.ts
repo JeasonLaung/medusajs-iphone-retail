@@ -5,6 +5,7 @@ import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
+import { cache as memoize } from "react"
 import {
   getAuthHeaders,
   getCacheOptions,
@@ -30,6 +31,16 @@ export async function retrieveCart(
   fields?: string,
   cache: RequestCache = "force-cache"
 ) {
+  // Share reads between the page, layout and navigation within one render only.
+  // Mutation preconditions must always read live state, including after checkout.
+  return cache === "no-store"
+    ? readCart(cartId, fields, cache)
+    : readCartForRender(cartId, fields, cache)
+}
+
+const readCartForRender = memoize(readCart)
+
+async function readCart(cartId?: string, fields?: string, cache: RequestCache = "force-cache") {
   const id = cartId || (await getCartId())
   fields ??=
     "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name"
@@ -100,6 +111,27 @@ export async function getOrSetCart(countryCode: string) {
   }
 
   return cart
+}
+
+export async function retrieveCartVariants(cart: HttpTypes.StoreCart | null) {
+  const ids = Array.from(new Set(cart?.items?.map((item) => item.product_id).filter((id): id is string => !!id) ?? []))
+  const variantIds = new Set(cart?.items?.map((item) => item.variant_id))
+  const variants: Record<string, HttpTypes.StoreProductVariant> = {}
+  if (!ids.length || !cart?.region_id) return variants
+
+  // The region is already known. Keep stock live and request only the fields
+  // needed by the cart, without loading prices or the product's other relations.
+  const { products } = await sdk.store.product.list({
+    id: ids,
+    region_id: cart.region_id,
+    limit: ids.length,
+    fields: "id,variants.id,variants.manage_inventory,variants.allow_backorder,variants.metadata,*variants.options,+variants.inventory_quantity",
+  }, { ...(await getAuthHeaders()), "cache-control": "no-cache" }).catch(() => ({ products: [] }))
+
+  products.forEach((product) => product.variants?.forEach((variant) => {
+    if (variantIds.has(variant.id)) variants[variant.id] = variant
+  }))
+  return variants
 }
 
 export async function updateCart(data: HttpTypes.StoreUpdateCart) {
@@ -209,7 +241,7 @@ export async function updateLineItem({
   }
 
   await sdk.store.cart
-    .updateLineItem(cartId, lineId, { quantity }, {}, headers)
+    .updateLineItem(cartId, lineId, { quantity }, { fields: "id" }, headers)
     .then(async () => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
@@ -236,7 +268,7 @@ export async function deleteLineItem(lineId: string) {
   }
 
   await sdk.store.cart
-    .deleteLineItem(cartId, lineId, {}, headers)
+    .deleteLineItem(cartId, lineId, { fields: "id" }, headers)
     .then(async () => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)

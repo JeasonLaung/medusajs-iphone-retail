@@ -1,0 +1,66 @@
+name: Dev checks
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dev-checks-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  NEXT_TELEMETRY_DISABLED: 1
+  MEDUSA_DISABLE_TELEMETRY: true
+
+jobs:
+  checks:
+    name: ${{ matrix.check }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - check: Backend lint
+            directory: medusa-store/apps/backend
+            command: pnpm run lint
+          - check: Backend unit tests
+            directory: medusa-store/apps/backend
+            command: pnpm run test:unit
+          - check: Storefront lint
+            directory: medusa-store/apps/storefront
+            command: pnpm run lint
+          - check: Storefront regression tests
+            directory: medusa-store/apps/storefront
+            # Browser tests opt in via PLAYWRIGHT_MODULE_PATH and are skipped here.
+            command: node --test tests/*.test.cjs
+          - check: Development tooling tests
+            directory: .
+            command: node --test scripts/*.test.cjs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: medusa-store/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.0'
+          cache: pnpm
+          cache-dependency-path: medusa-store/pnpm-lock.yaml
+      - name: Install locked workspace dependencies
+        working-directory: medusa-store
+        run: pnpm install --frozen-lockfile
+      # These checks do not start the apps, run migrations or access production.
+      # Database-dependent integration/numbering tests need a separate isolated DB.
+      - name: Run check
+        working-directory: ${{ matrix.directory }}
+        run: ${{ matrix.command }}

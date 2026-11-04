@@ -12,6 +12,7 @@ import {
   Input,
   Label,
   Popover,
+  Select,
   Text,
   toast,
 } from "@medusajs/ui"
@@ -22,7 +23,7 @@ import { mailGet, mailKey, type Account } from "../../../lib/mail"
 import { MailEmpty, useMailAction } from "../../../components/mail-shared"
 import "../../mail/mail.css"
 
-function WebhookAddress({ url }: { url?: string }) {
+function WebhookAddress({ url, label = "webhookUrl" }: { url?: string; label?: string }) {
   const { t } = useTranslation()
   const isPublicHttps = (() => {
     try {
@@ -38,7 +39,7 @@ function WebhookAddress({ url }: { url?: string }) {
   return (
     <div className="flex flex-col gap-2 rounded bg-ui-bg-subtle px-3 py-3">
       <Text size="small" weight="plus">
-        {t("mail.webhookUrl")}
+        {t(`mail.${label}`)}
       </Text>
       {url ? (
         <>
@@ -90,6 +91,14 @@ function AccountForm({
     email: account?.email || "",
     reply_to: account?.reply_to || "",
     enabled: account?.enabled ?? true,
+    provider: account?.provider || "resend",
+    api_url: account?.api_url || "http://quguo-mail.test.jobs123.cn",
+    relayme_key_id: account?.relayme_key_id || "",
+    imap_host: account?.imap_host || "",
+    imap_port: account?.imap_port || 993,
+    imap_username: account?.imap_username || "",
+    imap_password: "",
+    imap_tls: account?.imap_tls || "tls",
     api_key: "",
     webhook_secret: "",
   })
@@ -100,6 +109,7 @@ function AccountForm({
         action: "save_account",
         id: account?.id,
         ...form,
+        api_url: form.provider === "relayme" ? form.api_url : account?.api_url || "",
       })
       toast.success(t("mail.saved"))
       onClose()
@@ -111,13 +121,23 @@ function AccountForm({
       className="flex flex-col gap-4 px-6 py-6"
       onSubmit={(event) => void save(event)}
     >
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="mail-provider">{t("mail.provider")}</Label>
+        <Select value={form.provider} disabled={!!account || action.isPending} onValueChange={(value) => setForm({ ...form, provider: value as "resend" | "relayme" })}>
+          <Select.Trigger id="mail-provider"><Select.Value /></Select.Trigger>
+          <Select.Content>
+            <Select.Item value="resend">Resend</Select.Item>
+            <Select.Item value="relayme">Relayme</Select.Item>
+          </Select.Content>
+        </Select>
+      </div>
       {(
-        ["name", "email", "reply_to", "api_key", "webhook_secret"] as const
+        ["name", "email", "reply_to", ...(form.provider === "relayme" ? ["api_url", "relayme_key_id"] as const : ["api_key"] as const), "webhook_secret"] as const
       ).map((key) => (
         <div key={key} className="flex flex-col gap-2">
           <Label htmlFor={`mail-account-${key}`}>
             {t(
-              `mail.${({ reply_to: "replyTo", api_key: "apiKey", webhook_secret: "webhookSecret" } as Record<string, string>)[key] || key}`
+              `mail.${({ reply_to: "replyTo", api_key: "apiKey", api_url: "relaymeApiUrl", relayme_key_id: "relaymeKeyId", webhook_secret: form.provider === "relayme" ? "relaymeSecret" : "webhookSecret" } as Record<string, string>)[key] || key}`
             )}
           </Label>
           <Input
@@ -133,6 +153,8 @@ function AccountForm({
             required={
               key === "name" ||
               key === "email" ||
+              key === "api_url" || key === "relayme_key_id" ||
+              (key === "webhook_secret" && form.provider === "relayme" && !account?.has_webhook_secret) ||
               (key === "api_key" && !account?.has_api_key)
             }
             value={form[key]}
@@ -151,6 +173,26 @@ function AccountForm({
           )}
         </div>
       ))}
+      {form.provider === "relayme" && (
+        <div className="flex flex-col gap-4 rounded bg-ui-bg-subtle p-4">
+          <Text size="small" className="text-ui-fg-subtle">{t("mail.imapHint")}</Text>
+          {(["imap_host", "imap_port", "imap_username", "imap_password"] as const).map((key) => (
+            <div key={key} className="flex flex-col gap-2">
+              <Label htmlFor={`mail-account-${key}`}>{t(`mail.${key}`)}</Label>
+              <Input id={`mail-account-${key}`} type={key === "imap_password" ? "password" : key === "imap_port" ? "number" : "text"}
+                min={key === "imap_port" ? 1 : undefined} max={key === "imap_port" ? 65535 : undefined}
+                value={form[key]} disabled={action.isPending} autoComplete="off"
+                onChange={(e) => setForm({ ...form, [key]: key === "imap_port" ? Number(e.target.value) : e.target.value })} />
+              {key === "imap_password" && account?.has_imap_password && <Text size="xsmall" className="text-ui-fg-muted">{t("mail.configured")}</Text>}
+            </div>
+          ))}
+          <Label htmlFor="mail-imap-tls">{t("mail.imapTls")}</Label>
+          <Select value={form.imap_tls} disabled={action.isPending} onValueChange={(value) => setForm({ ...form, imap_tls: value as "tls" | "starttls" })}>
+            <Select.Trigger id="mail-imap-tls"><Select.Value /></Select.Trigger>
+            <Select.Content><Select.Item value="tls">TLS</Select.Item><Select.Item value="starttls">STARTTLS</Select.Item></Select.Content>
+          </Select>
+        </div>
+      )}
       <Text size="small" className="text-ui-fg-subtle">
         {t("mail.secretHint")}
       </Text>
@@ -166,8 +208,9 @@ function AccountForm({
       </Label>
       <div className="flex flex-col gap-3 border-t pt-4">
         <WebhookAddress url={account?.webhook_url} />
+        {form.provider === "relayme" && <WebhookAddress url={account?.delivery_webhook_url} label="deliveryWebhookUrl" />}
         <Text size="small" className="text-ui-fg-subtle">
-          {t("mail.webhookSetupSteps")}
+          {t(form.provider === "relayme" ? "mail.relaymeSetupSteps" : "mail.webhookSetupSteps")}
         </Text>
       </div>
     </form>
@@ -317,6 +360,7 @@ const MailboxSettings = () => {
         <div className="mail-card-grid">
           {data.accounts.map((account) => (
             <div className="mail-card" key={account.id}>
+              <Text size="xsmall" className="text-ui-fg-subtle">{account.provider === "relayme" ? "Relayme" : "Resend"}</Text>
               <div className="flex items-center justify-between gap-2">
                 <Text weight="plus">{account.name}</Text>
                 <Badge
@@ -329,7 +373,7 @@ const MailboxSettings = () => {
               <Text size="small">{account.email}</Text>
               <div className="flex flex-wrap gap-2">
                 <Text size="xsmall" className="text-ui-fg-muted">
-                  {t("mail.apiKey")}:{" "}
+                  {account.provider === "relayme" ? "Relayme API Key" : t("mail.apiKey")}:{" "}
                   {t(
                     account.has_api_key
                       ? "mail.configured"
@@ -337,7 +381,7 @@ const MailboxSettings = () => {
                   )}
                 </Text>
                 <Text size="xsmall" className="text-ui-fg-muted">
-                  {t("mail.webhookSecret")}:{" "}
+                  {t(account.provider === "relayme" ? "mail.relaymeSecret" : "mail.webhookSecret")}:{" "}
                   {t(
                     account.has_webhook_secret
                       ? "mail.configured"
@@ -346,6 +390,7 @@ const MailboxSettings = () => {
                 </Text>
               </div>
               <WebhookAddress url={account.webhook_url} />
+              {account.provider === "relayme" && <WebhookAddress url={account.delivery_webhook_url} label="deliveryWebhookUrl" />}
               <div className="flex flex-wrap gap-2">
                 <Button
                   size="small"

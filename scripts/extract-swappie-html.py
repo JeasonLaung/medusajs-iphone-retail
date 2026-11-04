@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "imports" / "swappie-iphone-catalog.json"
-IMAGE_DIR = ROOT / "medusa-store" / "apps" / "storefront" / "public" / "swappie"
+IMAGE_DIR = ROOT / "medusa-store" / "apps" / "storefront" / "public" / "product-images"
 SOURCE_URL = "https://swappie.com/en/iphone/"
 RELEASE_YEAR_REFERENCE = "https://support.apple.com/en-us/108044"
 # Swappie's releaseYear values are internal IDs, not calendar years. The
@@ -130,7 +130,7 @@ def main() -> None:
         high_resolution_url = re.sub(
             r"width=240,height=240", "width=600,height=600", original_image_url
         )
-        filename = Path(item["img"]).name
+        filename = Path(item["img"]).name.removeprefix("swappie-")
         target = IMAGE_DIR / filename
         if target.exists():
             image_bytes = target.read_bytes()
@@ -161,7 +161,7 @@ def main() -> None:
                 "release_year": RELEASE_YEAR_BY_CODE[release_year_code],
                 "source_url": urljoin(SOURCE_URL, item["url"]),
                 "source_image_url": original_image_url,
-                "local_image_url": f"http://127.0.0.1:8000/swappie/{filename}",
+                "local_image_url": f"http://127.0.0.1:8000/product-images/{filename}",
                 "image_sha256": hashlib.sha256(image_bytes).hexdigest(),
             }
         )

@@ -80,11 +80,11 @@ macOS/Linux：先用 `bash sh/start.sh` 启动开发服务，再运行 `bash frp
 
 双击 `start.bat` 会在前后台就绪后自动启动 frpc；已有服务运行时，可单独双击 `start-frp.bat`。首次启动会通过 `scripts/install-frp.ps1` 下载官方 Windows amd64 frp 0.71.0，并核对官方 SHA256。日志为 `logs/frpc.out.log` 和 `logs/frpc.err.log`，进程号为 `logs/frpc.pid`。修改配置后先运行 `scripts/stop-frp.ps1`，再启动。
 
-公网前台入口为 `https://frp.xeappliance.com/`，后台为 `https://frp.xeappliance.com/app`。本地网关将 `/app`、`/admin`、`/auth`、`/store`、`/health`、`/static`、`/uploads`、`/mobile-intake` 路径转发到后台 `9001`，其余路径转发到前台 `8000`。手机入库链接可从 `https://frp.xeappliance.com/app/device-scan/intake` 创建，后端地址使用 `https://frp.xeappliance.com`。网关仅监听本机，进程号记录在 `logs/frp-gateway.pid`；停止 frp 的脚本也会停止网关。浏览器无需指定端口。不再使用 18000/19001 代理端口。
+公网 `https://frp.xeappliance.com` 仅提供后端接口及外部回调：`/admin`、`/auth`、`/store`、`/health`、`/mobile-intake`、`/hooks`、`/api`、`/mail` 转发到后台 `9001`。其他路径返回 404，不提供商城、Admin、手机入库页面、静态资源或开发热更新连接。网关仅监听本机 `127.0.0.1:18080`，进程号记录在 `logs/frp-gateway.pid`；停止 frp 的脚本也会停止网关。
 
-证书和 Cloudflare 回源方式由服务器现有入口负责。前台 `.env.local` 中 `NEXT_PUBLIC_BASE_URL=https://frp.xeappliance.com`、`NEXT_PUBLIC_FRP_DOMAIN=frp.xeappliance.com`；浏览器访问该域名时 API 使用同源地址，服务端请求仍使用本机后台。网关保留公网转发头，并对后台同源 Origin 和 Host 做本机转换。
+本地商城使用 `http://localhost:8000`，Admin 使用 `http://localhost:9001/app`，页面和接口均直接走本地。前台 `.env.local` 中 `NEXT_PUBLIC_BASE_URL=http://localhost:8000`、`NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://127.0.0.1:9001`；后台 `STOREFRONT_URL=http://localhost:8000`、`WEBHOOK_ADMIN_URL=http://localhost:9001/app`。外部支付回调继续使用 `MOLLIE_WEBHOOK_BASE_URL=https://frp.xeappliance.com`。手机入库页面需通过本地网络或专用本地 HTTPS 入口访问。证书和 Cloudflare 回源方式由服务器现有入口负责；网关保留公网转发头，并对后台同源 Origin 和 Host 做本机转换。
 
-已验证 frpc 认证与代理注册成功，HTTPS 根路径跳转到 `/dk`，前台 `/dk/store`、后台 `/app` 和 `/health` 曾返回 200，前台浏览器无 localhost 请求。本地网关和后台静态资源均正常，但公网加载时出现间歇性 502 与 frpc session shutdown/写入超时，后台登录表单尚未通过浏览器验证。已启用代理压缩与 10 秒心跳，客户端会自动重连；服务器配置保持原样。
+FRP 已启用代理压缩与 10 秒心跳，客户端会自动重连；公网链路仍可能出现间歇性超时。服务器配置保持原样。
 
 配置格式与校验命令见 [frp 官方文档](https://gofrp.org/zh-cn/docs/features/common/configure/)。
 

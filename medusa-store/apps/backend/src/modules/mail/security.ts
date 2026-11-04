@@ -41,13 +41,14 @@ export function decryptSecret(value: string) {
 }
 
 export function publicAccount<
-  T extends { api_key: string; webhook_secret: string },
+  T extends { api_key: string; webhook_secret: string; imap_password?: string },
 >(account: T) {
-  const { api_key, webhook_secret, ...safe } = account
+  const { api_key, webhook_secret, imap_password, ...safe } = account
   return {
     ...safe,
     has_api_key: !!api_key,
     has_webhook_secret: !!webhook_secret,
+    ...(imap_password !== undefined ? { has_imap_password: !!imap_password } : {}),
   }
 }
 

@@ -11,6 +11,7 @@ import {
 } from "@medusajs/framework/http"
 import { CustomerServiceBody } from "./admin/customer-service/validators"
 import { BuyPoliciesBody } from "../lib/buy-policies"
+import { TrustpilotBody } from "../lib/trustpilot"
 import { CreateBuyback, BuybackAdminCommand, BuybackCustomerCommand, BuybackPhotoUpload, BuybackReferencePrice } from "./buyback-validators"
 import { BuybackCatalogCommand, BuybackEstimateBody } from "./buyback-pricing-validators"
 import { SeoCommandBody } from "./seo-validators"
@@ -69,6 +70,8 @@ export default defineMiddlewares({
     { matcher: "/admin/customer-service", method: "POST", middlewares: [validateAndTransformBody(CustomerServiceBody)] },
     { matcher: "/admin/buy-policies", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
     { matcher: "/admin/buy-policies", method: "POST", middlewares: [validateAndTransformBody(BuyPoliciesBody)] },
+    { matcher: "/admin/trustpilot", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
+    { matcher: "/admin/trustpilot", method: "POST", middlewares: [validateAndTransformBody(TrustpilotBody)] },
     { matcher: "/admin/warehouse-access", method: "POST", middlewares: [validateAndTransformBody(WarehouseBindingBody)] },
     ...["/admin/devices/photos", "/mobile-intake/photos"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: { sizeLimit: "34mb" }, middlewares: [validateAndTransformBody(DevicePhotoUpload)] })),
     { matcher: "/admin/devices/mobile-intake", method: "POST", middlewares: [validateAndTransformBody(CreateMobileIntake)] },
@@ -82,6 +85,7 @@ export default defineMiddlewares({
     { matcher: "/admin/mail", method: "GET", middlewares: [validateAndTransformQuery(MailListQuery, {})] },
     { matcher: "/admin/mail/commands", method: "POST", bodyParser: { sizeLimit: "16mb" }, middlewares: [validateAndTransformBody(MailCommand)] },
     { matcher: "/mail/webhooks/:account_id", method: "POST", bodyParser: { preserveRawBody: true, sizeLimit: "1mb" }, middlewares: [] },
+    ...["/api/callback/quguo_mail", "/api/callback/quguo_notify"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: false as const, middlewares: [] })),
     {
       matcher: "/admin/*",
       middlewares: [

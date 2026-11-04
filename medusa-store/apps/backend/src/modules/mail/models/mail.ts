@@ -8,6 +8,14 @@ export const MailAccount = model
     email: model.text(),
     reply_to: model.text().default(""),
     enabled: model.boolean().default(true),
+    provider: model.enum(["resend", "relayme"]).default("resend"),
+    api_url: model.text().default(""),
+    relayme_key_id: model.text().default(""),
+    imap_host: model.text().default(""),
+    imap_port: model.number().default(993),
+    imap_username: model.text().default(""),
+    imap_password: model.text().default(""),
+    imap_tls: model.enum(["tls", "starttls"]).default("tls"),
     api_key: model.text().default(""),
     webhook_secret: model.text().default(""),
   })
@@ -55,6 +63,7 @@ export const MailContact = model
     id: model.id({ prefix: "mcon" }).primaryKey(),
     email: model.text(),
     name: model.text().default(""),
+    notes: model.text().default(""),
     subscribed: model.boolean().default(false),
     consent_source: model.text().default(""),
     consent_at: model.dateTime().nullable(),
@@ -110,6 +119,7 @@ export const MailEvent = model
     type: model.text(),
     provider_id: model.text(),
     occurred_at: model.dateTime(),
+    data: model.json().default({}),
   })
   .indexes([{ on: ["event_id"], unique: true }])
 

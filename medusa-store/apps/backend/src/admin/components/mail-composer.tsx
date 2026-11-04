@@ -1,13 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import {
-  Button,
-  FocusModal,
-  Input,
-  Label,
-  Text,
-  Textarea,
-  toast,
-} from "@medusajs/ui"
+import { Button, FocusModal, Input, Label, Text, toast } from "@medusajs/ui"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import {
@@ -16,12 +8,13 @@ import {
   mailGet,
   mailKey,
   recipientList,
-  emailDocument,
   type Account,
   type Attachment,
   type Message,
   type Template,
 } from "../lib/mail"
+
+import MailBodyEditor from "./mail-body-editor"
 
 type Props = {
   accounts: Account[]
@@ -114,7 +107,6 @@ export default function MailComposer({
           in_reply_to: replying ? message?.message_id || null : null,
         }
   const [draft, setDraft] = useState(initialDraft)
-  const [tab, setTab] = useState(initialDraft.html_body ? "html" : "text")
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [saveState, setSaveState] = useState("")
@@ -370,7 +362,6 @@ export default function MailComposer({
                       text_body: template.text_body,
                       html_body: template.html_body,
                     }))
-                    setTab(template.html_body ? "html" : "text")
                   }
                 }}
               >
@@ -398,43 +389,14 @@ export default function MailComposer({
                 />
               </div>
             ))}
-            <div className="flex gap-2">
-              {["text", "html", "preview"].map((value) => (
-                <Button
-                  type="button"
-                  size="small"
-                  variant={tab === value ? "primary" : "secondary"}
-                  key={value}
-                  onClick={() => setTab(value)}
-                >
-                  {t(`mail.${value}`)}
-                </Button>
-              ))}
-            </div>
-            {tab === "preview" ? (
-              <iframe
-                className="min-h-80 w-full rounded border"
-                sandbox=""
-                title={t("mail.preview")}
-                srcDoc={emailDocument(
-                  draft.html_body ||
-                    `<pre>${draft.text_body.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre>`
-                )}
-              />
-            ) : (
-              <Textarea
-                className="min-h-80"
-                aria-label={t(tab === "html" ? "mail.html" : "mail.body")}
-                value={tab === "html" ? draft.html_body : draft.text_body}
-                disabled={busy}
-                onChange={(e) =>
-                  update(
-                    tab === "html" ? "html_body" : "text_body",
-                    e.target.value
-                  )
-                }
-              />
-            )}
+            <MailBodyEditor
+              text_body={draft.text_body}
+              html_body={draft.html_body}
+              disabled={busy}
+              onChange={(body) =>
+                setDraft((previous) => ({ ...previous, ...body }))
+              }
+            />
             <Text size="small" className="text-ui-fg-muted">
               {t("mail.attachmentLimit")}
             </Text>

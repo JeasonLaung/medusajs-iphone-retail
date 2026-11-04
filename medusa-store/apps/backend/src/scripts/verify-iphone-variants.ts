@@ -11,7 +11,7 @@ export default async function verifyIphoneVariants({ container }: ExecArgs) {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
   const { data: products } = await query.graph({
     entity: "product",
-    filters: { handle: catalogue.products.map((product) => `swappie-${product.slug}`) },
+    filters: { handle: catalogue.products.map((product) => product.slug) },
     fields: ["id", "handle", "options.title", "options.values.value", "variants.id", "variants.sku", "variants.metadata", "variants.manage_inventory", "variants.allow_backorder", "variants.options.value", "variants.options.option.title", "variants.inventory_items.inventory_item_id", "variants.inventory_items.inventory.location_levels.stocked_quantity", "variants.inventory_items.inventory.location_levels.reserved_quantity"],
     pagination: { take: catalogue.products.length },
   })
@@ -19,7 +19,7 @@ export default async function verifyIphoneVariants({ container }: ExecArgs) {
   let combinations = 0
   let stocked = 0
   for (const item of catalogue.products) {
-    const product = products.find((product) => product.handle === `swappie-${item.slug}`)!
+    const product = products.find((product) => product.handle === item.slug)!
     assert(product.variants?.some((variant) => variant?.metadata?.source_sku === item.sku), `Original source SKU missing: ${item.sku}`)
     for (const variant of product.variants ?? []) {
       assert.match(variant!.sku!, /^ERP[0-9]+$/)

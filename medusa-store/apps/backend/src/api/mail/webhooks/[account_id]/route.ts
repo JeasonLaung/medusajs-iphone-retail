@@ -11,7 +11,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     { id: req.params.account_id },
     { take: 1 }
   )
-  if (!account?.webhook_secret) return res.sendStatus(401)
+  if (!account?.webhook_secret || account.provider === "relayme") return res.sendStatus(401)
   let event: WebhookEventPayload
   const eventId = req.get("svix-id") || ""
   try {

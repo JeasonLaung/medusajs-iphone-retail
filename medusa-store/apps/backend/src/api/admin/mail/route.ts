@@ -37,6 +37,10 @@ export async function GET(
       accounts: accounts.map((account) => ({
         ...publicAccount(account),
         webhook_url: `${base}/mail/webhooks/${account.id}`,
+        ...(account.provider === "relayme" ? {
+          webhook_url: `${base}/api/callback/quguo_mail`,
+          delivery_webhook_url: `${base}/api/callback/quguo_notify`,
+        } : {}),
       })),
     })
   }
@@ -108,7 +112,7 @@ export async function GET(
     const [contacts, count] = await service.listAndCountMailContacts(
       search
         ? ({
-            $or: [{ email: search }, { name: search }],
+            $or: [{ email: search }, { name: search }, { notes: search }],
           } as FilterQuery<unknown>)
         : {},
       config
@@ -135,6 +139,7 @@ export async function GET(
           "queued",
           "sending",
           "sent",
+          "delivery_delayed",
           "delivered",
           "failed",
           "bounced",

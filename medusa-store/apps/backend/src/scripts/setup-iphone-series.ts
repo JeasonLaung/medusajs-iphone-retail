@@ -29,7 +29,7 @@ export default async function setupIphoneSeries({ container }: Pick<ExecArgs, "c
   const { data: products } = await query.graph({
     entity: "product",
     fields: ["id", "handle", "description", "categories.id"],
-    filters: { handle: manifest.products.map((item) => `swappie-${item.slug}`) },
+    filters: { handle: manifest.products.map((item) => item.slug) },
   })
   const groups = new Map<string, { name: string; productIds: string[] }>()
   // Validate the complete mapping before changing any data.
@@ -38,7 +38,7 @@ export default async function setupIphoneSeries({ container }: Pick<ExecArgs, "c
     if (!match) throw new Error(`Unrecognized iPhone family: ${item.model}`)
     const family = match[1]
     const handle = `iphone-${family.toLowerCase()}-series`
-    const product = products.find((entry) => entry.handle === `swappie-${item.slug}`)
+    const product = products.find((entry) => entry.handle === item.slug)
     if (!product) throw new Error(`Missing catalog product: ${item.model}`)
     const existing = categories.find((category) => category.handle === handle)
     if (existing && existing.parent_category_id !== parent.id) {

@@ -5,11 +5,13 @@ import MailModuleService from "../../modules/mail/service"
 import { MAIL_MODULE } from "../../modules/mail"
 import {
   encryptSecret,
+  decryptSecret,
   publicAccount,
   publicMailUrl,
 } from "../../modules/mail/security"
 import type { MailCommandBody } from "../../api/admin/mail/validators"
 import { jsonArray } from "../../modules/mail/types"
+import { relaymeOrigin } from "../../modules/mail/relayme"
 
 const fail = (code: string): never => {
   throw new MedusaError(MedusaError.Types.INVALID_DATA, `mail.${code}`)
@@ -27,7 +29,17 @@ export const mailCommandStep = createStep(
       const previous = input.id
         ? await service.retrieveMailAccount(input.id)
         : null
+      const provider = input.provider || previous?.provider || "resend"
+      if (previous && provider !== previous.provider) fail("providerImmutable")
       const value = {
+        provider,
+        api_url: input.api_url ?? previous?.api_url ?? "",
+        relayme_key_id: input.relayme_key_id ?? previous?.relayme_key_id ?? "",
+        imap_host: input.imap_host ?? previous?.imap_host ?? "",
+        imap_port: input.imap_port ?? previous?.imap_port ?? 993,
+        imap_username: input.imap_username ?? previous?.imap_username ?? "",
+        imap_password: input.imap_password ? encryptSecret(input.imap_password) : previous?.imap_password || "",
+        imap_tls: input.imap_tls ?? previous?.imap_tls ?? "tls",
         name: input.name,
         email: input.email,
         reply_to: input.reply_to,
@@ -38,6 +50,20 @@ export const mailCommandStep = createStep(
         webhook_secret: input.webhook_secret
           ? encryptSecret(input.webhook_secret)
           : previous?.webhook_secret || "",
+      }
+      if (provider === "relayme") {
+        try { value.api_url = relaymeOrigin(value.api_url) } catch { fail("relaymeUrlRequired") }
+        if (!value.relayme_key_id || !value.webhook_secret) fail("relaymeKeyRequired")
+        const secret = decryptSecret(value.webhook_secret)
+        const apiKey = `${value.relayme_key_id}.${secret}`
+        if (input.api_key && input.api_key !== apiKey) fail("relaymeKeyMismatch")
+        value.api_key = encryptSecret(apiKey)
+        // Identity/transport changes must not reroute mail already waiting to send.
+        if (previous && (previous.email !== value.email || previous.api_url !== value.api_url || previous.relayme_key_id !== value.relayme_key_id)) {
+          const [, pending] = await service.listAndCountMailMessages({ account_id: previous.id, folder: "outbox", status: ["queued", "sending"] }, { take: 1 })
+          const [, campaigns] = await service.listAndCountMailCampaigns({ account_id: previous.id, status: ["queued", "sending", "paused"] }, { take: 1 })
+          if (pending || campaigns) fail("accountBusy")
+        }
       }
       if (!value.api_key) fail("apiKeyRequired")
       return new StepResponse(
@@ -142,6 +168,8 @@ export const mailCommandStep = createStep(
         } else if (op === "retry") {
           if (message.folder !== "outbox" || message.status !== "failed")
             fail("retryFailedOnly")
+          if (message.error === "relayme_submission_unknown") fail("relaymeSubmissionUnknown")
+          if (message.provider_id && (await service.retrieveMailAccount(message.account_id)).provider === "relayme") fail("relaymeAlreadyAccepted")
           // Resend keeps idempotency keys for 24h. Older ambiguous sends require manual review.
           if (
             message.first_attempt_at &&
@@ -183,6 +211,7 @@ export const mailCommandStep = createStep(
           await service.updateMailContacts({
             id: existing.id,
             name: contact.name,
+            ...(contact.notes !== undefined ? { notes: contact.notes } : {}),
             ...(existing.subscribed ? { subscribed: contact.subscribed } : {}),
           })
         } else {
@@ -273,6 +302,7 @@ export const mailCommandStep = createStep(
           { take: 10_000 }
         )
         for (const delivery of failures) {
+          if (account.provider === "relayme" && (delivery.error === "relayme_submission_unknown" || delivery.provider_id)) continue
           if (
             delivery.first_attempt_at &&
             Date.now() - new Date(delivery.first_attempt_at).getTime() >

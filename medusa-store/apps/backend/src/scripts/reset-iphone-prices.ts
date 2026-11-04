@@ -22,11 +22,11 @@ export default async function resetIphonePrices({ container }: ExecArgs) {
     "variants.options.value", "variants.options.option.title",
     "variants.price_set.prices.*", "variants.price_set.prices.price_rules.*",
   ]
-  const filters = { handle: catalogue.map((item) => `swappie-${item.slug}`) }
+  const filters = { handle: catalogue.map((item) => item.slug) }
   const { data: products } = await query.graph({ entity: "product", fields, filters, pagination: { take: catalogue.length } })
   assert.equal(products.length, catalogue.length, "Missing catalogue products")
   const plans = products.flatMap((product) => {
-    const item = catalogue.find((item) => product.handle === `swappie-${item.slug}`)!
+    const item = catalogue.find((item) => product.handle === item.slug)!
     const minimumStorage = Math.min(...item.available_storages_gb)
     assert(Number.isFinite(item.price_eur) && item.price_eur > 0)
     let configurations = 0

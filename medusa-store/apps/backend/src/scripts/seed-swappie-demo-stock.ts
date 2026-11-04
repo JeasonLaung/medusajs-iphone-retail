@@ -62,7 +62,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
     (variant) =>
       typeof variant.metadata?.source_sku === "string" &&
       expectedSkus.has(variant.metadata.source_sku) &&
-      variant.product?.handle?.startsWith("swappie-")
+      variant.product?.handle?.startsWith("iphone-")
   )
   if (targets.length !== expectedSkus.size) {
     throw new MedusaError(

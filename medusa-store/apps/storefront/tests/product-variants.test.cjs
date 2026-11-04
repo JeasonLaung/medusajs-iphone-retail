@@ -75,8 +75,8 @@ test("stock rules cover managed inventory, backorders and unmanaged inventory", 
   assert.equal(variantInStock(variant("c", [], 0, { manage_inventory: false })), true)
 })
 test("configuration URLs resolve models with multiword names and preserve S85/S100", () => {
-  assert.equal(productHandleFromSlug("iphone-13-128gb-starlight-S85"), "swappie-iphone-13")
-  assert.equal(productHandleFromSlug("iphone-15-pro-max-1024gb-natural-titanium-S100"), "swappie-iphone-15-pro-max")
+  assert.equal(productHandleFromSlug("iphone-13-128gb-starlight-S85"), "iphone-13")
+  assert.equal(productHandleFromSlug("iphone-15-pro-max-1024gb-natural-titanium-S100"), "iphone-15-pro-max")
   assert.equal(productHandleFromSlug("swappie-iphone-13"), "swappie-iphone-13")
   assert.equal(variantSlug({ metadata: { slug: "iphone-13-128gb-starlight-S85" } }), "iphone-13-128gb-starlight-S85")
   assert.equal(variantSlug({ metadata: { slug: "../invalid" } }), null)

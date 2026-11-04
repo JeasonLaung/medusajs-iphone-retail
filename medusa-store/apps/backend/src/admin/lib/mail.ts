@@ -18,6 +18,15 @@ export type Account = {
   email: string
   reply_to: string
   enabled: boolean
+  provider: "resend" | "relayme"
+  api_url: string
+  relayme_key_id: string
+  imap_host: string
+  imap_port: number
+  imap_username: string
+  imap_tls: "tls" | "starttls"
+  has_imap_password: boolean
+  delivery_webhook_url?: string
   has_api_key: boolean
   has_webhook_secret: boolean
   webhook_url?: string
@@ -56,6 +65,7 @@ export type Contact = {
   id: string
   email: string
   name: string
+  notes: string
   subscribed: boolean
   suppressed: boolean
   consent_source: string

@@ -34,7 +34,7 @@ const ProductTemplate = async ({ product, region, countryCode, images, selectedV
       { label: product.title ?? "" },
     ]} />
     <div className={styles.hero} data-testid="product-container">
-      <div className={styles.visual}><ImageGallery images={product.images ?? images} variants={product.variants ?? []} initialVariantId={selectedVariantId} title={product.title ?? ""} />{product.metadata?.source === "swappie-html-snapshot" && <p className={styles.muted + " mt-4 text-center"}>{copy.imageNote}</p>}</div>
+      <div className={styles.visual}><ImageGallery images={product.images ?? images} variants={product.variants ?? []} initialVariantId={selectedVariantId} title={product.title ?? ""} />{product.metadata?.source === "iphone-catalog-snapshot" && <p className={styles.muted + " mt-4 text-center"}>{copy.imageNote}</p>}</div>
       <section aria-labelledby="product-title" id="product-info">
         <ProductActions product={product} region={region} initialVariantId={selectedVariantId} cartQuantities={cartVariantQuantities(cart?.items ?? [])} />
       </section>

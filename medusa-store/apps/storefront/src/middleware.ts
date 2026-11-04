@@ -102,6 +102,17 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  // Keep saved product and image links valid after catalog URL normalization.
+  const legacyProduct = request.nextUrl.pathname.match(/^(\/[^/]+\/products\/)swappie-(iphone-[a-z0-9-]+)\/?$/i)
+  const legacyImage = request.nextUrl.pathname.match(/^\/swappie\/(?:swappie-)?([^/]+)$/i)
+  if (legacyProduct || legacyImage) {
+    const target = request.nextUrl.clone()
+    target.pathname = legacyProduct
+      ? `${legacyProduct[1]}${legacyProduct[2]}`
+      : `/product-images/${legacyImage![1]}`
+    return NextResponse.redirect(target, 308)
+  }
+
   const verification = request.nextUrl.pathname.match(/^\/([A-Za-z0-9-]{8,128})\.txt$/)
   if (verification) {
     const target = request.nextUrl.clone()

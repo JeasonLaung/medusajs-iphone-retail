@@ -43,7 +43,7 @@ export function preferredOptionVariant(product: HttpTypes.StoreProduct, selected
 
 export function productHandleFromSlug(slug: string) {
   const match = slug.match(/^(iphone-.+?)-\d+(?:gb|tb)-[a-z0-9-]+-[sa](?:85|100)$/i)
-  return match ? `swappie-${match[1].toLowerCase()}` : slug
+  return match ? match[1].toLowerCase() : slug
 }
 
 export function variantSlug(variant?: HttpTypes.StoreProductVariant) {

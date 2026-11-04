@@ -75,9 +75,9 @@ else
   done
 fi
 
-echo "FRP gateway: 127.0.0.1:18080 -> backend 9001 / storefront 8000"
-echo "Store: https://frp.xeappliance.com/"
-echo "Admin: https://frp.xeappliance.com/app"
+echo "FRP gateway: 127.0.0.1:18080 -> backend APIs 9001 only"
+echo "Store (local): http://localhost:8000/"
+echo "Admin (local): http://localhost:9001/app"
 "${FRPC_BIN}" -c "${FRPC_CONFIG}" &
 FRPC_PID=$!
 echo "${FRPC_PID}" >"${LOG_DIR}/frpc.pid"

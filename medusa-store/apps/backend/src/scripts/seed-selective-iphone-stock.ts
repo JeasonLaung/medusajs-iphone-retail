@@ -45,7 +45,7 @@ export default async function seedSelectiveIphoneStock({ container }: ExecArgs) 
   })
   const { data: variants } = await query.graph({
     entity: "product_variant",
-    filters: { product: { handle: catalogue.map((item) => `swappie-${item.slug}`) } },
+    filters: { product: { handle: catalogue.map((item) => item.slug) } },
     fields: ["id", "sku", "metadata", "price_set.prices.currency_code", "price_set.prices.amount", "inventory_items.inventory_item_id", "inventory_items.inventory.location_levels.id", "inventory_items.inventory.location_levels.location_id", "inventory_items.inventory.location_levels.stocked_quantity"],
     pagination: { take: 10000 },
   })

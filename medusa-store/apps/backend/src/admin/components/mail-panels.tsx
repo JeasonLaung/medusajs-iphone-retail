@@ -16,7 +16,6 @@ import { useTranslation } from "react-i18next"
 import {
   mailGet,
   mailKey,
-  emailDocument,
   type Account,
   type Campaign,
   type Contact,
@@ -31,6 +30,10 @@ import {
   useMailAction,
 } from "./mail-shared"
 
+import { contactCsvTemplate, parseContactCsv } from "../lib/contact-import"
+
+import MailBodyEditor from "./mail-body-editor"
+
 export function MailContacts({
   selected,
   setSelected,
@@ -43,6 +46,12 @@ export function MailContacts({
   const [offset, setOffset] = useState(0)
   const [open, setOpen] = useState(false)
   const [csv, setCsv] = useState("")
+  const [mode, setMode] = useState<"add" | "import">("add")
+  const [contactForm, setContactForm] = useState({
+    email: "",
+    name: "",
+    notes: "",
+  })
   const [consent, setConsent] = useState(false)
   const [source, setSource] = useState("")
   const action = useMailAction()
@@ -62,49 +71,37 @@ export function MailContacts({
         : [...selected, id]
     )
   async function importContacts() {
-    // CSV supports quoted names and escaped quotes without treating commas in names as delimiters.
-    const lines = csv
-      .replace(/^\uFEFF/, "")
-      .split(/\r?\n/)
-      .filter((line) => line.trim())
-    const rows = lines
-      .map((line) => {
-        const cells: string[] = []
-        let value = ""
-        let quoted = false
-        for (let i = 0; i < line.length; i++) {
-          if (line[i] === '"') {
-            if (quoted && line[i + 1] === '"') {
-              value += '"'
-              i++
-            } else quoted = !quoted
-          } else if (line[i] === "," && !quoted) {
-            cells.push(value.trim())
-            value = ""
-          } else value += line[i]
-        }
-        cells.push(value.trim())
-        return cells
-      })
-      .filter((row, i) => !(i === 0 && row[0]?.toLowerCase() === "email"))
-    if (
-      !rows.length ||
-      rows.length > 1000 ||
-      rows.some((row) => !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(row[0]))
-    )
+    let rows: { email: string; name: string; notes?: string }[]
+    try {
+      rows =
+        mode === "import"
+          ? parseContactCsv(csv)
+          : [
+              {
+                email: contactForm.email.trim(),
+                name: contactForm.name.trim(),
+                notes: contactForm.notes.trim(),
+              },
+            ]
+      if (
+        rows.some((row) => !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(row.email))
+      )
+        throw new Error("invalidCsv")
+    } catch {
       return toast.error(t("mail.invalidCsv"))
+    }
     try {
       await action.mutateAsync({
         action: "contacts",
-        contacts: rows.map(([email, name]) => ({
-          email,
-          name: name || "",
+        contacts: rows.map((contact) => ({
+          ...contact,
           subscribed: consent,
           consent_source: source,
         })),
       })
       setOpen(false)
       setCsv("")
+      setContactForm({ email: "", name: "", notes: "" })
       setConsent(false)
       setSource("")
       toast.success(t("mail.saved"))
@@ -118,8 +115,8 @@ export function MailContacts({
         <Input
           className="max-w-xs"
           value={search}
-          aria-label={t("mail.search")}
-          placeholder={t("mail.search")}
+          aria-label={t("mail.contactSearch")}
+          placeholder={t("mail.contactSearch")}
           onChange={(e) => {
             setSearch(e.target.value)
             setOffset(0)
@@ -129,7 +126,11 @@ export function MailContacts({
         <Text size="small">
           {t("mail.selected", { count: selected.length })}
         </Text>
-        <Button size="small" onClick={() => setOpen(true)}>
+        <Button
+          size="small"
+          className="mail-contact-primary"
+          onClick={() => setOpen(true)}
+        >
           {t("mail.newContact")}
         </Button>
       </div>
@@ -170,6 +171,7 @@ export function MailContacts({
                 </th>
                 <th>{t("mail.name")}</th>
                 <th>{t("mail.email")}</th>
+                <th>{t("mail.notes")}</th>
                 <th>{t("mail.status")}</th>
                 <th>{t("mail.consentSource")}</th>
                 <th />
@@ -187,6 +189,9 @@ export function MailContacts({
                   </td>
                   <td>{contact.name}</td>
                   <td>{contact.email}</td>
+                  <td className="max-w-xs whitespace-pre-wrap break-words">
+                    {contact.notes}
+                  </td>
                   <td>
                     <Badge
                       size="2xsmall"
@@ -237,43 +242,126 @@ export function MailContacts({
           if (!action.isPending) setOpen(value)
         }}
       >
-        <FocusModal.Content>
+        <FocusModal.Content className="mail-contact-modal">
           <FocusModal.Header>
             <Button
               size="small"
               isLoading={action.isPending}
-              disabled={!csv.trim() || (consent && !source.trim())}
+              className="mail-contact-primary"
+              disabled={
+                (mode === "import" ? !csv.trim() : !contactForm.email.trim()) ||
+                (consent && !source.trim())
+              }
               onClick={() => void importContacts()}
             >
-              {t("mail.import")}
+              {t(mode === "import" ? "mail.import" : "mail.save")}
             </Button>
           </FocusModal.Header>
           <FocusModal.Body>
             <div className="mx-auto flex max-w-xl flex-col gap-4 px-6 py-8">
               <Text weight="plus">{t("mail.newContact")}</Text>
-              <Text size="small" className="text-ui-fg-subtle">
-                {t("mail.contactImport")}
-              </Text>
-              <Input
-                type="file"
-                accept=".csv,text/csv"
-                aria-label={t("mail.importFile")}
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file && file.size <= 1_000_000)
-                    void file.text().then(setCsv)
-                  e.target.value = ""
-                }}
-              />
-              <Textarea
-                className="min-h-64"
-                value={csv}
-                aria-label={t("mail.contactImport")}
-                onChange={(e) => setCsv(e.target.value)}
-              />
+              <div
+                className="flex gap-2"
+                role="group"
+                aria-label={t("mail.newContact")}
+              >
+                {(["add", "import"] as const).map((value) => (
+                  <Button
+                    key={value}
+                    size="small"
+                    variant={mode === value ? "primary" : "secondary"}
+                    className={mode === value ? "mail-contact-primary" : ""}
+                    aria-pressed={mode === value}
+                    disabled={action.isPending}
+                    onClick={() => setMode(value)}
+                  >
+                    {t(value === "add" ? "mail.addContact" : "mail.import")}
+                  </Button>
+                ))}
+              </div>
+              {mode === "add" ? (
+                <>
+                  <Label htmlFor="mail-contact-email">{t("mail.email")}</Label>
+                  <Input
+                    id="mail-contact-email"
+                    type="email"
+                    value={contactForm.email}
+                    disabled={action.isPending}
+                    onChange={(e) =>
+                      setContactForm({ ...contactForm, email: e.target.value })
+                    }
+                  />
+                  <Label htmlFor="mail-contact-name">{t("mail.name")}</Label>
+                  <Input
+                    id="mail-contact-name"
+                    maxLength={255}
+                    value={contactForm.name}
+                    disabled={action.isPending}
+                    onChange={(e) =>
+                      setContactForm({ ...contactForm, name: e.target.value })
+                    }
+                  />
+                  <Label htmlFor="mail-contact-notes">{t("mail.notes")}</Label>
+                  <Textarea
+                    id="mail-contact-notes"
+                    maxLength={5000}
+                    value={contactForm.notes}
+                    disabled={action.isPending}
+                    onChange={(e) =>
+                      setContactForm({ ...contactForm, notes: e.target.value })
+                    }
+                  />
+                </>
+              ) : (
+                <>
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    className="self-start"
+                    onClick={() => {
+                      const url = URL.createObjectURL(
+                        new Blob([contactCsvTemplate], {
+                          type: "text/csv;charset=utf-8",
+                        })
+                      )
+                      const link = document.createElement("a")
+                      link.href = url
+                      link.download = "mail-contacts-template.csv"
+                      link.click()
+                      setTimeout(() => URL.revokeObjectURL(url), 1000)
+                    }}
+                  >
+                    {t("mail.downloadContactTemplate")}
+                  </Button>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {t("mail.contactImport")}
+                  </Text>
+                  <Input
+                    type="file"
+                    accept=".csv,text/csv"
+                    disabled={action.isPending}
+                    aria-label={t("mail.importFile")}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file && file.size <= 1_000_000)
+                        void file.text().then(setCsv)
+                      e.target.value = ""
+                    }}
+                  />
+                  <Textarea
+                    className="min-h-64"
+                    value={csv}
+                    aria-label={t("mail.contactImport")}
+                    onChange={(e) => setCsv(e.target.value)}
+                    disabled={action.isPending}
+                    placeholder="email,name,notes"
+                  />
+                </>
+              )}
               <Label className="flex items-center gap-2">
                 <Checkbox
                   checked={consent}
+                  disabled={action.isPending}
                   onCheckedChange={(value) => setConsent(value === true)}
                 />
                 {t("mail.consent")}
@@ -281,6 +369,7 @@ export function MailContacts({
               {consent && (
                 <Input
                   value={source}
+                  disabled={action.isPending}
                   aria-label={t("mail.consentSource")}
                   placeholder={t("mail.consentSource")}
                   onChange={(e) => setSource(e.target.value)}
@@ -313,7 +402,6 @@ export function CampaignEditor({
     text_body: campaign?.text_body || "",
     html_body: campaign?.html_body || "",
   })
-  const [mode, setMode] = useState(campaign?.html_body ? "html" : "text")
   const { data } = useQuery({
     queryKey: [...mailKey, "templates", "campaign"],
     queryFn: () =>
@@ -395,7 +483,6 @@ export function CampaignEditor({
                     text_body: item.text_body,
                     html_body: item.html_body,
                   })
-                  setMode(item.html_body ? "html" : "text")
                 }
               }}
             >
@@ -406,42 +493,14 @@ export function CampaignEditor({
                 </option>
               ))}
             </select>
-            <div className="flex gap-2">
-              {["text", "html", "preview"].map((value) => (
-                <Button
-                  size="small"
-                  variant={mode === value ? "primary" : "secondary"}
-                  key={value}
-                  onClick={() => setMode(value)}
-                >
-                  {t(`mail.${value}`)}
-                </Button>
-              ))}
-            </div>
-            {mode === "preview" ? (
-              <iframe
-                sandbox=""
-                title={t("mail.preview")}
-                className="min-h-80 w-full border"
-                srcDoc={emailDocument(
-                  form.html_body ||
-                    `<pre>${form.text_body.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre>`
-                )}
-              />
-            ) : (
-              <Textarea
-                className="min-h-80"
-                aria-label={t("mail.body")}
-                value={mode === "html" ? form.html_body : form.text_body}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    [mode === "html" ? "html_body" : "text_body"]:
-                      e.target.value,
-                  })
-                }
-              />
-            )}
+            <MailBodyEditor
+              text_body={form.text_body}
+              html_body={form.html_body}
+              disabled={action.isPending}
+              onChange={(body) =>
+                setForm((previous) => ({ ...previous, ...body }))
+              }
+            />
             <Text size="small" className="text-ui-fg-subtle">
               {t("mail.audienceHint")}
             </Text>
@@ -826,6 +885,13 @@ export function MailEvents() {
           type: string
           provider_id: string
           occurred_at: string
+          data?: {
+            recipient?: string
+            status?: string
+            smtp_code?: number
+            enhanced_code?: string
+            diagnostic?: string
+          }
         }[]
         count: number
       }>({ resource: "events", offset }),
@@ -847,7 +913,14 @@ export function MailEvents() {
           <table className="mail-table">
             <thead>
               <tr>
-                {["eventType", "providerId", "createdAt"].map((key) => (
+                {[
+                  "eventType",
+                  "providerId",
+                  "to",
+                  "status",
+                  "details",
+                  "createdAt",
+                ].map((key) => (
                   <th key={key}>{t(`mail.${key}`)}</th>
                 ))}
               </tr>
@@ -857,6 +930,29 @@ export function MailEvents() {
                 <tr key={event.id}>
                   <td>{event.type}</td>
                   <td className="font-mono text-xs">{event.provider_id}</td>
+                  <td>{event.data?.recipient || ""}</td>
+                  <td>
+                    {event.data?.status ? (
+                      <MailStatus
+                        status={
+                          event.data.status === "success"
+                            ? "delivered"
+                            : event.data.status === "delayed"
+                              ? "delivery_delayed"
+                              : "failed"
+                        }
+                      />
+                    ) : null}
+                  </td>
+                  <td className="max-w-xs break-words">
+                    {[
+                      event.data?.smtp_code,
+                      event.data?.enhanced_code,
+                      event.data?.diagnostic,
+                    ]
+                      .filter((v) => v !== undefined && v !== "")
+                      .join(" ")}
+                  </td>
                   <td>
                     {new Date(event.occurred_at).toLocaleString(
                       i18n.language.startsWith("zh") ? "zh-CN" : "en-GB"

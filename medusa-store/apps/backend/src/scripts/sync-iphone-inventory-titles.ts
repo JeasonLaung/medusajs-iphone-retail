@@ -21,7 +21,7 @@ export default async function syncIphoneInventoryTitles({ container }: ExecArgs)
       "variants.inventory_items.inventory_item_id",
       "variants.inventory_items.inventory.title",
     ],
-    filters: { handle: catalogue.products.map((item) => `swappie-${item.slug}`) },
+    filters: { handle: catalogue.products.map((item) => item.slug) },
     pagination: { take: catalogue.products.length },
   })
   if (products.length !== catalogue.products.length) {

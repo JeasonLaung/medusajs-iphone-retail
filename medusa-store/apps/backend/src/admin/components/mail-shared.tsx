@@ -36,7 +36,9 @@ export function MailStatus({ status }: { status: string }) {
 export function MailDeliveryError({ error }: { error: string }) {
   const { t } = useTranslation()
   const key =
-    error === "retry_expired"
+    error === "relayme_submission_unknown"
+      ? "mail.relaymeSubmissionUnknown"
+      : error === "retry_expired"
       ? "mail.retryExpired"
       : error === "unsubscribed"
         ? "mail.unsubscribed"

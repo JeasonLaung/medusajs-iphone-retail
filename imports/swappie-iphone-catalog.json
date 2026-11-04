@@ -55,7 +55,7 @@
       "release_year": 2022,
       "source_url": "https://swappie.com/en/model/iphone-14/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-midnight.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-midnight.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-14-midnight.png",
       "image_sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247"
     },
     {
@@ -99,7 +99,7 @@
       "release_year": 2023,
       "source_url": "https://swappie.com/en/model/iphone-15-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-pro-natural-titanium.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-pro-natural-titanium.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-15-pro-natural-titanium.png",
       "image_sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3"
     },
     {
@@ -146,7 +146,7 @@
       "release_year": 2023,
       "source_url": "https://swappie.com/en/model/iphone-15/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-15-black.png",
       "image_sha256": "e0ef6db140afd656d31af8d722e0e75e7f4a6b3e4b816e8edd52aded23bb0d67"
     },
     {
@@ -199,7 +199,7 @@
       "release_year": 2021,
       "source_url": "https://swappie.com/en/model/iphone-13/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-midnight.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-midnight.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-13-midnight.png",
       "image_sha256": "91d18f8cd46ead9634136ed3dcebf0ec276e13468fb2a75d17b9d1902f844692"
     },
     {
@@ -243,7 +243,7 @@
       "release_year": 2022,
       "source_url": "https://swappie.com/en/model/iphone-14-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-pro-gold.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-pro-gold.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-14-pro-gold.png",
       "image_sha256": "87ce7eb6521d41357133153f9d50139d740fb2660f09fc3d767573df1028b3c6"
     },
     {
@@ -286,7 +286,7 @@
       "release_year": 2023,
       "source_url": "https://swappie.com/en/model/iphone-15-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-pro-max-natural-titanium.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-pro-max-natural-titanium.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-15-pro-max-natural-titanium.png",
       "image_sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3"
     },
     {
@@ -334,7 +334,7 @@
       "release_year": 2021,
       "source_url": "https://swappie.com/en/model/iphone-13-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-pro-gold.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-pro-gold.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-13-pro-gold.png",
       "image_sha256": "b01aadf4a0ac7dfbbbe31a281361995ca545fb89763c39261230c2b75ca1fbad"
     },
     {
@@ -387,7 +387,7 @@
       "release_year": 2021,
       "source_url": "https://swappie.com/en/model/iphone-13-mini/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-mini-green.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-mini-green.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-13-mini-green.png",
       "image_sha256": "be652be590ef31b6692d02c8d44296ae6785aae9a91f610bcbc35a1a47e2eee6"
     },
     {
@@ -440,7 +440,7 @@
       "release_year": 2020,
       "source_url": "https://swappie.com/en/model/iphone-12/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-12-black.png",
       "image_sha256": "3d43a478e79c7608539c70b467da842475abf57b96910f2b013f46b1c6c82e3b"
     },
     {
@@ -484,7 +484,7 @@
       "release_year": 2024,
       "source_url": "https://swappie.com/en/model/iphone-16-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-pro-black-titanium.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-pro-black-titanium.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-16-pro-black-titanium.png",
       "image_sha256": "4101998f988a733607b5de92ed0ea5c68fb1be835ca42ea4a42e06d075846d5e"
     },
     {
@@ -528,7 +528,7 @@
       "release_year": 2022,
       "source_url": "https://swappie.com/en/model/iphone-14-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-pro-max-deep-purple.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-pro-max-deep-purple.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-14-pro-max-deep-purple.png",
       "image_sha256": "6f4605db736a17b7b2e4c14eeada40eb06d04f02ad59e97d00a20e86e5c743d0"
     },
     {
@@ -571,7 +571,7 @@
       "release_year": 2024,
       "source_url": "https://swappie.com/en/model/iphone-16-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-pro-max-desert-titanium.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-pro-max-desert-titanium.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-16-pro-max-desert-titanium.png",
       "image_sha256": "817c0f5a279d7642fad116b99d43cc73a3924c4e49d5184aa30fc98fac449ac4"
     },
     {
@@ -624,7 +624,7 @@
       "release_year": 2020,
       "source_url": "https://swappie.com/en/model/iphone-12-mini/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-mini-red.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-mini-red.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-12-mini-red.png",
       "image_sha256": "0685ed9c4a276dc3cb3315a5ba725d87cbef56b8a7951105fec31b6afefc35a7"
     },
     {
@@ -673,7 +673,7 @@
       "release_year": 2021,
       "source_url": "https://swappie.com/en/model/iphone-13-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-pro-max-sierra-blue.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-pro-max-sierra-blue.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-13-pro-max-sierra-blue.png",
       "image_sha256": "f93bc4a5161447776929631e820d4b3a07d4197c8da0f912271fdeace581baea"
     },
     {
@@ -724,7 +724,7 @@
       "release_year": 2019,
       "source_url": "https://swappie.com/en/model/iphone-11/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-11-purple.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-11-purple.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-11-purple.png",
       "image_sha256": "5dad78829e1c55015f43e2cc849faf7b85062bcc5e0b00ec3489cfcc2d78d577"
     },
     {
@@ -772,7 +772,7 @@
       "release_year": 2023,
       "source_url": "https://swappie.com/en/model/iphone-15-plus/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-plus-blue.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-plus-blue.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-15-plus-blue.png",
       "image_sha256": "f23a0b7e2c3cd6103f6d1c2f338cc477ae8b8b27c9a97981d41de3514a363c4a"
     },
     {
@@ -820,7 +820,7 @@
       "release_year": 2024,
       "source_url": "https://swappie.com/en/model/iphone-16/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-16-black.png",
       "image_sha256": "3c085999ee1cb319acd25801b25a1706e1831272856150795743db498ae53843"
     },
     {
@@ -863,7 +863,7 @@
       "release_year": 2020,
       "source_url": "https://swappie.com/en/model/iphone-12-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-pro-graphite.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-pro-graphite.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-12-pro-graphite.png",
       "image_sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab"
     },
     {
@@ -900,7 +900,7 @@
       "release_year": 2022,
       "source_url": "https://swappie.com/en/model/iphone-se-2022/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-se-2022-midnight.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-se-2022-midnight.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-se-2022-midnight.png",
       "image_sha256": "77d4610b63681fb7e34807b44c042153797978f386163f7c1b50d7678eaa558e"
     },
     {
@@ -953,7 +953,7 @@
       "release_year": 2022,
       "source_url": "https://swappie.com/en/model/iphone-14-plus/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-plus-midnight.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-plus-midnight.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-14-plus-midnight.png",
       "image_sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247"
     },
     {
@@ -996,7 +996,7 @@
       "release_year": 2020,
       "source_url": "https://swappie.com/en/model/iphone-12-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-pro-max-graphite.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-pro-max-graphite.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-12-pro-max-graphite.png",
       "image_sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab"
     },
     {
@@ -1034,7 +1034,7 @@
       "release_year": 2019,
       "source_url": "https://swappie.com/en/model/iphone-11-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-11-pro-gold.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-11-pro-gold.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-11-pro-gold.png",
       "image_sha256": "fa7ce751d6dccefb8ebaba2ae6a5c85a15a285986c7a131bd3581eb63170894b"
     },
     {
@@ -1082,7 +1082,7 @@
       "release_year": 2024,
       "source_url": "https://swappie.com/en/model/iphone-16-plus/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-plus-ultramarine.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-plus-ultramarine.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-16-plus-ultramarine.png",
       "image_sha256": "4e5c491fbd894a4cdd3bbc9882a91f693cd8aa9211b364187a25e321b3c39e7a"
     },
     {
@@ -1120,7 +1120,7 @@
       "release_year": 2025,
       "source_url": "https://swappie.com/en/model/iphone-17-pro/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-pro-deep-blue.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-pro-deep-blue.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-17-pro-deep-blue.png",
       "image_sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c"
     },
     {
@@ -1153,7 +1153,7 @@
       "release_year": 2025,
       "source_url": "https://swappie.com/en/model/iphone-16e/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16e-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16e-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-16e-black.png",
       "image_sha256": "70eecf5cc6e65fc6b81af438cb92d3705873d49520df7086fa87aa5c01da1da7"
     },
     {
@@ -1192,7 +1192,7 @@
       "release_year": 2025,
       "source_url": "https://swappie.com/en/model/iphone-17-pro-max/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-pro-max-deep-blue.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-pro-max-deep-blue.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-17-pro-max-deep-blue.png",
       "image_sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c"
     },
     {
@@ -1226,7 +1226,7 @@
       "release_year": 2020,
       "source_url": "https://swappie.com/en/model/iphone-se-2020/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-se-2020-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-se-2020-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-se-2020-black.png",
       "image_sha256": "977243575c8b6e3c7dca1c0bb169f944b4f39a7fd7f1267a07e18f1724971259"
     },
     {
@@ -1269,7 +1269,7 @@
       "release_year": 2025,
       "source_url": "https://swappie.com/en/model/iphone-air/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-air-space-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-air-space-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-air-space-black.png",
       "image_sha256": "8fb3fea31aa61033003b6266735abcdd3fde81f4983b0e5b24c821c21e555722"
     },
     {
@@ -1316,7 +1316,7 @@
       "release_year": 2025,
       "source_url": "https://swappie.com/en/model/iphone-17/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-black.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-black.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-17-black.png",
       "image_sha256": "ed45bd7a7f25250a6f6a0b5ae567b329768be21ce0fb46405ae223abae3a75fb"
     },
     {
@@ -1352,7 +1352,7 @@
       "release_year": 2026,
       "source_url": "https://swappie.com/en/model/iphone-17e/",
       "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17e-soft-pink.png?v=ecc8a403",
-      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17e-soft-pink.png",
+      "local_image_url": "http://127.0.0.1:8000/product-images/iphone-17e-soft-pink.png",
       "image_sha256": "0e7a9d3e3831d0ef5fd2c442dc5af039639d8e495dbdb04fb063063e068ee726"
     }
   ]

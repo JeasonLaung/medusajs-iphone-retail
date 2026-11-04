@@ -1,12 +1,17 @@
 import { ArrowRight } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
 import { listProductReviews } from "@lib/data/product-reviews"
+import { getTrustpilotSettings } from "@lib/data/trustpilot"
+import { getLocale } from "@lib/data/locale-actions"
+import TrustpilotReviews from "@modules/common/components/trustpilot/reviews"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import type { HomeCopy } from "@modules/home/i18n"
 import Rating from "@modules/common/components/rating"
 import styles from "../home-sections.module.css"
 
 export default async function HomeReviews({ copy, products }: { copy: HomeCopy; products: HttpTypes.StoreProduct[] }) {
+  const settings = await getTrustpilotSettings()
+  if (settings) return <TrustpilotReviews settings={settings} locale={await getLocale()} />
   const pages = await Promise.all(products.map(async (product) => ({ product, page: await listProductReviews(product.id) })))
   const reviews = pages.flatMap(({ product, page }) => (page?.reviews ?? []).map((review) => ({ ...review, product })))
     .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)).slice(0, 3)

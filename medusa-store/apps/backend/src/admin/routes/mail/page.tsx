@@ -70,15 +70,6 @@ const MailPage = () => {
     queryKey: [...mailKey, "accounts"],
     queryFn: () => mailGet<{ accounts: Account[] }>({ resource: "accounts" }),
   })
-  const summary = useQuery({
-    queryKey: [...mailKey, "summary", accountId],
-    queryFn: () =>
-      mailGet<{ counts: Record<string, number>; unread: number }>({
-        resource: "summary",
-        account_id: accountId || undefined,
-      }),
-    refetchInterval: 30_000,
-  })
   const messages = useQuery({
     queryKey: [
       ...mailKey,
@@ -133,6 +124,10 @@ const MailPage = () => {
       setParams(next, { replace: true })
     }
   }, [accounts.data, params])
+  useEffect(() => {
+    setSelected([])
+    setOffset(0)
+  }, [view, accountId])
   const navigate = (next: Record<string, string>) => {
     setParams(next)
     setSelected([])
@@ -204,66 +199,9 @@ const MailPage = () => {
       setDownloading(false)
     }
   }
-  const count = summary.data?.counts || {}
   const list = messages.data?.messages || []
-  const navItems = [...folders, "contacts", "campaigns", "templates", "events"]
   return (
     <div className="mail-workspace">
-      <aside className="mail-nav" aria-label={t("mail.title")}>
-        <div className="mail-nav-caption px-3 pb-3">
-          <Text
-            size="xsmall"
-            weight="plus"
-            className="tracking-widest text-ui-fg-muted"
-          >
-            {t("mail.workspace")}
-          </Text>
-        </div>
-        <Button
-          size="small"
-          className="mb-3"
-          disabled={!accounts.data?.accounts.some((a) => a.enabled)}
-          onClick={() => setCompose({ mode: "new" })}
-        >
-          {t("mail.compose")}
-        </Button>
-        {navItems.map((item, index) => (
-          <button
-            className={`mail-nav-button ${index === 6 ? "mt-5" : ""}`}
-            aria-current={view === item ? "page" : undefined}
-            key={item}
-            onClick={() =>
-              navigate({
-                view: item,
-                ...(accountId ? { account: accountId } : {}),
-              })
-            }
-          >
-            <Text as="span" size="small">
-              {t(`mail.${item}`)}
-            </Text>
-            {item === "inbox" && !!summary.data?.unread ? (
-              <Text
-                as="span"
-                size="xsmall"
-                weight="plus"
-                className="rounded bg-ui-tag-blue-bg px-1.5 text-ui-tag-blue-text"
-              >
-                {summary.data.unread}
-              </Text>
-            ) : !!count[item] ? (
-              <Text as="span" size="xsmall" className="text-ui-fg-muted">
-                {count[item]}
-              </Text>
-            ) : null}
-          </button>
-        ))}
-        <div className="mail-nav-settings mt-auto border-t pt-4">
-          <Link className="mail-nav-button" to="/settings/mailboxes">
-            {t("mail.openSettings")}
-          </Link>
-        </div>
-      </aside>
       <main className="mail-main">
         {accounts.isPending ? (
           <MailEmpty title="loading" />
@@ -310,6 +248,7 @@ const MailPage = () => {
                     ))}
                   </select>
                   <Button
+                    className="mail-action-button"
                     size="small"
                     variant="transparent"
                     onClick={() =>
@@ -357,7 +296,11 @@ const MailPage = () => {
                         : ["read", "unread", "archive", "trash"]
                       ).map((operation) => (
                         <Button
+                          className="mail-action-button"
                           key={operation}
+                          data-danger={
+                            operation === "trash" || operation === "delete"
+                          }
                           size="small"
                           variant="transparent"
                           disabled={action.isPending}
@@ -401,11 +344,8 @@ const MailPage = () => {
                                 aria-label={t(
                                   item.starred ? "mail.unstar" : "mail.star"
                                 )}
-                                className={
-                                  item.starred
-                                    ? "text-ui-tag-orange-text"
-                                    : "text-ui-fg-muted"
-                                }
+                                className="mail-star-button"
+                                aria-pressed={item.starred}
                                 disabled={action.isPending}
                                 onClick={() =>
                                   void change(
@@ -415,8 +355,8 @@ const MailPage = () => {
                                 }
                               >
                                 <svg
-                                  width="15"
-                                  height="15"
+                                  width="18"
+                                  height="18"
                                   viewBox="0 0 24 24"
                                   fill={item.starred ? "currentColor" : "none"}
                                   stroke="currentColor"
@@ -499,6 +439,7 @@ const MailPage = () => {
                         <div className="mail-reader-head">
                           <div className="mb-5 flex flex-wrap gap-2">
                             <Button
+                              className="mail-action-button"
                               size="small"
                               variant="transparent"
                               onClick={() =>
@@ -513,6 +454,7 @@ const MailPage = () => {
                             {["trash", "outbox"].includes(message.folder) ? (
                               message.folder === "trash" ? (
                                 <Button
+                                  className="mail-action-button"
                                   size="small"
                                   variant="secondary"
                                   disabled={action.isPending}
@@ -525,6 +467,7 @@ const MailPage = () => {
                               ) : (
                                 message.status === "failed" && (
                                   <Button
+                                    className="mail-action-button"
                                     size="small"
                                     variant="secondary"
                                     disabled={action.isPending}
@@ -539,6 +482,7 @@ const MailPage = () => {
                             ) : (
                               <>
                                 <Button
+                                  className="mail-action-button"
                                   size="small"
                                   variant="secondary"
                                   onClick={() =>
@@ -548,6 +492,7 @@ const MailPage = () => {
                                   {t("mail.reply")}
                                 </Button>
                                 <Button
+                                  className="mail-action-button"
                                   size="small"
                                   variant="secondary"
                                   onClick={() =>
@@ -557,6 +502,7 @@ const MailPage = () => {
                                   {t("mail.replyAll")}
                                 </Button>
                                 <Button
+                                  className="mail-action-button"
                                   size="small"
                                   variant="transparent"
                                   onClick={() =>
@@ -568,7 +514,8 @@ const MailPage = () => {
                               </>
                             )}
                             <Button
-                              className="ml-auto"
+                              className="mail-action-button ml-auto"
+                              data-danger="true"
                               size="small"
                               variant="transparent"
                               disabled={action.isPending}
@@ -636,6 +583,7 @@ const MailPage = () => {
                                 {t("mail.imagesBlocked")}
                               </Text>
                               <Button
+                                className="mail-action-button"
                                 size="small"
                                 variant="transparent"
                                 disabled={images}
@@ -664,6 +612,7 @@ const MailPage = () => {
                             <div className="flex flex-wrap gap-2">
                               {message.attachments.map((attachment, index) => (
                                 <Button
+                                  className="mail-action-button"
                                   key={index}
                                   size="small"
                                   variant="secondary"

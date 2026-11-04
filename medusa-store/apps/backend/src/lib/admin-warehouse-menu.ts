@@ -10,16 +10,24 @@ export function transformWarehouseMenu(source: string, id: string) {
   const utilityAnchor = "var UtilitySection = () => {\n  const location = useLocation6();\n  const { t: t2 } = useTranslation10();"
   if (!source.includes(utilityAnchor)) throw new MedusaError(MedusaError.Types.UNEXPECTED_STATE, "Warehouse menu: dashboard utility integration changed")
   const component = path.resolve(__dirname, "../admin/lib/use-warehouse-menu.ts").replace(/\\/g, "/")
+  const mailSidebar = path.resolve(__dirname, "../admin/components/mail-sidebar.tsx").replace(/\\/g, "/")
+  const sidebarAnchor = "jsx16(MainSidebar, {})"
+  if (!source.includes(sidebarAnchor)) throw new MedusaError(MedusaError.Types.UNEXPECTED_STATE, "Mail sidebar: dashboard layout integration changed")
+  const layoutAnchor = "var MainLayout = () => {"
+  if (!source.includes(layoutAnchor) || !source.includes("var useSidebar = () => {")) throw new MedusaError(MedusaError.Types.UNEXPECTED_STATE, "Mail sidebar: dashboard toggle integration changed")
+  source = source.replace(layoutAnchor, `${layoutAnchor}\n  const { mobile, toggle } = useSidebar();`)
+    .replace(sidebarAnchor, 'jsx16(MailSidebarLayout, { closeMobile: () => { if (mobile) toggle("mobile"); }, children: jsx16(MainSidebar, {}) })')
   // Keep every hook unconditional while the access query loads or refreshes.
-  return `import { useWarehouseMenu, useWarehouseAccess } from ${JSON.stringify(component)}\n${source.replace(anchor, 'var SidebarRoutes = () => {\n  const filterWarehouseMenu = useWarehouseMenu();\n  const coreRoutes = filterWarehouseMenu(useCoreRoutes());\n  const { getMenu } = useExtension();\n  const menuItems = filterWarehouseMenu(getMenu("coreExtensions"));').replace(utilityAnchor, `${utilityAnchor}\n  const { data: warehouseAccess } = useWarehouseAccess();\n  if (!warehouseAccess || warehouseAccess.warehouse) return null;`)}`
+  return `import { MailSidebarLayout } from ${JSON.stringify(mailSidebar)}\nimport { useWarehouseMenu, useWarehouseAccess } from ${JSON.stringify(component)}\n${source.replace(anchor, 'var SidebarRoutes = () => {\n  const filterWarehouseMenu = useWarehouseMenu();\n  const coreRoutes = filterWarehouseMenu(useCoreRoutes());\n  const { getMenu } = useExtension();\n  const menuItems = filterWarehouseMenu(getMenu("coreExtensions"));').replace(utilityAnchor, `${utilityAnchor}\n  const { data: warehouseAccess } = useWarehouseAccess();\n  if (!warehouseAccess || warehouseAccess.warehouse) return null;`)}`
 }
 export const adminWarehouseMenu = (): Plugin => ({ name: "admin-warehouse-menu", enforce: "pre", transform(source, id) {
   const code = transformWarehouseMenu(source, id)
   if (code) return { code, map: null }
 } })
 type OptimizationPlugin = NonNullable<NonNullable<DepOptimizationOptions["esbuildOptions"]>["plugins"]>[number]
-export const adminWarehouseMenuOptimizer = (): OptimizationPlugin => ({ name: "admin-warehouse-menu-optimizer-v2", setup(build) {
+export const adminWarehouseMenuOptimizer = (): OptimizationPlugin => ({ name: "admin-warehouse-menu-optimizer-v4-mail-toggle", setup(build) {
   build.onResolve({ filter: /\/src\/admin\/lib\/use-warehouse-menu\.ts$/ }, (args) => ({ path: `/@fs/${args.path}`, external: true }))
+  build.onResolve({ filter: /\/src\/admin\/components\/mail-sidebar\.tsx$/ }, (args) => ({ path: `/@fs/${args.path}`, external: true }))
   build.onLoad({ filter: /chunk-[^/\\]+\.mjs$/ }, (args) => {
     const contents = transformWarehouseMenu(fs.readFileSync(args.path, "utf8"), args.path)
     if (contents) return { contents, loader: "js", resolveDir: path.dirname(args.path) }

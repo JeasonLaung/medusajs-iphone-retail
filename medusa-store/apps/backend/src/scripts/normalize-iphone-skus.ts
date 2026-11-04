@@ -17,7 +17,7 @@ export default async function normalizeIphoneSkus({ container }: ExecArgs) {
     "variants.inventory_items.inventory_item_id", "variants.inventory_items.required_quantity",
     "variants.inventory_items.inventory.sku", "variants.inventory_items.inventory.location_levels.*",
   ]
-  const filters = { handle: catalogue.map((item) => `swappie-${item.slug}`) }
+  const filters = { handle: catalogue.map((item) => item.slug) }
   const load = async () => {
     const { data } = await query.graph({ entity: "product", fields, filters, pagination: { take: catalogue.length } })
     assert.equal(data.length, catalogue.length, "Missing catalogue products")

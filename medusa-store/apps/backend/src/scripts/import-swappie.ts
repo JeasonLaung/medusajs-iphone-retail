@@ -7,7 +7,9 @@ import {
 } from "@medusajs/framework/utils";
 import {
   createProductCategoriesWorkflow,
+  createProductOptionsWorkflow,
   createProductsWorkflow,
+  updateProductOptionsWorkflow,
 } from "@medusajs/medusa/core-flows";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -149,7 +151,7 @@ export default async function importSwappie({ container }: ExecArgs) {
         `Release year mismatch for ${item.model}`,
       );
     }
-    const handle = `swappie-${item.slug}`;
+    const handle = item.slug;
     const existing = await productService.listProducts({ handle });
     if (existing.length) {
       const product = existing[0];
@@ -194,6 +196,24 @@ export default async function importSwappie({ container }: ExecArgs) {
     }
 
     const storage = `${item.selected_storage_gb} GB`;
+    const storageOptions = await productService.listProductOptions(
+      { title: "Storage", is_exclusive: false },
+      { relations: ["values"] },
+    );
+    if (storageOptions.length > 1) throw new MedusaError(MedusaError.Types.INVALID_DATA, "Ambiguous shared Storage option");
+    let storageOption = storageOptions[0];
+    if (!storageOption) {
+      const { result } = await createProductOptionsWorkflow(container).run({
+        input: { product_options: [{ title: "Storage", values: [storage], is_exclusive: false }] },
+      });
+      storageOption = result[0];
+    } else if (!storageOption.values.some((value) => value.value === storage)) {
+      await updateProductOptionsWorkflow(container).run({
+        input: { selector: { id: storageOption.id }, update: { values: [...storageOption.values.map((value) => value.value), storage] } },
+      });
+      storageOption = await productService.retrieveProductOption(storageOption.id, { relations: ["values"] });
+    }
+    const storageValue = storageOption.values.find((value) => value.value === storage)!;
     await createProductsWorkflow(container).run({
       input: {
         products: [
@@ -211,8 +231,7 @@ export default async function importSwappie({ container }: ExecArgs) {
             thumbnail: item.local_image_url,
             images: [{ url: item.local_image_url }],
             metadata: {
-              source: "swappie-html-snapshot",
-              source_url: item.source_url,
+              source: "iphone-catalog-snapshot",
               source_sku: item.sku,
               source_file_sha256: manifest.source_file_sha256,
               extracted_at: manifest.extracted_at,
@@ -231,7 +250,7 @@ export default async function importSwappie({ container }: ExecArgs) {
               release_year: item.release_year,
               source_release_year_code: item.source_release_year_code,
             },
-            options: [{ title: "Storage", values: [storage] }],
+            options: [{ id: storageOption.id, value_ids: [storageValue.id] }],
             variants: [
               {
                 title: storage,

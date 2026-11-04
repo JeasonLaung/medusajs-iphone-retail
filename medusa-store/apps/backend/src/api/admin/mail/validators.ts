@@ -24,6 +24,14 @@ export const MailCommand = z.discriminatedUnion("action", [
     email,
     reply_to: z.union([email, z.literal("")]).default(""),
     enabled: z.boolean(),
+    provider: z.enum(["resend", "relayme"]).optional(),
+    api_url: z.string().max(500).optional(),
+    relayme_key_id: z.string().max(255).regex(/^[A-Za-z0-9_-]*$/).optional(),
+    imap_host: z.string().max(255).regex(/^[^\s\/:]*$/).optional(),
+    imap_port: z.number().int().min(1).max(65535).optional(),
+    imap_username: z.string().max(255).optional(),
+    imap_password: z.string().max(512).optional(),
+    imap_tls: z.enum(["tls", "starttls"]).optional(),
     api_key: z.string().max(512).default(""),
     webhook_secret: z.string().max(512).default(""),
   }),
@@ -83,6 +91,7 @@ export const MailCommand = z.discriminatedUnion("action", [
         z.object({
           email,
           name: z.string().max(255).default(""),
+          notes: z.string().max(5000).optional(),
           subscribed: z.boolean().default(false),
           consent_source: z.string().max(500).default(""),
         })

@@ -153,7 +153,7 @@ function toDocument(
     labels,
     option_values: toOptionValues(product.options),
     model:
-      product.metadata?.source === "swappie-html-snapshot"
+      product.metadata?.source === "iphone-catalog-snapshot"
         ? (product.title ?? null)
         : null,
     // Only capacities attached to real variants belong in the shopping filter.

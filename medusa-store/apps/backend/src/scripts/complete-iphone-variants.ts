@@ -1,6 +1,6 @@
 import type { ExecArgs } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
-import { createAndLinkProductOptionsToProductWorkflow, createProductVariantsWorkflow, updateProductOptionsWorkflow, updateProductVariantsWorkflow } from "@medusajs/medusa/core-flows"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { createAndLinkProductOptionsToProductWorkflow, createProductOptionsWorkflow, createProductVariantsWorkflow, updateProductOptionsWorkflow, updateProductVariantsWorkflow } from "@medusajs/medusa/core-flows"
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
 
@@ -15,7 +15,7 @@ export default async function completeIphoneVariants({ container }: Pick<ExecArg
   const service = container.resolve(Modules.PRODUCT)
   let created = 0
   for (const item of catalogue.products) {
-    const [product] = await service.listProducts({ handle: `swappie-${item.slug}` }, { relations: ["options.values", "variants.options"] })
+    const [product] = await service.listProducts({ handle: item.slug }, { relations: ["options.values", "variants.options"] })
     if (!product) continue
     const definitions = [
       { title: "Storage", values: item.available_storages_gb.map((value) => `${value} GB`) },
@@ -26,20 +26,37 @@ export default async function completeIphoneVariants({ container }: Pick<ExecArg
     // Preserve any additional merchant-defined options as well.
     for (const option of product.options ?? []) {
       if (!definitions.some((definition) => definition.title === option.title)) {
-        throw new Error(`Unexpected option ${option.title} on ${product.handle}; refusing to invent values`)
+        throw new MedusaError(MedusaError.Types.INVALID_DATA, `Unexpected option ${option.title} on ${product.handle}; refusing to invent values`)
       }
     }
     for (const definition of definitions) {
       const existing = product.options?.find((option) => option.title === definition.title)
       if (existing) {
         const global = await service.retrieveProductOption(existing.id, { relations: ["values"] })
+        if (global.is_exclusive) {
+          throw new MedusaError(MedusaError.Types.INVALID_DATA, `Private ${definition.title} on ${product.handle}; run pnpm exec medusa exec ./src/scripts/share-iphone-options.ts apply from the backend directory first`)
+        }
         const values = Array.from(new Set([...definition.values, ...global.values.map((value) => value.value)]))
         if (values.length !== global.values.length) await updateProductOptionsWorkflow(container).run({ input: { selector: { id: existing.id }, update: { values } } })
         const expanded = await service.retrieveProductOption(existing.id, { relations: ["values"] })
         const add = expanded.values.filter((value) => definition.values.includes(value.value) && !existing.values.some((entry) => entry.id === value.id)).map((value) => value.id)
         if (add.length) await createAndLinkProductOptionsToProductWorkflow(container).run({ input: { product_id: product.id, update: [{ product_option_id: existing.id, add }] } })
       } else {
-        await createAndLinkProductOptionsToProductWorkflow(container).run({ input: { product_id: product.id, add: [{ ...definition, is_exclusive: true }] } })
+        const matches = await service.listProductOptions({ title: definition.title, is_exclusive: false }, { relations: ["values"] })
+        if (matches.length > 1) throw new MedusaError(MedusaError.Types.INVALID_DATA, `Ambiguous shared option: ${definition.title}`)
+        let global = matches[0]
+        if (!global) {
+          const { result } = await createProductOptionsWorkflow(container).run({ input: { product_options: [{ ...definition, is_exclusive: false }] } })
+          global = result[0]
+        } else {
+          const values = Array.from(new Set([...global.values.map((value) => value.value), ...definition.values]))
+          if (values.length !== global.values.length) {
+            await updateProductOptionsWorkflow(container).run({ input: { selector: { id: global.id }, update: { values } } })
+            global = await service.retrieveProductOption(global.id, { relations: ["values"] })
+          }
+        }
+        const valueIds = global.values.filter((value) => definition.values.includes(value.value)).map((value) => value.id)
+        await createAndLinkProductOptionsToProductWorkflow(container).run({ input: { product_id: product.id, add: [{ id: global.id, value_ids: valueIds }] } })
       }
     }
     const [updated] = await service.listProducts({ id: product.id }, { relations: ["options.values", "variants.options"] })

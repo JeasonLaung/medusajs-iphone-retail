@@ -6,6 +6,7 @@ import { headers } from "next/headers"
 import { getRegion } from "@lib/data/regions"
 import { getStoreSearchData } from "@lib/data/store-search"
 import { getBuyPolicies } from "@lib/data/buy-policies"
+import { getTrustpilotSettings } from "@lib/data/trustpilot"
 import StoreTemplate from "@modules/store/templates"
 
 const defaultPageMetadata: Metadata = {
@@ -26,9 +27,10 @@ export default async function StorePage(props: {
   }
 
   const requestUrl = (await headers()).get("x-storefront-url")!
-  const [searchData, policies] = await Promise.all([
+  const [searchData, policies, trustpilot] = await Promise.all([
     getStoreSearchData(requestUrl, region.currency_code),
     getBuyPolicies(),
+    getTrustpilotSettings(),
   ])
 
   return (
@@ -37,6 +39,7 @@ export default async function StorePage(props: {
       requestUrl={requestUrl}
       searchData={searchData}
       policies={policies}
+      trustpilot={trustpilot}
     />
   )
 }

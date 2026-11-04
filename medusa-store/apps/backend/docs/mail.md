@@ -4,14 +4,28 @@
 
 ## 功能
 
-- 多个 Resend 邮箱；设置 → 邮箱管理，配置发件名称、地址、回复地址、API 密钥和 Webhook 签名密钥。
+- 多个 Resend / Relayme 邮箱；设置 → 邮箱管理，选择服务商并配置发件名称、地址、回复地址和凭据。已有邮箱默认继续使用 Resend，不允许直接切换服务商。
 - 收件箱、草稿箱、待发送、已发送、归档、垃圾箱；搜索、分页、星标、已读状态和批量操作。
 - 写信、回复、回复全部、转发正文；To/Cc/Bcc、附件、草稿自动保存、纯文本和 HTML、隔离预览、可重复使用的模板。
 - CSV 联系人导入和订阅同意来源记录；导入不会重新订阅已退订的联系人。
 - 营销活动逐人发送，支持全部符合条件的订阅者或通讯录中所选联系人；暂停、继续、失败重试和逐人投递明细。
 - 自动退订链接、RFC 8058 单击退订、退信/投诉禁止投递；送达、打开和点击事件记录。
 
-当前使用后台人员共享的邮箱，沿用现有管理员认证；供应商账号由项目现有权限中间件拒绝访问。未迁入参考项目的 SMTP、Relayme、业务员邮箱分配、文件管理器和询盘集成。附件直接上传，转发来信附件需下载后重新附加。
+当前使用后台人员共享的邮箱，沿用现有管理员认证；供应商账号由项目现有权限中间件拒绝访问。未迁入参考项目的 SMTP、业务员邮箱分配、文件管理器和询盘集成。附件直接上传，转发来信附件需下载后重新附加。
+
+## Relayme 配置
+
+1. 设置 → 邮箱管理 → 添加邮箱，服务商选择 Relayme。填写实际邮箱地址、Postmaster HTTP/HTTPS 根地址、Key ID 和客户端密钥。完整 API Key 自动由 `<key_id>.<secret>` 组成，客户端密钥同时用于回调验签。客户端密钥和 IMAP 密码沿用 AES-GCM 加密存储，编辑时留空保留，不会返回前端。后台需要设置安全的 `MAIL_ENCRYPTION_KEY` 或 `COOKIE_SECRET`。
+2. Relayme 客户端启用 API 和发信 API 权限，发件地址需要 Gateway 授权。保存后，设置页分别显示两个完整公网回调地址。路径与 iphone0902 一致：收件 `POST /api/callback/quguo_mail`；投递通知 `POST /api/callback/quguo_notify`。配置 `MAIL_PUBLIC_URL` 为本系统的公网 HTTPS 后端根地址，不要将另一个项目的域名填入本系统。
+3. 完整收件通过 IMAP 读取正文、HTML、Message-ID、回复地址和附件，需配置 IMAP 主机、端口、用户名、密码及 TLS/STARTTLS。使用系统 CA 和主机名校验证书，不支持跳过 TLS 验证。采用只读选取和 PEEK 下载，不改变远端已读状态。缺少 IMAP 配置时收件回调返回错误以便重试，不会把通知伪装成完整来信。
+4. 收件通知没有 UID 或 Message-ID，因此用原始邮箱 `username` 确认账号，再用发件人、收件人、已解码主题、服务器到达时间（前后 30 分钟）匹配。候选不唯一时返回错误，不猜测正文归属。最多检查 200 封候选、25 MiB 原始邮件；单次 IMAP 读取总时限 25 秒。匹配结果用账号、文件夹、UIDVALIDITY 和 UID 的摘要作为持久化邮件标识。正文和附件保存在现有邮件表，沿用管理员权限及 HTML 沙箱预览。
+5. 回调先读取原始字节，再用 `X-Relayme-Key-ID` 找到启用邮箱的客户端密钥。验证 `X-Relayme-Timestamp`、`X-Relayme-Nonce`、`X-Relayme-Signature`：五行 HMAC-SHA256 原文、UTF-8 密钥、原始百分号编码路径（排除查询参数）、5 分钟时间偏差、无填充 Base64URL 和常量时间比较。验签通过后才解析 JSON，并要求 `X-Relayme-Event-ID` 与 `event_id` 一致。
+6. 两个回调共享现有数据库锁；处理成功后持久化事件去重，重复事件返回 204，失败返回非 2xx 由 Relayme 重试。同一个 Key ID 可用于多个本地邮箱，每个邮箱分别保存客户端密钥；处理范围仅限该密钥验签通过的启用邮箱。未配置或不匹配的邮箱返回错误。
+7. 发送支持 To/Cc/Bcc、回复地址、纯文本/HTML、自定义回复头和 `filename` + Base64 `content` 附件。201 必须包含 `id`、`object=email`、`status=accepted`、`delivery_status=awaiting_dsn`；`id` 保存为 submission ID。营销邮件沿用逐人投递和退订头。
+8. 投递通知按账号、submission ID 和实际收件人关联，保存每人的结果、SMTP 响应码、增强状态码和诊断信息，可在「投递事件」查看。全部收件人成功才显示已送达；任一收件人失败则显示失败；delayed 不会覆盖已有终态。
+9. 文档未承诺发送幂等键：Relayme 不自动重试提交。超时、服务端错误、无效受理响应，以及进程中断遗留的发送中记录，标记 `relayme_submission_unknown` 并阻止直接重试。先去 Relayme 核对实际发送结果再决定是否新建邮件。已受理邮件的投递失败也不能通过营销重试重复提交。
+
+本地自动验证：`$env:TEST_TYPE='unit'; pnpm exec jest --runInBand src/__tests__/mail.unit.spec.ts src/__tests__/relayme.unit.spec.ts src/__tests__/registration-email.unit.spec.ts`。覆盖签名、原始字节、路径、时间窗、事件一致性、IMAP 歧义、跨账号/收件人隔离、去重和提交不明保护。真实收发还需要实际 Postmaster 和 IMAP 配置及公网回调。
 
 ## Resend 配置
 
